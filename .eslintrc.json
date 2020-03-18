@@ -24,7 +24,7 @@
     ],
     "ignorePatterns": ["dist/"],
     "rules": {
-        // "arrow-body-style": ["off"]
-        "no-console": "off"
+        "no-console": "off",
+        "jsx-a11y/no-static-element-interactions": "off"
     }
 }
