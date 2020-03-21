@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import BookRenderer from './BookRenderer';
 
 const BookUI = ({ source }) => {
-  const [offset, setOffset] = useState(0);
   const [containerWidth, setContainerWidth] = useState(null);
   const handleContainerWidthChange = (newWidth) => {
     setContainerWidth(newWidth);
@@ -14,6 +13,10 @@ const BookUI = ({ source }) => {
   const handleContentWidthChange = (newWidth) => {
     setContentWidth(newWidth);
   };
+
+  const [curPage, setCurPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(-1);
+  const [offset, setOffset] = useState(0);
 
   const getGapSize = () => 40; // css column-gap property of container
   const prevPage = () => {
@@ -39,14 +42,17 @@ const BookUI = ({ source }) => {
 
   return (
     <div className="bookUI">
-      <div className="leftButton" onClick={prevPage} />
       <BookRenderer
         source={source}
         onContentWidthChange={handleContentWidthChange}
         onContainerWidthChange={handleContainerWidthChange}
         offset={offset}
       />
-      <div className="rightButton" onClick={nextPage} />
+      <div className="pageButton prevButton" onClick={prevPage} />
+      <div className="pageButton nextButton" onClick={nextPage} />
+      <div className="pageCounter">
+        {`${curPage + 1} / ${totalPages}`}
+      </div>
     </div>
   );
 };

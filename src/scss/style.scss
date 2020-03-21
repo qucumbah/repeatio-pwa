@@ -15,6 +15,11 @@ body {
   opacity: 1;
 }
 
+::selection {
+  color: #1D3F3F;
+  background-color: #75FFFF;
+}
+
 .fileChooserDropzone {
   transition: .4s ease;
   position: fixed;
@@ -63,9 +68,52 @@ body {
 .bookUI {
   width: 100%;
   height: 100%;
-  padding: 40px;
+  padding: 40px 100px 60px;
   box-sizing: border-box;
   overflow: hidden;
+
+  .pageButton {
+    position: absolute;
+    width: 100px;
+    height: 100%;
+    top: 0;
+    cursor: pointer;
+    transition: .2s ease;
+    transition-property: filter;
+    filter: sepia(0) saturate(10) brightness(0.9) hue-rotate(120deg);
+
+    &:hover {
+      filter: sepia(1) saturate(10) brightness(0.9) hue-rotate(120deg);
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-image: url(../img/arrow.svg);
+      filter: invert(0.8);
+    }
+  }
+
+  .prevButton {
+    left: 0px;
+  }
+  .nextButton {
+    right: 0px;
+    transform: scaleX(-1);
+  }
+
+  .pageCounter {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #777;
+  }
 }
 
 .bookRendererContainer {
