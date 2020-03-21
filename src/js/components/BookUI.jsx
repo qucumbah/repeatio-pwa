@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import BookRenderer from './BookRenderer';
+import BookTextWrapper from './BookTextWrapper';
 
 const BookUI = ({ source }) => {
   const [containerWidth, setContainerWidth] = useState(null);
@@ -42,10 +42,10 @@ const BookUI = ({ source }) => {
 
   return (
     <div className="bookUI">
-      <BookRenderer
+      <BookTextWrapper
         source={source}
-        onContentWidthChange={handleContentWidthChange}
-        onContainerWidthChange={handleContainerWidthChange}
+        onWrapperWidthChange={handleContainerWidthChange}
+        onTextWidthChange={handleContentWidthChange}
         offset={offset}
       />
       <div className="pageButton prevButton" onClick={prevPage} />
