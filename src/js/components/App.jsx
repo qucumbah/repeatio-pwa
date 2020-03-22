@@ -22,7 +22,6 @@ const App = () => {
     };
   };
 
-  // Piece of shit
   const bookUi = <BookUI source={bookSource} />;
   const mainPage = <MainPage onFileChange={changeBookFile} />;
 
