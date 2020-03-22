@@ -33,7 +33,21 @@ const App = () => {
     });
   };
 
-  const bookUi = <BookUI source={bookSource} />;
+  const handleBookInfoChange = (newBookInfo) => {
+    const {
+      authorFirstName,
+      authorLastName,
+      title,
+    } = newBookInfo;
+    document.title = `${title} - ${authorFirstName} ${authorLastName}`;
+  };
+
+  const bookUi = (
+    <BookUI
+      source={bookSource}
+      onBookInfoChange={handleBookInfoChange}
+    />
+  );
   const mainPage = <MainPage onFileChange={changeBookFile} />;
 
   return (

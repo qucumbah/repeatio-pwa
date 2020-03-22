@@ -4,14 +4,10 @@ import PropTypes from 'prop-types';
 
 import BookTextWrapper from './BookTextWrapper';
 
-const BookUI = ({ source }) => {
+const BookUI = ({ source, onBookInfoChange }) => {
   const [containerWidth, setContainerWidth] = useState(null);
   const handleContainerWidthChange = (newWidth) => {
     setContainerWidth(newWidth);
-  };
-  const [contentWidth, setContentWidth] = useState(null);
-  const handleContentWidthChange = (newWidth) => {
-    setContentWidth(newWidth);
   };
 
   const [curPage, setCurPage] = useState(0);
@@ -38,14 +34,14 @@ const BookUI = ({ source }) => {
 
     window.onkeydown = keyDownHandler;
     return () => { window.onkeydown = null; };
-  }, [contentWidth, containerWidth, offset]);
+  }, [containerWidth, offset]);
 
   return (
     <div className="bookUI">
       <BookTextWrapper
         source={source}
         onWrapperWidthChange={handleContainerWidthChange}
-        onTextWidthChange={handleContentWidthChange}
+        onBookInfoChange={onBookInfoChange}
         offset={offset}
       />
       <div className="pageButton prevButton" onClick={prevPage} />
@@ -59,6 +55,7 @@ const BookUI = ({ source }) => {
 
 BookUI.propTypes = {
   source: PropTypes.string,
+  onBookInfoChange: PropTypes.func.isRequired,
 };
 
 BookUI.defaultProps = {
