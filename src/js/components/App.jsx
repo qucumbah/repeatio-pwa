@@ -9,17 +9,28 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const changeBookFile = (file) => {
-    setIsLoading(true);
-    const reader = new FileReader();
-    reader.readAsText(file);
+    const makeAllWorkAndHideLoader = () => {
+      const reader = new FileReader();
+      reader.readAsText(file);
 
-    reader.onload = () => {
-      setBookSource(reader.result);
-      setIsLoading(false);
+      reader.onload = () => {
+        setBookSource(reader.result);
+        setIsLoading(false);
+      };
+      reader.onerror = () => {
+        setIsLoading(false);
+      };
     };
-    reader.onerror = () => {
-      setIsLoading(false);
-    };
+
+    // Before rendering frame 1: set loader visible
+    requestAnimationFrame(() => {
+      setIsLoading(true);
+
+      // Before rendering frame 2: make all work, set loader invisible
+      requestAnimationFrame(() => {
+        makeAllWorkAndHideLoader();
+      });
+    });
   };
 
   const bookUi = <BookUI source={bookSource} />;
