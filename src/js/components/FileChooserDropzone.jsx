@@ -15,6 +15,9 @@ const FileChooserDropzone = ({ onFileChange }) => {
 
     window.ondragover = (event) => {
       preventDefault(event);
+      if (event.dataTransfer.items[0].kind !== 'file') {
+        return;
+      }
       setIsVisible(true);
     };
     window.ondragleave = (event) => {
@@ -25,7 +28,9 @@ const FileChooserDropzone = ({ onFileChange }) => {
       preventDefault(event);
       setIsVisible(false);
       const file = event.dataTransfer.files[0];
-      onFileChange(file);
+      if (file instanceof File) {
+        onFileChange(file);
+      }
     };
 
     return () => {

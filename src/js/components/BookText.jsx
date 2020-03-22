@@ -141,7 +141,6 @@ const BookText = React.memo(
         {content}
       </div>
     );
-  // eslint-disable-next-line comma-dangle
   })
 );
 

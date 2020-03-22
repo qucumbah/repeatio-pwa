@@ -81,11 +81,19 @@ body {
     top: 0;
     cursor: pointer;
     transition: .2s ease;
-    transition-property: filter;
-    filter: sepia(0) saturate(10) brightness(0.9) hue-rotate(120deg);
+    transition-property: filter opacity;
 
-    &:hover {
-      filter: sepia(1) saturate(10) brightness(0.9) hue-rotate(120deg);
+    &.active {
+      filter: sepia(0) saturate(10) brightness(0.9) hue-rotate(120deg);
+
+      &:hover {
+        filter: sepia(1) saturate(10) brightness(0.9) hue-rotate(120deg);
+      }
+    }
+
+    &.inactive {
+      opacity: 0;
+      cursor: auto;
     }
 
     &::after {
@@ -139,6 +147,8 @@ img {
   display: block;
   max-height: calc(100vh - 120px);
   margin: 0 auto;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 [xmltagname="poem"] {

@@ -5,21 +5,49 @@ import PropTypes from 'prop-types';
 import BookTextWrapper from './BookTextWrapper';
 
 const BookUI = ({ source, onBookInfoChange }) => {
-  const [containerWidth, setContainerWidth] = useState(null);
-  const handleContainerWidthChange = (newWidth) => {
-    setContainerWidth(newWidth);
-  };
-
   const [curPage, setCurPage] = useState(0);
   const [totalPages, setTotalPages] = useState(-1);
-  const [offset, setOffset] = useState(0);
+  const [wrapperWidth, setWrapperWidth] = useState(null);
+  const [textWidth, setTextWidth] = useState(null);
 
-  const getGapSize = () => 40; // css column-gap property of container
+  const [prevButtonActive, setPrevButtonActive] = useState(true);
+  const [nextButtonActive, setNextButtonActive] = useState(true);
+  const updateButtons = () => {
+    setPrevButtonActive(curPage !== 0);
+    setNextButtonActive(curPage !== totalPages - 1);
+  };
+
+  const getGapSize = () => 40; // css column-gap property of wrapper
+  const handleWrapperSizeChange = (
+    newWrapperWidth,
+    newWrapperHeight,
+    newTextWidth,
+  ) => {
+    console.log(newWrapperWidth, newTextWidth);
+    const progress = (totalPages === -1) ? 0 : curPage / totalPages;
+    setWrapperWidth(newWrapperWidth);
+    setTextWidth(newTextWidth);
+    const newTotalPages = Math.ceil(
+      newTextWidth / (newWrapperWidth + getGapSize())
+    );
+    setTotalPages(newTotalPages);
+    setCurPage(Math.round(progress * newTotalPages));
+    updateButtons();
+  };
+
   const prevPage = () => {
-    setOffset(offset - (containerWidth + getGapSize()));
+    if (curPage - 1 < 0) {
+      return;
+    }
+    setCurPage(curPage - 1);
+    updateButtons();
   };
   const nextPage = () => {
-    setOffset(offset + (containerWidth + getGapSize()));
+    if (curPage + 1 >= totalPages) {
+      return;
+    }
+    setCurPage(curPage + 1);
+    updateButtons();
   };
 
   useEffect(() => {
@@ -34,18 +62,24 @@ const BookUI = ({ source, onBookInfoChange }) => {
 
     window.onkeydown = keyDownHandler;
     return () => { window.onkeydown = null; };
-  }, [containerWidth, offset]);
+  }, [wrapperWidth, curPage]);
 
+  const prevButtonClassName = (
+    `pageButton prevButton ${prevButtonActive ? 'active' : 'inactive'}`
+  );
+  const nextButtonClassName = (
+    `pageButton nextButton ${nextButtonActive ? 'active' : 'inactive'}`
+  );
   return (
     <div className="bookUI">
       <BookTextWrapper
         source={source}
-        onWrapperWidthChange={handleContainerWidthChange}
+        onWrapperSizeChange={handleWrapperSizeChange}
         onBookInfoChange={onBookInfoChange}
-        offset={offset}
+        offset={curPage * (wrapperWidth + getGapSize())}
       />
-      <div className="pageButton prevButton" onClick={prevPage} />
-      <div className="pageButton nextButton" onClick={nextPage} />
+      <div className={prevButtonClassName} onClick={prevPage} />
+      <div className={nextButtonClassName} onClick={nextPage} />
       <div className="pageCounter">
         {`${curPage + 1} / ${totalPages}`}
       </div>

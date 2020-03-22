@@ -6,15 +6,27 @@ import BookText from './BookText';
 const BookTextWrapper = (props) => {
   const {
     source,
-    onWrapperWidthChange,
+    onWrapperSizeChange,
     onBookInfoChange,
     offset,
   } = props;
 
   const wrapperRef = useRef();
+  const textRef = useRef();
   useEffect(() => {
-    onWrapperWidthChange(wrapperRef.current.clientWidth);
-  }, [wrapperRef.current ? wrapperRef.current.clientWidth : null]);
+    const callOnWrapperSizeChange = () => {
+      onWrapperSizeChange(
+        wrapperRef.current.clientWidth,
+        wrapperRef.current.clientHieght,
+        wrapperRef.current.scrollWidth,
+      );
+    };
+    callOnWrapperSizeChange();
+    window.onresize = callOnWrapperSizeChange;
+    return () => {
+      window.onresize = null;
+    };
+  });
 
   useEffect(() => {
     wrapperRef.current.scrollLeft = offset;
@@ -22,14 +34,18 @@ const BookTextWrapper = (props) => {
 
   return (
     <div className="bookTextWrapper" ref={wrapperRef}>
-      <BookText source={source} onBookInfoChange={onBookInfoChange} />
+      <BookText
+        source={source}
+        onBookInfoChange={onBookInfoChange}
+        ref={textRef}
+      />
     </div>
   );
 };
 
 BookTextWrapper.propTypes = {
   source: PropTypes.string.isRequired,
-  onWrapperWidthChange: PropTypes.func.isRequired,
+  onWrapperSizeChange: PropTypes.func.isRequired,
   onBookInfoChange: PropTypes.func.isRequired,
   offset: PropTypes.number.isRequired,
 };
