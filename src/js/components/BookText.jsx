@@ -83,10 +83,14 @@ const xmlToHtml = (node, index) => {
     epigraph: 'blockquote',
     section: 'section',
     emphasis: 'i',
+    strong: 'b',
     p: 'p',
   };
 
   const htmlTagName = switchXmlTagName[tagName];
+  if (!htmlTagName) {
+    console.log(tagName);
+  }
 
   // Switch all unknown tag names to div
   return React.createElement(

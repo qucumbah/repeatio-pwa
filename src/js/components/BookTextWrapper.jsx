@@ -26,7 +26,7 @@ const BookTextWrapper = (props) => {
     return () => {
       window.onresize = null;
     };
-  });
+  }, [source]);
 
   useEffect(() => {
     wrapperRef.current.scrollLeft = offset;

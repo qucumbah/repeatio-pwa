@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import BookTextWrapper from './BookTextWrapper';
@@ -10,12 +10,8 @@ const BookUI = ({ source, onBookInfoChange }) => {
   const [wrapperWidth, setWrapperWidth] = useState(null);
   const [textWidth, setTextWidth] = useState(null);
 
-  const [prevButtonActive, setPrevButtonActive] = useState(true);
-  const [nextButtonActive, setNextButtonActive] = useState(true);
-  const updateButtons = () => {
-    setPrevButtonActive(curPage !== 0);
-    setNextButtonActive(curPage !== totalPages - 1);
-  };
+  const curPageRef = useRef(curPage);
+  const totalPagesRef = useRef(totalPages);
 
   const getGapSize = () => 40; // css column-gap property of wrapper
   const handleWrapperSizeChange = (
@@ -23,16 +19,20 @@ const BookUI = ({ source, onBookInfoChange }) => {
     newWrapperHeight,
     newTextWidth,
   ) => {
-    console.log(newWrapperWidth, newTextWidth);
-    const progress = (totalPages === -1) ? 0 : curPage / totalPages;
+    console.log(curPageRef.current, totalPagesRef.current);
+    const progress = curPageRef.current / totalPagesRef.current;
     setWrapperWidth(newWrapperWidth);
     setTextWidth(newTextWidth);
+
     const newTotalPages = Math.ceil(
       newTextWidth / (newWrapperWidth + getGapSize())
     );
+    const newCurPage = Math.round(progress * newTotalPages);
+    console.log(progress, newTotalPages, newCurPage);
+    setCurPage(newCurPage);
     setTotalPages(newTotalPages);
-    setCurPage(Math.round(progress * newTotalPages));
-    updateButtons();
+    curPageRef.current = newCurPage;
+    totalPagesRef.current = newTotalPages;
   };
 
   const prevPage = () => {
@@ -40,15 +40,22 @@ const BookUI = ({ source, onBookInfoChange }) => {
       return;
     }
     setCurPage(curPage - 1);
-    updateButtons();
+    curPageRef.current = curPage - 1;
   };
   const nextPage = () => {
     if (curPage + 1 >= totalPages) {
       return;
     }
     setCurPage(curPage + 1);
-    updateButtons();
+    curPageRef.current = curPage + 1;
   };
+
+  const [prevButtonActive, setPrevButtonActive] = useState(true);
+  const [nextButtonActive, setNextButtonActive] = useState(true);
+  useEffect(() => {
+    setPrevButtonActive(curPage !== 0);
+    setNextButtonActive(curPage !== totalPages - 1);
+  }, [curPage, totalPages]);
 
   useEffect(() => {
     const keyDownHandler = (event) => {
@@ -62,7 +69,7 @@ const BookUI = ({ source, onBookInfoChange }) => {
 
     window.onkeydown = keyDownHandler;
     return () => { window.onkeydown = null; };
-  }, [wrapperWidth, curPage]);
+  }, [curPage, totalPages]);
 
   const prevButtonClassName = (
     `pageButton prevButton ${prevButtonActive ? 'active' : 'inactive'}`
