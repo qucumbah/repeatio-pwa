@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import FileChooserDropzone from './FileChooserDropzone';
 import Loader from './Loader';
 import MainPage from './MainPage';
@@ -42,12 +42,12 @@ const App = () => {
     document.title = `${title} - ${authorFirstName} ${authorLastName}`;
   };
 
-  const bookUi = (
+  const bookUi = useMemo(() => (
     <BookUI
       source={bookSource}
       onBookInfoChange={handleBookInfoChange}
     />
-  );
+  ), [bookSource]);
   const mainPage = <MainPage onFileChange={changeBookFile} />;
 
   return (
