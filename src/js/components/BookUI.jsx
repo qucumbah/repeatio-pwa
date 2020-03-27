@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 
 import BookTextWrapper from './BookTextWrapper';
@@ -8,46 +8,40 @@ const BookUI = ({ source, onBookInfoChange }) => {
   const [curPage, setCurPage] = useState(0);
   const [totalPages, setTotalPages] = useState(-1);
   const [wrapperWidth, setWrapperWidth] = useState(null);
-  const [textWidth, setTextWidth] = useState(null);
 
-  const curPageRef = useRef(curPage);
-  const totalPagesRef = useRef(totalPages);
+  useEffect(() => {
+    setCurPage(0);
+  }, [source]);
 
   const getGapSize = () => 40; // css column-gap property of wrapper
-  const handleWrapperSizeChange = (
+  const handleWrapperSizeChange = useCallback((
     newWrapperWidth,
     newWrapperHeight,
     newTextWidth,
   ) => {
-    console.log(curPageRef.current, totalPagesRef.current);
-    const progress = curPageRef.current / totalPagesRef.current;
+    console.log(curPage, totalPages);
+    const progress = curPage / totalPages;
     setWrapperWidth(newWrapperWidth);
-    setTextWidth(newTextWidth);
 
     const newTotalPages = Math.ceil(
       newTextWidth / (newWrapperWidth + getGapSize())
     );
     const newCurPage = Math.round(progress * newTotalPages);
-    console.log(progress, newTotalPages, newCurPage);
     setCurPage(newCurPage);
     setTotalPages(newTotalPages);
-    curPageRef.current = newCurPage;
-    totalPagesRef.current = newTotalPages;
-  };
+  }, [curPage, totalPages]);
 
   const prevPage = () => {
     if (curPage - 1 < 0) {
       return;
     }
     setCurPage(curPage - 1);
-    curPageRef.current = curPage - 1;
   };
   const nextPage = () => {
     if (curPage + 1 >= totalPages) {
       return;
     }
     setCurPage(curPage + 1);
-    curPageRef.current = curPage + 1;
   };
 
   const [prevButtonActive, setPrevButtonActive] = useState(true);
