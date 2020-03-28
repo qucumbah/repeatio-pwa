@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 const SelectionPopup = ({
@@ -12,11 +12,26 @@ const SelectionPopup = ({
     return null;
   }
 
+  useEffect(() => {
+    const handleWindowKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleWindowKeyDown);
+    return () => window.removeEventListener('keydown', handleWindowKeyDown);
+  });
+
   const inputRef = useRef();
   const handleWordAdd = () => {
     const wordText = inputRef.current.value;
     onWordAdd(wordText);
+    onClose();
   };
+
+  useEffect(() => {
+    inputRef.current.value = text;
+  }, [text]);
 
   const positionStyle = {
     left: `${position.x}px`,

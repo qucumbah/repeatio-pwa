@@ -44,6 +44,7 @@ const App = () => {
 
   const [words, setWords] = useState([]);
   const addWord = (newWord) => {
+    console.log(words);
     setWords((prevWords) => prevWords.push(newWord));
   };
 

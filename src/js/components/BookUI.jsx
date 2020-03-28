@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import BookTextWrapper from './BookTextWrapper';
@@ -51,6 +51,7 @@ const BookUI = ({ source, onBookInfoChange, onWordAdd }) => {
     setNextButtonActive(curPage !== totalPages - 1);
   }, [curPage, totalPages]);
 
+  const bookUIRef = useRef();
   useEffect(() => {
     const keyDownHandler = (event) => {
       if (event.key === 'ArrowDown' || event.key === 'ArrowRight') {
@@ -61,8 +62,9 @@ const BookUI = ({ source, onBookInfoChange, onWordAdd }) => {
       }
     };
 
-    window.onkeydown = keyDownHandler;
-    return () => { window.onkeydown = null; };
+    bookUIRef.current.focus();
+    bookUIRef.current.onkeydown = keyDownHandler;
+    return () => { bookUIRef.current.onkeydown = null; };
   }, [curPage, totalPages]);
 
   const [selectionPopupVisible, setSelectionPopupVisible] = useState(false);
@@ -85,7 +87,8 @@ const BookUI = ({ source, onBookInfoChange, onWordAdd }) => {
     `pageButton nextButton ${nextButtonActive ? 'active' : 'inactive'}`
   );
   return (
-    <div className="bookUI">
+    // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+    <div className="bookUI" ref={bookUIRef} tabIndex="0">
       <BookTextWrapper
         source={source}
         onWrapperSizeChange={handleWrapperSizeChange}
