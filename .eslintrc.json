@@ -26,8 +26,8 @@
     "rules": {
         "no-console": "off",
         "jsx-a11y/no-static-element-interactions": "off",
-        "comma-dangle": ["always", {
-            "functions": "ignore"
-        }]
+        "jsx-a11y/click-events-have-key-events": "off",
+        "comma-dangle": "off",
+        "object-curly-newline": "off"
     }
 }

@@ -126,6 +126,29 @@ body {
   }
 }
 
+.selectionPopup {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px 0 #0007;
+
+  .buttons {
+    margin-top: 5px;
+    .button {
+      cursor: pointer;
+      display: inline-block;
+      width: 50%;
+      box-sizing: border-box;
+      text-align: center;
+      padding: 3px;
+      border-radius: 3px;
+      border: 1px solid #0005;
+    }
+  }
+}
+
 .bookTextWrapper {
   column-count: 2;
   column-gap: 40px;

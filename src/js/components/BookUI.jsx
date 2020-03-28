@@ -3,8 +3,9 @@ import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 
 import BookTextWrapper from './BookTextWrapper';
+import SelectionPopup from './SelectionPopup';
 
-const BookUI = ({ source, onBookInfoChange }) => {
+const BookUI = ({ source, onBookInfoChange, onWordAdd }) => {
   const [curPage, setCurPage] = useState(0);
   const [totalPages, setTotalPages] = useState(-1);
   const [wrapperWidth, setWrapperWidth] = useState(null);
@@ -19,7 +20,6 @@ const BookUI = ({ source, onBookInfoChange }) => {
     newWrapperHeight,
     newTextWidth,
   ) => {
-    console.log(curPage, totalPages);
     const progress = curPage / totalPages;
     setWrapperWidth(newWrapperWidth);
 
@@ -65,6 +65,19 @@ const BookUI = ({ source, onBookInfoChange }) => {
     return () => { window.onkeydown = null; };
   }, [curPage, totalPages]);
 
+  const [selectionPopupVisible, setSelectionPopupVisible] = useState(false);
+  const [selectionPopupPosition, setSelectionPopupPosition] = useState();
+  const [selectionPopupText, setSelectionPopupText] = useState('');
+
+  const handleTextSelect = ({ x, y, width, text }) => {
+    setSelectionPopupVisible(true);
+    setSelectionPopupPosition({ x: x + width / 2, y });
+    setSelectionPopupText(text);
+  };
+  const handleSelectionPopupClose = () => {
+    setSelectionPopupVisible(false);
+  };
+
   const prevButtonClassName = (
     `pageButton prevButton ${prevButtonActive ? 'active' : 'inactive'}`
   );
@@ -77,7 +90,16 @@ const BookUI = ({ source, onBookInfoChange }) => {
         source={source}
         onWrapperSizeChange={handleWrapperSizeChange}
         onBookInfoChange={onBookInfoChange}
+        onTextSelect={handleTextSelect}
+        onTextUnselect={handleSelectionPopupClose}
         offset={curPage * (wrapperWidth + getGapSize())}
+      />
+      <SelectionPopup
+        visible={selectionPopupVisible}
+        position={selectionPopupPosition}
+        text={selectionPopupText}
+        onClose={handleSelectionPopupClose}
+        onWordAdd={onWordAdd}
       />
       <div className={prevButtonClassName} onClick={prevPage} />
       <div className={nextButtonClassName} onClick={nextPage} />
@@ -91,6 +113,7 @@ const BookUI = ({ source, onBookInfoChange }) => {
 BookUI.propTypes = {
   source: PropTypes.string,
   onBookInfoChange: PropTypes.func.isRequired,
+  onWordAdd: PropTypes.func.isRequired,
 };
 
 BookUI.defaultProps = {

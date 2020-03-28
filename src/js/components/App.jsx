@@ -42,10 +42,16 @@ const App = () => {
     document.title = `${title} - ${authorFirstName} ${authorLastName}`;
   };
 
+  const [words, setWords] = useState([]);
+  const addWord = (newWord) => {
+    setWords((prevWords) => prevWords.push(newWord));
+  };
+
   const bookUi = useMemo(() => (
     <BookUI
       source={bookSource}
       onBookInfoChange={handleBookInfoChange}
+      onWordAdd={addWord}
     />
   ), [bookSource]);
   const mainPage = <MainPage onFileChange={changeBookFile} />;
