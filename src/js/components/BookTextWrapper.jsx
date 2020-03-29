@@ -59,7 +59,12 @@ const BookTextWrapper = (props) => {
   };
 
   return (
-    <div className="bookTextWrapper" ref={wrapperRef} onClick={checkSelection}>
+    <div
+      className="bookTextWrapper"
+      ref={wrapperRef}
+      onTouchEnd={checkSelection}
+      onMouseUp={checkSelection}
+    >
       <BookText
         source={source}
         onBookInfoChange={onBookInfoChange}

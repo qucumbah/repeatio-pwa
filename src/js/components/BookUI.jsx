@@ -104,8 +104,16 @@ const BookUI = ({ source, onBookInfoChange, onWordAdd }) => {
         onClose={handleSelectionPopupClose}
         onWordAdd={onWordAdd}
       />
-      <div className={prevButtonClassName} onClick={prevPage} />
-      <div className={nextButtonClassName} onClick={nextPage} />
+      <div
+        className={prevButtonClassName}
+        onClick={prevPage}
+        onTouchEnd={prevPage}
+      />
+      <div
+        className={nextButtonClassName}
+        onClick={nextPage}
+        onTouchEnd={nextPage}
+      />
       <div className="pageCounter">
         {`${curPage + 1} / ${totalPages}`}
       </div>

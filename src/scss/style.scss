@@ -1,11 +1,16 @@
+:root {
+  height: 100%;
+}
+
 body {
   margin: 0;
+  height: 100%;
 }
 
 #root {
   position: relative;
   width: 100vw;
-  height: 100vh;
+  height: 100%;
 }
 
 .invisible {
@@ -74,6 +79,10 @@ body {
   box-sizing: border-box;
   overflow: hidden;
 
+  @media screen and (max-width: 719px) {
+    padding: 40px 40px 80px;
+  }
+
   .pageButton {
     position: absolute;
     width: 100px;
@@ -82,6 +91,11 @@ body {
     cursor: pointer;
     transition: .2s ease;
     transition-property: filter opacity;
+
+    @media screen and (max-width: 719px) {
+      width: 50%;
+      opacity: 0;
+    }
 
     &.active {
       filter: sepia(0) saturate(10) brightness(0.9) hue-rotate(120deg);
@@ -156,6 +170,9 @@ body {
   height: 100%;
   overflow: hidden;
   font-size: 20px;
+  @media screen and (max-width: 1279px) {
+    column-count: 1;
+  }
 }
 
 p {
