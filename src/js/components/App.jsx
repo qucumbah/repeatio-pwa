@@ -55,13 +55,18 @@ const App = () => {
       onWordAdd={addWord}
     />
   ), [bookSource]);
-  const mainPage = <MainPage onFileChange={changeBookFile} />;
+  const showBookUi = bookSource !== null;
 
   return (
     <>
       <FileChooserDropzone onFileChange={changeBookFile} />
       <Loader isLoading={isLoading} />
-      {bookSource ? bookUi : mainPage}
+      <MainPage
+        onFileChange={changeBookFile}
+        showBookUi={showBookUi}
+        isLoading={isLoading}
+      />
+      {showBookUi ? bookUi : null}
     </>
   );
 };

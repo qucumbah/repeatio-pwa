@@ -98,6 +98,7 @@ const xmlToHtml = (node, index) => {
     {
       key: index,
       xmltagname: tagName,
+      xmltagid: index,
       ...attribs,
     },
     children.map(xmlToHtml),
@@ -111,11 +112,17 @@ const getContent = ($) => {
 
 const BookText = React.memo(
   React.forwardRef((props, ref) => {
+    console.time('render');
     const { source, onBookInfoChange } = props;
+    console.time('parse1');
     const $ = Cheerio.load(source, { xmlMode: true });
+    console.timeEnd('parse1');
+    console.time('parse2');
     const dom = new DOMParser().parseFromString(source, 'text/xml');
+    console.timeEnd('parse2');
     console.log(dom);
 
+    console.time('stuff');
     const info = getInfo($);
     const imagesBase64 = getImagesBase64($);
     const images = $('image');
@@ -134,12 +141,16 @@ const BookText = React.memo(
 
       image.attr('l:href', `data:image/png;base64,${imageBase64}`);
     });
+    console.timeEnd('stuff');
+    console.time('content');
     const content = getContent($);
+    console.timeEnd('content');
 
     useEffect(() => {
       onBookInfoChange(info);
     }, [source]);
 
+    console.timeEnd('render');
     return (
       <div ref={ref}>
         {content}
