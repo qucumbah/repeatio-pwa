@@ -21,8 +21,8 @@ body {
 }
 
 ::selection {
-  color: #1D3F3F;
-  background-color: #75FFFF;
+  color: var(--theme-secondary);
+  background-color: var(--theme-primary);
 }
 
 .fileChooserDropzone {
@@ -31,17 +31,17 @@ body {
   position: fixed;
   width: 100vw;
   height: 100vh;
-  border: 10px dashed black;
+  border: 10px dashed var(--theme-secondary);
   box-sizing: border-box;
   pointer-events: none;
 
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 20px;
+  font-size: 50px;
   font-family: Arial, Helvetica, sans-serif;
-  // background-color: rgb(255, 255, 255);
-  color: transparent;
+  background-color: var(--theme-primary);
+  color: var(--theme-text);
 }
 
 .loader {
@@ -78,7 +78,7 @@ body {
   }
 
   transition: 0.5s ease;
-  background-color: blue;
+  background-color: var(--theme-primary);
   .foreground {
     position: absolute;
     width: 100%;
@@ -111,9 +111,6 @@ body {
     }
   }
 
-  .fileMenu {
-  }
-
   .plate {
     padding: 10px;
     display: block;
@@ -128,8 +125,8 @@ body {
 
   label {
     font-size: 20px;
-    color: #fff;
-    background-color: blue;
+    color: var(--theme-text);
+    background-color: var(--theme-primary);
     cursor: pointer;
   }
 
@@ -137,6 +134,27 @@ body {
     background: linear-gradient(90deg, hsl(0, 100%, 50%), hsl(60, 100%, 50%), hsl(120, 100%, 50%), hsl(180, 100%, 50%), hsl(240, 100%, 50%), hsl(300, 100%, 50%), hsl(360, 100%, 50%));
     color: transparent;
     user-select: none;
+  }
+
+  .colorPreview {
+    position: absolute;
+    height: 100%;
+    width: 5px;
+    top: 0;
+    pointer-events: none;
+
+    &::after {
+      content: '';
+      position: absolute;
+      width: 25px;
+      height: 25px;
+      border: 2px solid black;
+      border-radius: 50%;
+      background-color: var(--theme-primary);
+      left: 50%;
+      bottom: 0;
+      transform: translate(-50%, 100%);
+    }
   }
 
   input {
