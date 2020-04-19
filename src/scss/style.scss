@@ -45,8 +45,6 @@ body {
 }
 
 .loader {
-  display: none !important;
-
   z-index: 100;
   transition: .4s ease;
   position: fixed;
@@ -59,7 +57,7 @@ body {
   align-items: center;
   font-size: 20px;
   font-family: Arial, Helvetica, sans-serif;
-  background-color: rgb(255, 255, 255);
+  background-color: var(--theme-primary);
 }
 
 .mainPage {
@@ -180,19 +178,11 @@ body {
     top: 0;
     cursor: pointer;
     transition: .2s ease;
-    transition-property: filter opacity;
+    transition-property: opacity;
 
     @media screen and (max-width: 719px) {
       width: 50%;
       opacity: 0;
-    }
-
-    &.active {
-      filter: sepia(0) saturate(10) brightness(0.9) hue-rotate(120deg);
-
-      &:hover {
-        filter: sepia(1) saturate(10) brightness(0.9) hue-rotate(120deg);
-      }
     }
 
     &.inactive {
@@ -208,8 +198,15 @@ body {
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background-image: url(../img/arrow.svg);
-      filter: invert(0.8);
+      transition: .2s;
+      mask-image: url(../img/arrow.svg);
+      -webkit-mask-image: url(../img/arrow.svg);
+    }
+    &.active::after {
+      background-color: #ccc;
+    }
+    &.active:hover::after {
+      background-color: var(--theme-primary);
     }
   }
 
