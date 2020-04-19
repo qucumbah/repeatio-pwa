@@ -1,12 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-const FileChooserDropzone = ({ onFileChange }) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const className = (
-    `fileChooserDropzone ${isVisible ? 'visible' : 'invisible'}`
-  );
-
+const FileChooserDropzone = ({ onFileDrag, onFileChange }) => {
   useEffect(() => {
     const preventDefault = (event) => {
       event.stopPropagation();
@@ -18,15 +13,15 @@ const FileChooserDropzone = ({ onFileChange }) => {
       if (event.dataTransfer.items[0].kind !== 'file') {
         return;
       }
-      setIsVisible(true);
+      onFileDrag(true);
     };
     window.ondragleave = (event) => {
       preventDefault(event);
-      setIsVisible(false);
+      onFileDrag(false);
     };
     window.ondrop = (event) => {
       preventDefault(event);
-      setIsVisible(false);
+      onFileDrag(false);
       const file = event.dataTransfer.files[0];
       if (file instanceof File) {
         onFileChange(file);
@@ -37,14 +32,15 @@ const FileChooserDropzone = ({ onFileChange }) => {
       window.ondragover = null;
       window.ondragleave = null;
       window.ondrop = null;
-      setIsVisible(false);
+      onFileDrag(false);
     };
   }, []);
 
-  return <div className={className}>Drop FB2 Here</div>;
+  return <div className="fileChooserDropzone" />;
 };
 
 FileChooserDropzone.propTypes = {
+  onFileDrag: PropTypes.func.isRequired,
   onFileChange: PropTypes.func.isRequired,
 };
 

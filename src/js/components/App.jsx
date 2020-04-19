@@ -1,34 +1,38 @@
 import React, { useState, useMemo } from 'react';
 import FileChooserDropzone from './FileChooserDropzone';
-import Loader from './Loader';
+import Overlay from './Overlay';
 import MainPage from './MainPage';
 import BookUI from './BookUI';
 
 const App = () => {
   const [bookSource, setBookSource] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [overlayContent, setOverlayContent] = useState(null);
+
+  const handleFileDrag = (isFileDragged) => {
+    setOverlayContent(isFileDragged ? 'Drop FB2 Here' : null);
+  };
 
   const changeBookFile = (file) => {
-    const makeAllWorkAndHideLoader = () => {
+    const makeAllWorkAndHideOverlay = () => {
       const reader = new FileReader();
       reader.readAsText(file);
 
       reader.onload = () => {
         setBookSource(reader.result);
-        setIsLoading(false);
+        setOverlayContent(null);
       };
       reader.onerror = () => {
-        setIsLoading(false);
+        setOverlayContent(null);
       };
     };
 
     // Before rendering frame 1: set loader visible
     requestAnimationFrame(() => {
-      setIsLoading(true);
+      setOverlayContent('Loading...');
 
       // Before rendering frame 2: make all work, set loader invisible
       requestAnimationFrame(() => {
-        makeAllWorkAndHideLoader();
+        makeAllWorkAndHideOverlay();
       });
     });
   };
@@ -55,18 +59,21 @@ const App = () => {
       onWordAdd={addWord}
     />
   ), [bookSource]);
+  const mainPage = <MainPage onFileChange={changeBookFile} />;
   const showBookUi = bookSource !== null;
 
   return (
     <>
-      <FileChooserDropzone onFileChange={changeBookFile} />
-      <Loader isLoading={isLoading} />
-      <MainPage
+      <FileChooserDropzone
+        onFileDrag={handleFileDrag}
         onFileChange={changeBookFile}
-        showBookUi={showBookUi}
-        isLoading={isLoading}
       />
-      {showBookUi ? bookUi : null}
+      <Overlay
+        isVisible={overlayContent !== null}
+        content={(overlayContent === null) ? '' : overlayContent}
+      />
+
+      {showBookUi ? bookUi : mainPage}
     </>
   );
 };

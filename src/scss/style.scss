@@ -25,7 +25,7 @@ body {
   background-color: var(--theme-primary);
 }
 
-.fileChooserDropzone {
+.overlay {
   z-index: 100;
   transition: .4s ease;
   position: fixed;
@@ -42,22 +42,6 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   background-color: var(--theme-primary);
   color: var(--theme-text);
-}
-
-.loader {
-  z-index: 100;
-  transition: .4s ease;
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 20px;
-  font-family: Arial, Helvetica, sans-serif;
-  background-color: var(--theme-primary);
 }
 
 .mainPage {

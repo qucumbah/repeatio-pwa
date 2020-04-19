@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-const MainPage = ({ onFileChange, showBookUi, isLoading }) => {
+const MainPage = ({ onFileChange }) => {
   const handleFileInput = (event) => {
     const inputNode = event.target;
     onFileChange(inputNode.files[0]);
@@ -66,17 +66,12 @@ const MainPage = ({ onFileChange, showBookUi, isLoading }) => {
   const resetColorChange = () => {
     setTemporaryColorCoefficient(permanentColorCoefficient);
   };
-
-  const showBookUiClass = showBookUi ? 'invisible' : '';
-  const isLoadingClass = isLoading ? 'isLoading' : '';
-  const className = `mainPage ${showBookUiClass} ${isLoadingClass}`;
-
   const colorPreviewStyle = {
     left: `${temporaryColorCoefficient * 100}%`,
   };
 
   return (
-    <div className={className}>
+    <div className="mainPage">
       <div className="foreground">
         <h1>Welcome to Repeatio!</h1>
         <div className="menus">
@@ -108,8 +103,6 @@ const MainPage = ({ onFileChange, showBookUi, isLoading }) => {
 
 MainPage.propTypes = {
   onFileChange: PropTypes.func.isRequired,
-  showBookUi: PropTypes.bool.isRequired,
-  isLoading: PropTypes.bool.isRequired,
 };
 
 export default MainPage;
