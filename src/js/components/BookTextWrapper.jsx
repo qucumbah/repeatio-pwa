@@ -63,7 +63,7 @@ const BookTextWrapper = (props) => {
       className="bookTextWrapper"
       ref={wrapperRef}
       onTouchEnd={checkSelection}
-      onMouseUp={checkSelection}
+      onMouseUp={() => requestAnimationFrame(checkSelection)}
     >
       <BookText
         source={source}
