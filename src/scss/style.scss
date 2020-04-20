@@ -1,5 +1,8 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway:400,700,900&display=swap&subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext,vietnamese');
+
 :root {
   height: 100%;
+  font-family: 'Raleway', sans-serif;
 }
 
 body {
@@ -44,18 +47,107 @@ body {
   color: var(--theme-text);
 }
 
+.topLeft {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.topRight {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.bottomLeft {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+.bottomRight {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.menuLink {
+  position: relative;
+  z-index: 3;
+
+  display: inline-flex;
+  justify-content: start;
+  align-items: center;
+  color: #888;
+  text-decoration: none;
+
+  margin-left: 25px;
+  &:first-child {
+    margin-left: 0;
+  }
+
+  cursor: pointer;
+
+  .text {
+    position: relative;
+  }
+
+  .text::after {
+    content: '';
+    transition: .2s ease;
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--theme-primary);
+  }
+  &:hover .text::after {
+    width: 100%;
+  }
+
+  img {
+    --icon-size: 16px;
+    display: block;
+    width: var(--icon-size);
+    height: var(--icon-size);
+    background-position: center;
+    background-size: cover;
+    margin-right: 5px;
+  }
+}
+
 .mainPage {
   position: absolute;
   width: 100%;
   height: 100%;
 
+  .links {
+    position: absolute;
+    width: calc(100% - 36px);
+    height: calc(100% - 36px);
+    margin: 18px;
+    box-sizing: border-box;
+  }
+
   h1 {
     text-align: center;
     margin-top: 30vh;
-    font-family: sans-serif;
+    font-weight: 700;
     font-size: 48px;
+    position: relative;
     @media screen and (max-width: 639px) {
       margin-top: 10vh;
+    }
+
+    &::after {
+      content: '';
+      display: block;
+      width: 150px;
+      height: 2px;
+      background-color: var(--theme-primary);
+      position: absolute;
+      bottom: -50%;
+      left: 50%;
+      transform: translateX(-50%);
     }
   }
 
@@ -66,7 +158,7 @@ body {
     width: 100%;
     height: 100%;
     background-color: #fff;
-    clip-path: circle(130% at 0 0);
+    // clip-path: circle(130% at 0 0);
   }
   &.isLoading .foreground {
     clip-path: circle(0% at 0 0);
@@ -130,12 +222,13 @@ body {
       position: absolute;
       width: 25px;
       height: 25px;
-      border: 2px solid black;
       border-radius: 50%;
       background-color: var(--theme-primary);
       left: 50%;
       bottom: 0;
-      transform: translate(-50%, 100%);
+      transform: translate(-50%, 100%) rotate(90deg);
+      mask-image: url(../img/arrow.svg);
+      -webkit-mask-image: url(../img/arrow.svg);
     }
   }
 

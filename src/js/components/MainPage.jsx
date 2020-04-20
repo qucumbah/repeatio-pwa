@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
+import MenuLink from './MenuLink';
+
+import SettingsIcon from '../../img/settings.svg';
+import LoginIcon from '../../img/man.svg';
+import SignupIcon from '../../img/laptop.svg';
+import FaqIcon from '../../img/info.svg';
+import GithubIcon from '../../img/github.svg';
+
 const MainPage = ({ onFileChange }) => {
   const handleFileInput = (event) => {
     const inputNode = event.target;
@@ -31,7 +39,6 @@ const MainPage = ({ onFileChange }) => {
       `hsl(${temporaryColorCoefficient * 360}, 100%, 10%)`,
     );
 
-    console.log(temporaryColorCoefficient);
     const needContrastText = (
       (temporaryColorCoefficient > 0.1) && (temporaryColorCoefficient < 0.2)
     );
@@ -72,6 +79,21 @@ const MainPage = ({ onFileChange }) => {
 
   return (
     <div className="mainPage">
+      <div className="links">
+        <div className="topLeft">
+          <MenuLink action={null} icon={SettingsIcon}>Settings</MenuLink>
+        </div>
+        <div className="topRight">
+          <MenuLink action={null} icon={SignupIcon}>Signup</MenuLink>
+          <MenuLink action={null} icon={LoginIcon}>Login</MenuLink>
+        </div>
+        <div className="bottomLeft">
+          <MenuLink action={null} icon={FaqIcon}>Help</MenuLink>
+        </div>
+        <div className="bottomRight">
+          <MenuLink action={null} icon={GithubIcon}>Github</MenuLink>
+        </div>
+      </div>
       <div className="foreground">
         <h1>Welcome to Repeatio!</h1>
         <div className="menus">
