@@ -1,15 +1,17 @@
 import React, { useState, useMemo } from 'react';
 import FileChooserDropzone from './FileChooserDropzone';
+import FileOverlay from './FileOverlay';
 import Overlay from './Overlay';
+import Settings from './Settings';
 import MainPage from './MainPage';
 import BookUI from './BookUI';
 
 const App = () => {
   const [bookSource, setBookSource] = useState(null);
-  const [overlayContent, setOverlayContent] = useState(null);
+  const [fileOverlayContent, setFileOverlayContent] = useState(null);
 
   const handleFileDrag = (isFileDragged) => {
-    setOverlayContent(isFileDragged ? 'Drop FB2 Here' : null);
+    setFileOverlayContent(isFileDragged ? 'Drop FB2 Here' : null);
   };
 
   const changeBookFile = (file) => {
@@ -19,16 +21,16 @@ const App = () => {
 
       reader.onload = () => {
         setBookSource(reader.result);
-        setOverlayContent(null);
+        setFileOverlayContent(null);
       };
       reader.onerror = () => {
-        setOverlayContent(null);
+        setFileOverlayContent(null);
       };
     };
 
     // Before rendering frame 1: set loader visible
     requestAnimationFrame(() => {
-      setOverlayContent('Loading...');
+      setFileOverlayContent('Loading...');
 
       // Before rendering frame 2: make all work, set loader invisible
       requestAnimationFrame(() => {
@@ -52,6 +54,25 @@ const App = () => {
     setWords((prevWords) => prevWords.push(newWord));
   };
 
+  const [overlayOpenFrom, setOverlayOpenFrom] = useState(null);
+  const [settingsMenuOpen, setSettingsMenuOpen] = useState(false);
+  const openSettingsMenu = (event) => {
+    setOverlayOpenFrom({
+      x: event.pageX,
+      y: event.pageY,
+    });
+    setSettingsMenuOpen(true);
+  };
+
+  const mainPage = (
+    <MainPage
+      onFileChange={changeBookFile}
+      onSettingsMenuOpen={openSettingsMenu}
+      onHelpMenuOpen={() => null}
+      onSignupMenuOpen={() => null}
+      onLoginMenuOpen={() => null}
+    />
+  );
   const bookUi = useMemo(() => (
     <BookUI
       source={bookSource}
@@ -59,7 +80,6 @@ const App = () => {
       onWordAdd={addWord}
     />
   ), [bookSource]);
-  const mainPage = <MainPage onFileChange={changeBookFile} />;
   const showBookUi = bookSource !== null;
 
   return (
@@ -68,10 +88,14 @@ const App = () => {
         onFileDrag={handleFileDrag}
         onFileChange={changeBookFile}
       />
-      <Overlay
-        isVisible={overlayContent !== null}
-        content={(overlayContent === null) ? '' : overlayContent}
+      <FileOverlay
+        isVisible={fileOverlayContent !== null}
+        content={(fileOverlayContent === null) ? '' : fileOverlayContent}
       />
+
+      <Overlay shouldOpen={settingsMenuOpen} from={overlayOpenFrom}>
+        <Settings onClose={() => setSettingsMenuOpen(false)} />
+      </Overlay>
 
       {showBookUi ? bookUi : mainPage}
     </>

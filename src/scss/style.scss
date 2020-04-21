@@ -30,10 +30,15 @@ body {
 
 .overlay {
   z-index: 100;
-  transition: .4s ease;
   position: fixed;
   width: 100vw;
   height: 100vh;
+  background-color: var(--theme-primary);
+  color: var(--theme-text);
+}
+
+.fileOverlay {
+  transition: .4s ease;
   border: 10px dashed var(--theme-secondary);
   box-sizing: border-box;
   pointer-events: none;
@@ -43,8 +48,6 @@ body {
   align-items: center;
   font-size: 50px;
   font-family: Arial, Helvetica, sans-serif;
-  background-color: var(--theme-primary);
-  color: var(--theme-text);
 }
 
 .topLeft {
@@ -66,6 +69,16 @@ body {
   position: absolute;
   bottom: 0;
   right: 0;
+}
+
+button {
+  appearance: none;
+  -webkit-appearance: none;
+  font: inherit;
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  outline: none;
 }
 
 .menuLink {

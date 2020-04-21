@@ -9,7 +9,13 @@ import SignupIcon from '../../img/laptop.svg';
 import FaqIcon from '../../img/info.svg';
 import GithubIcon from '../../img/github.svg';
 
-const MainPage = ({ onFileChange }) => {
+const MainPage = ({
+  onFileChange,
+  onSettingsMenuOpen,
+  onHelpMenuOpen,
+  onSignupMenuOpen,
+  onLoginMenuOpen,
+}) => {
   const handleFileInput = (event) => {
     const inputNode = event.target;
     onFileChange(inputNode.files[0]);
@@ -53,8 +59,6 @@ const MainPage = ({ onFileChange }) => {
     const elementOffset = event.target.getBoundingClientRect().left;
     const relativePosition = event.pageX - elementOffset;
     const coefficient = relativePosition / elementWidth;
-    // console.log(event);
-    // console.log(elementWidth, elementOffset, event.pageX);
     return coefficient;
   };
 
@@ -62,7 +66,6 @@ const MainPage = ({ onFileChange }) => {
     const coefficient = getCoefficient(event);
     setTemporaryColorCoefficient(coefficient);
     setPermanentColorCoefficient(coefficient);
-    console.log(coefficient);
   };
 
   const handleColorChangePreview = (event) => {
@@ -77,21 +80,29 @@ const MainPage = ({ onFileChange }) => {
     left: `${temporaryColorCoefficient * 100}%`,
   };
 
+  const openGithubLink = (
+    () => window.open('https://github.com/qucumbah/repeatio-pwa', '_blank')
+  );
+
   return (
     <div className="mainPage">
       <div className="links">
         <div className="topLeft">
-          <MenuLink action={null} icon={SettingsIcon}>Settings</MenuLink>
+          <MenuLink action={onSettingsMenuOpen} icon={SettingsIcon}>
+            Settings
+          </MenuLink>
         </div>
         <div className="topRight">
-          <MenuLink action={null} icon={SignupIcon}>Signup</MenuLink>
-          <MenuLink action={null} icon={LoginIcon}>Login</MenuLink>
+          <MenuLink action={onSignupMenuOpen} icon={SignupIcon}>
+            Signup
+          </MenuLink>
+          <MenuLink action={onLoginMenuOpen} icon={LoginIcon}>Login</MenuLink>
         </div>
         <div className="bottomLeft">
-          <MenuLink action={null} icon={FaqIcon}>Help</MenuLink>
+          <MenuLink action={onHelpMenuOpen} icon={FaqIcon}>Help</MenuLink>
         </div>
         <div className="bottomRight">
-          <MenuLink action={null} icon={GithubIcon}>Github</MenuLink>
+          <MenuLink action={openGithubLink} icon={GithubIcon}>Github</MenuLink>
         </div>
       </div>
       <div className="foreground">
@@ -125,6 +136,10 @@ const MainPage = ({ onFileChange }) => {
 
 MainPage.propTypes = {
   onFileChange: PropTypes.func.isRequired,
+  onSettingsMenuOpen: PropTypes.func.isRequired,
+  onHelpMenuOpen: PropTypes.func.isRequired,
+  onSignupMenuOpen: PropTypes.func.isRequired,
+  onLoginMenuOpen: PropTypes.func.isRequired,
 };
 
 export default MainPage;

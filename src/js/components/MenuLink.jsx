@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const MenuLink = ({ icon, action, children }) => (
-  <div className="menuLink" onClick={action}>
+  <button type="button" className="menuLink" onClick={action}>
     {icon !== '' && <img src={icon} alt={children} />}
     {children !== null && <div className="text">{children}</div>}
-  </div>
+  </button>
 );
 
 MenuLink.propTypes = {
