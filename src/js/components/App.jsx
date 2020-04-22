@@ -50,9 +50,9 @@ const App = () => {
 
   const [words, setWords] = useState([]);
   const addWord = (newWord) => {
-    console.log(words);
-    setWords((prevWords) => prevWords.push(newWord));
+    setWords((prevWords) => [...prevWords, newWord]);
   };
+  console.log(words);
 
   const [overlayOpenFrom, setOverlayOpenFrom] = useState(null);
   const [settingsMenuOpen, setSettingsMenuOpen] = useState(false);
