@@ -321,21 +321,66 @@ button {
   position: absolute;
   transform: translate(-50%, -100%);
   background-color: #fff;
-  padding: 10px;
-  border-radius: 5px;
-  box-shadow: 0 0 10px 0 #0007;
+  padding: 18px;
+  width: 250px;
+  box-shadow: 0 0 8px 0 #0005;
+
+  .word {
+    position: relative;
+
+    input {
+      font: inherit;
+      font-weight: 700;
+      border: none;
+      padding: 5px;
+      padding-right: 24px;
+      box-sizing: border-box;
+      width: 100%;
+      &:focus {
+        outline: 1px solid #0005;
+      }
+    }
+
+    &::after {
+      content: '';
+      width: 16px;
+      height: 16px;
+      background-image: url(../img/edit.svg);
+      position: absolute;
+      right: 5px;
+      top: 50%;
+      transform: translateY(-50%);
+      background-size: contain;
+      pointer-events: none;
+      filter: invert(0.5)
+    }
+  }
+
+  .translation {
+    word-wrap: break-word;
+    margin-top: 10px;
+
+    .placeholder {
+      color: #0003;
+      &::after {
+        content: 'Loading...';
+      }
+    }
+  }
 
   .buttons {
-    margin-top: 5px;
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+
     .button {
       cursor: pointer;
       display: inline-block;
-      width: 50%;
       box-sizing: border-box;
       text-align: center;
-      padding: 3px;
-      border-radius: 3px;
-      border: 1px solid #0005;
+      padding: 5px 15px;
+      background-color: var(--theme-primary);
+      color: var(--theme-text);
     }
   }
 }
