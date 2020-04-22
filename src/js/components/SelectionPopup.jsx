@@ -1,5 +1,7 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+
+import { getTranslation } from '../util';
 
 const SelectionPopup = ({
   visible,
@@ -29,8 +31,16 @@ const SelectionPopup = ({
     onClose();
   };
 
+  const [translation, setTranslation] = useState(null);
+  const updateTranslation = (textToTranslate) => {
+    getTranslation(textToTranslate)
+      .then((response) => response.json())
+      .then((json) => setTranslation(json.text[0]));
+  };
+
   useEffect(() => {
     inputRef.current.value = text;
+    updateTranslation(text);
   }, [text]);
 
   const positionStyle = {
@@ -39,9 +49,19 @@ const SelectionPopup = ({
   };
   return (
     <div className="selectionPopup" style={positionStyle}>
-      <input type="text" defaultValue={text} ref={inputRef} />
+      <div className="word">
+        <input
+          type="text"
+          onChange={(event) => updateTranslation(event.target.value)}
+          defaultValue={text}
+          ref={inputRef}
+        />
+      </div>
+      <div className="translation">
+        {translation === null ? <span className="placeholder" /> : translation}
+      </div>
       <div className="buttons">
-        <div className="button okButton" onClick={handleWordAdd}>Ok</div>
+        <div className="button okButton" onClick={handleWordAdd}>Add</div>
         <div className="button cancelButton" onClick={onClose}>Cancel</div>
       </div>
     </div>

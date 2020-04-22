@@ -72,9 +72,9 @@ const BookUI = ({ source, onBookInfoChange, onWordAdd }) => {
   const [selectionPopupText, setSelectionPopupText] = useState('');
 
   const handleTextSelect = ({ x, y, width, text }) => {
-    setSelectionPopupVisible(true);
     setSelectionPopupPosition({ x: x + width / 2, y });
     setSelectionPopupText(text);
+    setSelectionPopupVisible(true);
   };
   const handleSelectionPopupClose = () => {
     setSelectionPopupVisible(false);
