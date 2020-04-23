@@ -67,17 +67,25 @@ const BookUI = ({ source, onBookInfoChange, onWordAdd }) => {
     return () => { bookUIRef.current.onkeydown = null; };
   }, [curPage, totalPages]);
 
-  const [selectionPopupVisible, setSelectionPopupVisible] = useState(false);
-  const [selectionPopupPosition, setSelectionPopupPosition] = useState();
-  const [selectionPopupText, setSelectionPopupText] = useState('');
+  const [selectionPopupState, setSelectionPopupState] = useState({
+    visible: false,
+    position: null,
+    text: '',
+  });
 
   const handleTextSelect = ({ x, y, width, text }) => {
-    setSelectionPopupPosition({ x: x + width / 2, y });
-    setSelectionPopupText(text);
-    setSelectionPopupVisible(true);
+    setSelectionPopupState({
+      visible: true,
+      position: { x: x + width / 2, y },
+      text,
+    });
   };
   const handleSelectionPopupClose = () => {
-    setSelectionPopupVisible(false);
+    setSelectionPopupState((prevState) => ({
+      visible: false,
+      position: prevState.position,
+      text: prevState.text,
+    }));
   };
 
   const prevButtonClassName = (
@@ -98,9 +106,9 @@ const BookUI = ({ source, onBookInfoChange, onWordAdd }) => {
         offset={curPage * (wrapperWidth + getGapSize())}
       />
       <SelectionPopup
-        visible={selectionPopupVisible}
-        position={selectionPopupPosition}
-        text={selectionPopupText}
+        visible={selectionPopupState.visible}
+        position={selectionPopupState.position}
+        text={selectionPopupState.text}
         onClose={handleSelectionPopupClose}
         onWordAdd={onWordAdd}
       />
