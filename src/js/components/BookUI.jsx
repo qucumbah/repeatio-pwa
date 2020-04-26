@@ -88,6 +88,15 @@ const BookUI = ({ source, onBookInfoChange, onWordAdd }) => {
     }));
   };
 
+  const getSelectionPopup = () => (
+    <SelectionPopup
+      position={selectionPopupState.position}
+      text={selectionPopupState.text}
+      onClose={handleSelectionPopupClose}
+      onWordAdd={onWordAdd}
+    />
+  );
+
   const prevButtonClassName = (
     `pageButton prevButton ${prevButtonActive ? 'active' : 'inactive'}`
   );
@@ -105,13 +114,7 @@ const BookUI = ({ source, onBookInfoChange, onWordAdd }) => {
         onTextUnselect={handleSelectionPopupClose}
         offset={curPage * (wrapperWidth + getGapSize())}
       />
-      <SelectionPopup
-        visible={selectionPopupState.visible}
-        position={selectionPopupState.position}
-        text={selectionPopupState.text}
-        onClose={handleSelectionPopupClose}
-        onWordAdd={onWordAdd}
-      />
+      {selectionPopupState.visible ? getSelectionPopup() : null}
       <div
         className={prevButtonClassName}
         onClick={prevPage}

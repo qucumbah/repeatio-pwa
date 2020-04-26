@@ -4,16 +4,11 @@ import PropTypes from 'prop-types';
 import { getTranslation } from '../util';
 
 const SelectionPopup = ({
-  visible,
   position,
   text,
   onClose,
   onWordAdd,
 }) => {
-  if (!visible) {
-    return null;
-  }
-
   useEffect(() => {
     const handleWindowKeyDown = (event) => {
       if (event.key === 'Escape') {
@@ -69,22 +64,13 @@ const SelectionPopup = ({
 };
 
 SelectionPopup.propTypes = {
-  visible: PropTypes.bool.isRequired,
   text: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
   onWordAdd: PropTypes.func.isRequired,
-
   position: PropTypes.exact({
     x: PropTypes.number,
     y: PropTypes.number,
-  }),
-};
-
-SelectionPopup.defaultProps = {
-  position: {
-    x: 0,
-    y: 0,
-  },
+  }).isRequired,
 };
 
 export default SelectionPopup;
