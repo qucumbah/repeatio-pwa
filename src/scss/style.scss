@@ -128,6 +128,27 @@ button {
   }
 }
 
+.colorChooser {
+  background: linear-gradient(90deg,
+    hsl(000, 100%, 50%),
+    hsl(060, 100%, 50%),
+    hsl(120, 100%, 50%),
+    hsl(180, 100%, 50%),
+    hsl(240, 100%, 50%),
+    hsl(300, 100%, 50%),
+    hsl(360, 100%, 50%),
+  );
+  color: transparent;
+  user-select: none;
+}
+
+.plate {
+  padding: 10px;
+  display: block;
+  text-align: center;
+  box-sizing: border-box;
+}
+
 .mainPage {
   position: absolute;
   width: 100%;
@@ -196,18 +217,14 @@ button {
       display: block;
       text-align: center;
     }
-  }
 
-  .plate {
-    padding: 10px;
-    display: block;
-    text-align: center;
-    position: absolute;
-    box-sizing: border-box;
-    width: 90%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    .content {
+      position: absolute;
+      width: 90%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
   }
 
   label {
@@ -215,12 +232,6 @@ button {
     color: var(--theme-text);
     background-color: var(--theme-primary);
     cursor: pointer;
-  }
-
-  .colorChooser {
-    background: linear-gradient(90deg, hsl(0, 100%, 50%), hsl(60, 100%, 50%), hsl(120, 100%, 50%), hsl(180, 100%, 50%), hsl(240, 100%, 50%), hsl(300, 100%, 50%), hsl(360, 100%, 50%));
-    color: transparent;
-    user-select: none;
   }
 
   .colorPreview {
@@ -247,6 +258,155 @@ button {
 
   input {
     display: none;
+  }
+}
+
+.settings {
+  width: 400px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  h2 {
+    text-align: center;
+    font-size: 40px;
+    margin-top: 0;
+  }
+
+  .list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: settingsListCounter;
+  }
+
+  .closeButton {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    margin-top: 15px;
+    // border: 1px solid var(--theme-text);
+    border-radius: 50%;
+    cursor: pointer;
+    left: 50%;
+    transform: translateX(-50%);
+
+    &::before, &::after {
+      content: '';
+      width: 80%;
+      height: 2px;
+      background-color: var(--theme-text);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+    }
+    &::before {
+      transform: translate(-50%, -50%) rotate(45deg);
+    }
+    &::after {
+      transform: translate(-50%, -50%) rotate(-45deg);
+    }
+  }
+}
+
+.listItem {
+  position: relative;
+  margin-bottom: 20px;
+  font-size: 20px;
+
+  // &::before {
+  //   content: '';
+  //   position: absolute;
+  //   width: 80%;
+  //   height: 1px;
+  //   top: -10px;
+  //   left: 50%;
+  //   transform: translateX(-50%);
+  //   background-color: var(--theme-text);
+  // }
+
+  .name {
+    &::before {
+      content: counter(settingsListCounter) '.';
+      counter-increment: settingsListCounter;
+      position: relative;
+      left: 0;
+      margin-right: 5px;
+    }
+
+    margin-bottom: 10px;
+    display: block;
+  }
+}
+
+.switch {
+  input {
+    display: none;
+  }
+
+  .switchGraphic {
+    transition: .2s;
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    width: 40px;
+    height: 16px;
+    border: 2px solid var(--theme-secondary);
+    border-radius: 8px;
+    background-color: var(--theme-darker);
+
+    &::before {
+      content: '';
+      transition: .2s;
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background-color: var(--theme-primary);
+      border-radius: 50%;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    &.on::before {
+      margin-left: 2px;
+    }
+    &.off::before {
+      margin-left: 26px;
+    }
+  }
+
+  .text {
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    margin-left: 15px;
+  }
+}
+
+.numberInput {
+  input {
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    width: 40px;
+    height: 16px;
+    border: 2px solid var(--theme-secondary);
+    border-radius: 8px;
+    background-color: var(--theme-darker);
+    color: white;
+    text-align: center;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .text {
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    margin-left: 15px;
   }
 }
 

@@ -11,7 +11,7 @@ const Overlay = ({ shouldOpen, from, children }) => {
     Math.sqrt(window.innerWidth ** 2 + window.innerHeight ** 2)
   );
   const style = {
-    transition: `${transitionDuration}ms ease-in`,
+    transition: `clip-path ${transitionDuration}ms ease-in`,
     clipPath: `circle(${isOpen ? circleRadius : 0}px at ${x}px ${y}px)`,
   };
 

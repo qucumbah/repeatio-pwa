@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { SettingsProvider } from './SettingsProvider';
 import FileChooserDropzone from './FileChooserDropzone';
 import FileOverlay from './FileOverlay';
 import Overlay from './Overlay';
@@ -83,7 +84,7 @@ const App = () => {
   const showBookUi = bookSource !== null;
 
   return (
-    <>
+    <SettingsProvider>
       <FileChooserDropzone
         onFileDrag={handleFileDrag}
         onFileChange={changeBookFile}
@@ -98,7 +99,7 @@ const App = () => {
       </Overlay>
 
       {showBookUi ? bookUi : mainPage}
-    </>
+    </SettingsProvider>
   );
 };
 
