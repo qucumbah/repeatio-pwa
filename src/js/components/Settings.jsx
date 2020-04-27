@@ -21,8 +21,8 @@ const Settings = ({ onClose }) => {
         </ListItem>
         <ListItem name="Theme">
           <Switch
-            labelOn="Light"
-            labelOff="Dark"
+            labelOn="Dark"
+            labelOff="Light"
             ariaLabel="Theme switch"
             onChange={setDarkTheme}
           />
