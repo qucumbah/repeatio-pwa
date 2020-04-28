@@ -9,7 +9,9 @@ import NumberInput from './NumberInput';
 
 const Settings = ({ onClose }) => {
   const {
+    darkTheme,
     setDarkTheme,
+    fontSize,
     setFontSize,
   } = useContext(SettingsContext);
   return (
@@ -24,6 +26,7 @@ const Settings = ({ onClose }) => {
             labelOn="Dark"
             labelOff="Light"
             ariaLabel="Theme switch"
+            initiallyOn={darkTheme}
             onChange={setDarkTheme}
           />
         </ListItem>
@@ -31,6 +34,7 @@ const Settings = ({ onClose }) => {
           <NumberInput
             label="px"
             ariaLabel="Font size input"
+            initialValue={fontSize}
             onChange={setFontSize}
           />
         </ListItem>

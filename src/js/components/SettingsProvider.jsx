@@ -8,7 +8,7 @@ export const SettingsProvider = ({ children }) => {
   const [permanentColorHue, setPermanentColorHue] = useState(180);
 
   const [darkTheme, setDarkTheme] = useState(false);
-  const [fontSize, setFontSize] = useState(16);
+  const [fontSize, setFontSize] = useState(20);
 
   const getLightThemeColors = () => {
     const primaryColor = `hsl(${temporaryColorHue}, 100%, 50%)`;
@@ -78,8 +78,8 @@ export const SettingsProvider = ({ children }) => {
     rootStyle.setProperty('--text-over-primary', textOverPrimaryColor);
     rootStyle.setProperty('--text-over-background', textOverBackgroundColor);
 
-    console.log(darkTheme);
-  }, [temporaryColorHue, darkTheme]);
+    rootStyle.setProperty('font-size', `${fontSize}px`);
+  }, [temporaryColorHue, darkTheme, fontSize]);
 
   const settings = {
     temporaryColorHue,

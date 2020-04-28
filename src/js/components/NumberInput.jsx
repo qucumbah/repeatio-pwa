@@ -19,6 +19,18 @@ const NumberInput = ({ label, ariaLabel, onChange, initialValue }) => {
           onChange={(event) => setValue(event.target.value)}
         />
         <div className="text">{label}</div>
+        <button
+          className="plus"
+          type="button"
+          aria-label="increase font size"
+          onClick={() => setValue((prevValue) => prevValue + 1)}
+        />
+        <button
+          className="minus"
+          type="button"
+          aria-label="decrease font size"
+          onClick={() => setValue((prevValue) => prevValue - 1)}
+        />
       </label>
     </div>
   );
