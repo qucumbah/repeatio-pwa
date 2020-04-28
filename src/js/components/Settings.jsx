@@ -13,7 +13,7 @@ const Settings = ({ onClose }) => {
     setFontSize,
   } = useContext(SettingsContext);
   return (
-    <div className="settings">
+    <div className="overlayMenu settings">
       <h2>Settings</h2>
       <ol className="list">
         <ListItem name="Favorite color">

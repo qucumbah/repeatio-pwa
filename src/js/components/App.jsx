@@ -4,6 +4,7 @@ import FileChooserDropzone from './FileChooserDropzone';
 import FileOverlay from './FileOverlay';
 import Overlay from './Overlay';
 import Settings from './Settings';
+import Help from './Help';
 import MainPage from './MainPage';
 import BookUI from './BookUI';
 
@@ -64,12 +65,20 @@ const App = () => {
     });
     setSettingsMenuOpen(true);
   };
+  const [helpMenuOpen, setHelpMenuOpen] = useState(false);
+  const openHelpMenu = (event) => {
+    setOverlayOpenFrom({
+      x: event.pageX,
+      y: event.pageY,
+    });
+    setHelpMenuOpen(true);
+  };
 
   const mainPage = (
     <MainPage
       onFileChange={changeBookFile}
       onSettingsMenuOpen={openSettingsMenu}
-      onHelpMenuOpen={() => null}
+      onHelpMenuOpen={openHelpMenu}
       onSignupMenuOpen={() => null}
       onLoginMenuOpen={() => null}
     />
@@ -96,6 +105,10 @@ const App = () => {
 
       <Overlay shouldOpen={settingsMenuOpen} from={overlayOpenFrom}>
         <Settings onClose={() => setSettingsMenuOpen(false)} />
+      </Overlay>
+
+      <Overlay shouldOpen={helpMenuOpen} from={overlayOpenFrom}>
+        <Help onClose={() => setHelpMenuOpen(false)} />
       </Overlay>
 
       {showBookUi ? bookUi : mainPage}

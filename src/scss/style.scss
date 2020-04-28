@@ -264,7 +264,7 @@ button {
   }
 }
 
-.settings {
+.overlayMenu {
   width: 400px;
   position: absolute;
   top: 50%;
@@ -282,7 +282,7 @@ button {
     margin: 0;
     padding: 0;
     list-style: none;
-    counter-reset: settingsListCounter;
+    counter-reset: listCounter;
   }
 
   .closeButton {
@@ -332,8 +332,8 @@ button {
 
   .name {
     &::before {
-      content: counter(settingsListCounter) '.';
-      counter-increment: settingsListCounter;
+      content: counter(listCounter) '.';
+      counter-increment: listCounter;
       position: relative;
       left: 0;
       margin-right: 5px;
@@ -350,7 +350,6 @@ button {
   }
 
   .switchGraphic {
-    transition: .2s;
     display: inline-block;
     position: relative;
     vertical-align: middle;
@@ -362,7 +361,7 @@ button {
 
     &::before {
       content: '';
-      transition: .2s;
+      transition: .2s margin;
       position: absolute;
       width: 12px;
       height: 12px;
@@ -411,6 +410,20 @@ button {
     vertical-align: middle;
     position: relative;
     margin-left: 15px;
+  }
+}
+
+.settings {
+  .colorChooser {
+    border: 1.5px solid var(--contrast);
+    border-radius: 10px;
+  }
+}
+
+.help {
+  .helpText {
+    margin: 0 10px;
+    font-size: 15px;
   }
 }
 
