@@ -4,6 +4,11 @@ import PropTypes from 'prop-types';
 
 import BookTextWrapper from './BookTextWrapper';
 import SelectionPopup from './SelectionPopup';
+import Overlay from './Overlay';
+import MenuLink from './MenuLink';
+import BookMenu from './BookMenu';
+
+import Bars from '../../img/bars.svg'
 
 const BookUI = ({ source, onBookInfoChange, onWordAdd }) => {
   const [curPage, setCurPage] = useState(0);
@@ -97,6 +102,16 @@ const BookUI = ({ source, onBookInfoChange, onWordAdd }) => {
     />
   );
 
+  const [overlayOpenFrom, setOverlayOpenFrom] = useState(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const openMenu = (event) => {
+    setOverlayOpenFrom({
+      x: event.pageX,
+      y: event.pageY,
+    });
+    setMenuOpen(true);
+  };
+
   const prevButtonClassName = (
     `pageButton prevButton ${prevButtonActive ? 'active' : 'inactive'}`
   );
@@ -106,6 +121,10 @@ const BookUI = ({ source, onBookInfoChange, onWordAdd }) => {
   return (
     // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
     <div className="bookUI" ref={bookUIRef} tabIndex="0">
+      <Overlay shouldOpen={menuOpen} from={overlayOpenFrom}>
+        <BookMenu onClose={() => setMenuOpen(false)} />
+      </Overlay>
+      <MenuLink action={openMenu} icon={Bars}>Open menu</MenuLink>
       <BookTextWrapper
         source={source}
         onWrapperSizeChange={handleWrapperSizeChange}

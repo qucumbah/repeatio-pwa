@@ -4,6 +4,7 @@ import FileChooserDropzone from './FileChooserDropzone';
 import FileOverlay from './FileOverlay';
 import Overlay from './Overlay';
 import Settings from './Settings';
+import RepeatList from './RepeatList';
 import Help from './Help';
 import MainPage from './MainPage';
 import BookUI from './BookUI';
@@ -57,6 +58,7 @@ const App = () => {
   console.log(words);
 
   const [overlayOpenFrom, setOverlayOpenFrom] = useState(null);
+
   const [settingsMenuOpen, setSettingsMenuOpen] = useState(false);
   const openSettingsMenu = (event) => {
     setOverlayOpenFrom({
@@ -65,6 +67,16 @@ const App = () => {
     });
     setSettingsMenuOpen(true);
   };
+
+  const [repeatListOpen, setRepeatListOpen] = useState(false);
+  const openrepeatList = (event) => {
+    setOverlayOpenFrom({
+      x: event.pageX,
+      y: event.pageY,
+    });
+    setRepeatListOpen(true);
+  };
+
   const [helpMenuOpen, setHelpMenuOpen] = useState(false);
   const openHelpMenu = (event) => {
     setOverlayOpenFrom({
@@ -78,6 +90,7 @@ const App = () => {
     <MainPage
       onFileChange={changeBookFile}
       onSettingsMenuOpen={openSettingsMenu}
+      onRepeatListOpen={openrepeatList}
       onHelpMenuOpen={openHelpMenu}
       onSignupMenuOpen={() => null}
       onLoginMenuOpen={() => null}
@@ -105,6 +118,10 @@ const App = () => {
 
       <Overlay shouldOpen={settingsMenuOpen} from={overlayOpenFrom}>
         <Settings onClose={() => setSettingsMenuOpen(false)} />
+      </Overlay>
+
+      <Overlay shouldOpen={repeatListOpen} from={overlayOpenFrom}>
+        <RepeatList onClose={() => setRepeatListOpen(false)} />
       </Overlay>
 
       <Overlay shouldOpen={helpMenuOpen} from={overlayOpenFrom}>

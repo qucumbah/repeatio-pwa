@@ -5,6 +5,7 @@ import MenuLink from './MenuLink';
 import ColorChooser from './ColorChooser';
 
 import SettingsIcon from '../../img/settings.svg';
+import RepeatListIcon from '../../img/book.svg';
 import LoginIcon from '../../img/man.svg';
 import SignupIcon from '../../img/laptop.svg';
 import FaqIcon from '../../img/info.svg';
@@ -13,6 +14,7 @@ import GithubIcon from '../../img/github.svg';
 const MainPage = ({
   onFileChange,
   onSettingsMenuOpen,
+  onRepeatListOpen,
   onHelpMenuOpen,
   onSignupMenuOpen,
   onLoginMenuOpen,
@@ -32,6 +34,9 @@ const MainPage = ({
         <div className="topLeft">
           <MenuLink action={onSettingsMenuOpen} icon={SettingsIcon}>
             Settings
+          </MenuLink>
+          <MenuLink action={onRepeatListOpen} icon={RepeatListIcon}>
+            Repeat list
           </MenuLink>
         </div>
         <div className="topRight">
@@ -74,6 +79,7 @@ const MainPage = ({
 MainPage.propTypes = {
   onFileChange: PropTypes.func.isRequired,
   onSettingsMenuOpen: PropTypes.func.isRequired,
+  onRepeatListOpen: PropTypes.func.isRequired,
   onHelpMenuOpen: PropTypes.func.isRequired,
   onSignupMenuOpen: PropTypes.func.isRequired,
   onLoginMenuOpen: PropTypes.func.isRequired,
