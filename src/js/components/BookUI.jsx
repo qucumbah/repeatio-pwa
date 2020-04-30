@@ -115,12 +115,16 @@ const BookUI = ({ source, onBookInfoChange, onWordAdd }) => {
         offset={curPage * (wrapperWidth + getGapSize())}
       />
       {selectionPopupState.visible ? getSelectionPopup() : null}
-      <div
+      <button
+        type="button"
+        aria-label="previous page"
         className={prevButtonClassName}
         onClick={prevPage}
         onTouchEnd={prevPage}
       />
-      <div
+      <button
+        type="button"
+        aria-label="next page"
         className={nextButtonClassName}
         onClick={nextPage}
         onTouchEnd={nextPage}
