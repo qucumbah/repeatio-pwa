@@ -8,7 +8,7 @@ import Overlay from './Overlay';
 import MenuLink from './MenuLink';
 import BookMenu from './BookMenu';
 
-import Bars from '../../img/bars.svg'
+import Bars from '../../img/bars.svg';
 
 const BookUI = ({ source, onBookInfoChange, onWordAdd }) => {
   const [curPage, setCurPage] = useState(0);

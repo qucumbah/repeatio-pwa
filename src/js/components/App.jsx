@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { SettingsProvider } from './SettingsProvider';
 import FileChooserDropzone from './FileChooserDropzone';
 import FileOverlay from './FileOverlay';
@@ -52,10 +52,28 @@ const App = () => {
   };
 
   const [words, setWords] = useState([]);
-  const addWord = (newWord) => {
+  const addWord = (newWordText) => {
+    const newWord = {
+      text: newWordText,
+      time: Date.now(),
+    };
     setWords((prevWords) => [...prevWords, newWord]);
   };
+  const editWord = (time, newText) => {
+    setWords((prevWords) => prevWords.map((word) => ({
+      text: (word.time === time) ? newText : word.text,
+      time
+    })));
+  };
+  const removeWord = (time) => {
+    setWords((prevWords) => prevWords.filter((word) => word.time !== time));
+  };
   console.log(words);
+
+  useEffect(() => {
+    addWord('first');
+    addWord('second');
+  }, []);
 
   const [overlayOpenFrom, setOverlayOpenFrom] = useState(null);
 
@@ -121,7 +139,13 @@ const App = () => {
       </Overlay>
 
       <Overlay shouldOpen={repeatListOpen} from={overlayOpenFrom}>
-        <RepeatList onClose={() => setRepeatListOpen(false)} />
+        <RepeatList
+          words={words}
+          onClose={() => setRepeatListOpen(false)}
+          onWordAdd={addWord}
+          onWordEdit={editWord}
+          onWordRemove={removeWord}
+        />
       </Overlay>
 
       <Overlay shouldOpen={helpMenuOpen} from={overlayOpenFrom}>

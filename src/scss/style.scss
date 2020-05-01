@@ -448,6 +448,96 @@ button {
   }
 }
 
+.repeatList {
+  width: 100%;
+  height: 100%;
+  color: var(--text-over-background);
+  background-color: var(--book-background);
+
+  .list {
+    width: 400px;
+    margin: auto;
+  }
+
+  .closeButton {
+    &::before, &::after {
+      background-color: var(--text-over-background);
+    }
+  }
+}
+
+.repeatListItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px;
+  padding: 5px;
+  box-shadow: 0 0 10px 0 #0003;
+
+  .word {
+    width: 100%;
+    margin-right: 5px;
+    position: relative;
+
+    &::before {
+      content: '';
+      width: 16px;
+      height: 16px;
+      background-image: url(../img/edit.svg);
+      position: absolute;
+      left: 5px;
+      top: 50%;
+      transform: translateY(-55%);
+      background-size: contain;
+      pointer-events: none;
+      filter: invert(0.5)
+    }
+
+    input {
+      padding: 5px;
+      padding-left: 24px;
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+      border: none;
+
+      &:focus {
+        outline: 1px solid var(--text-over-background);
+      }
+    }
+  }
+
+  .removeButton {
+    display: block;
+    width: 20px;
+    height: 20px;
+    position: relative;
+    cursor: pointer;
+
+    transition: .2s transform;
+    &:hover {
+      transform: scale(1.2);
+    }
+
+    &::before, &::after {
+      content: '';
+      width: 80%;
+      height: 2px;
+      background-color: var(--text-over-background);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+    }
+    &::before {
+      transform: translate(-50%, -50%) rotate(45deg);
+    }
+    &::after {
+      transform: translate(-50%, -50%) rotate(-45deg);
+    }
+
+  }
+}
+
 .settings {
   .colorChooser {
     border: 1.5px solid var(--contrast);
