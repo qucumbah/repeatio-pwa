@@ -1,13 +1,13 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 
 import { getTranslation } from '../util';
+import { RepeatListContext } from './RepeatListProvider';
 
 const SelectionPopup = ({
   position,
   text,
   onClose,
-  onWordAdd,
 }) => {
   useEffect(() => {
     const handleWindowKeyDown = (event) => {
@@ -19,6 +19,7 @@ const SelectionPopup = ({
     return () => window.removeEventListener('keydown', handleWindowKeyDown);
   });
 
+  const { onWordAdd } = useContext(RepeatListContext);
   const inputRef = useRef();
   const handleWordAdd = () => {
     const wordText = inputRef.current.value;
@@ -66,7 +67,6 @@ const SelectionPopup = ({
 SelectionPopup.propTypes = {
   text: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
-  onWordAdd: PropTypes.func.isRequired,
   position: PropTypes.exact({
     x: PropTypes.number,
     y: PropTypes.number,

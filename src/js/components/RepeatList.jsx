@@ -1,16 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
+
+import { RepeatListContext } from './RepeatListProvider';
 
 import RepeatListItem from './RepeatListItem';
 
-const RepeatList = (props) => {
+const RepeatList = ({ onClose }) => {
   const {
     words,
-    onClose,
-    onWordAdd,
     onWordEdit,
     onWordRemove,
-  } = props;
+  } = useContext(RepeatListContext);
 
   return (
     <div className="overlayMenu repeatList">
@@ -36,14 +36,7 @@ const RepeatList = (props) => {
 };
 
 RepeatList.propTypes = {
-  words: PropTypes.arrayOf(PropTypes.exact({
-    text: PropTypes.string,
-    time: PropTypes.number,
-  })).isRequired,
   onClose: PropTypes.func.isRequired,
-  onWordAdd: PropTypes.func.isRequired,
-  onWordEdit: PropTypes.func.isRequired,
-  onWordRemove: PropTypes.func.isRequired,
 };
 
 export default RepeatList;

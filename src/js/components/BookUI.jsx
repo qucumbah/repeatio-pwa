@@ -10,7 +10,10 @@ import BookMenu from './BookMenu';
 
 import Bars from '../../img/bars.svg';
 
-const BookUI = ({ source, onBookInfoChange, onWordAdd }) => {
+const BookUI = ({
+  source,
+  onBookInfoChange,
+}) => {
   const [curPage, setCurPage] = useState(0);
   const [totalPages, setTotalPages] = useState(-1);
   const [wrapperWidth, setWrapperWidth] = useState(null);
@@ -98,7 +101,6 @@ const BookUI = ({ source, onBookInfoChange, onWordAdd }) => {
       position={selectionPopupState.position}
       text={selectionPopupState.text}
       onClose={handleSelectionPopupClose}
-      onWordAdd={onWordAdd}
     />
   );
 
@@ -158,7 +160,6 @@ const BookUI = ({ source, onBookInfoChange, onWordAdd }) => {
 BookUI.propTypes = {
   source: PropTypes.string,
   onBookInfoChange: PropTypes.func.isRequired,
-  onWordAdd: PropTypes.func.isRequired,
 };
 
 BookUI.defaultProps = {

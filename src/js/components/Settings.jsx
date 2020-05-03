@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 
 import { SettingsContext } from './SettingsProvider';
+
 import ListItem from './ListItem';
 import ColorChooser from './ColorChooser';
 import Switch from './Switch';

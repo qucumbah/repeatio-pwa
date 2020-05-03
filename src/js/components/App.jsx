@@ -1,5 +1,7 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
+
 import { SettingsProvider } from './SettingsProvider';
+import { RepeatListProvider } from './RepeatListProvider';
 import FileChooserDropzone from './FileChooserDropzone';
 import FileOverlay from './FileOverlay';
 import Overlay from './Overlay';
@@ -51,30 +53,6 @@ const App = () => {
     document.title = `${title} - ${authorFirstName} ${authorLastName}`;
   };
 
-  const [words, setWords] = useState([]);
-  const addWord = (newWordText) => {
-    const newWord = {
-      text: newWordText,
-      time: Date.now(),
-    };
-    setWords((prevWords) => [...prevWords, newWord]);
-  };
-  const editWord = (time, newText) => {
-    setWords((prevWords) => prevWords.map((word) => ({
-      text: (word.time === time) ? newText : word.text,
-      time
-    })));
-  };
-  const removeWord = (time) => {
-    setWords((prevWords) => prevWords.filter((word) => word.time !== time));
-  };
-  console.log(words);
-
-  useEffect(() => {
-    addWord('first');
-    addWord('second');
-  }, []);
-
   const [overlayOpenFrom, setOverlayOpenFrom] = useState(null);
 
   const [settingsMenuOpen, setSettingsMenuOpen] = useState(false);
@@ -118,7 +96,6 @@ const App = () => {
     <BookUI
       source={bookSource}
       onBookInfoChange={handleBookInfoChange}
-      onWordAdd={addWord}
     />
   ), [bookSource]);
   const showBookUi = bookSource !== null;
@@ -138,21 +115,17 @@ const App = () => {
         <Settings onClose={() => setSettingsMenuOpen(false)} />
       </Overlay>
 
-      <Overlay shouldOpen={repeatListOpen} from={overlayOpenFrom}>
-        <RepeatList
-          words={words}
-          onClose={() => setRepeatListOpen(false)}
-          onWordAdd={addWord}
-          onWordEdit={editWord}
-          onWordRemove={removeWord}
-        />
-      </Overlay>
-
       <Overlay shouldOpen={helpMenuOpen} from={overlayOpenFrom}>
         <Help onClose={() => setHelpMenuOpen(false)} />
       </Overlay>
 
-      {showBookUi ? bookUi : mainPage}
+      <RepeatListProvider>
+        <Overlay shouldOpen={repeatListOpen} from={overlayOpenFrom}>
+          <RepeatList onClose={() => setRepeatListOpen(false)} />
+        </Overlay>
+
+        {showBookUi ? bookUi : mainPage}
+      </RepeatListProvider>
     </SettingsProvider>
   );
 };
