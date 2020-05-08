@@ -1,12 +1,13 @@
 import React, { useRef, useEffect, useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 
-import { getTranslation } from '../util';
 import { RepeatListContext } from './RepeatListProvider';
+
+import Translation from './Translation';
 
 const SelectionPopup = ({
   position,
-  text,
+  text: inputText,
   onClose,
 }) => {
   useEffect(() => {
@@ -19,6 +20,8 @@ const SelectionPopup = ({
     return () => window.removeEventListener('keydown', handleWindowKeyDown);
   });
 
+  const [text, setText] = useState(inputText);
+
   const { onWordAdd } = useContext(RepeatListContext);
   const inputRef = useRef();
   const handleWordAdd = () => {
@@ -26,18 +29,6 @@ const SelectionPopup = ({
     onWordAdd(wordText);
     onClose();
   };
-
-  const [translation, setTranslation] = useState(null);
-  const updateTranslation = (textToTranslate) => {
-    getTranslation(textToTranslate)
-      .then((response) => response.json())
-      .then((json) => setTranslation(json.text[0]));
-  };
-
-  useEffect(() => {
-    inputRef.current.value = text;
-    updateTranslation(text);
-  }, [text]);
 
   const positionStyle = {
     left: `${position.x}px`,
@@ -48,14 +39,12 @@ const SelectionPopup = ({
       <div className="word">
         <input
           type="text"
-          onChange={(event) => updateTranslation(event.target.value)}
-          defaultValue={text}
+          value={text}
+          onChange={(event) => setText(event.target.value)}
           ref={inputRef}
         />
       </div>
-      <div className="translation">
-        {translation === null ? <span className="placeholder" /> : translation}
-      </div>
+      <Translation text={text} />
       <div className="buttons">
         <div className="button okButton" onClick={handleWordAdd}>Add</div>
         <div className="button cancelButton" onClick={onClose}>Cancel</div>

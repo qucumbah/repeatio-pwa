@@ -22,6 +22,7 @@ export const SettingsProvider = ({ children }) => {
     );
     const textOverPrimaryColor = needContrastText ? contrastColor : 'white';
     const textOverBackgroundColor = 'black';
+
     return {
       primaryColor,
       secondaryColor,
@@ -38,13 +39,14 @@ export const SettingsProvider = ({ children }) => {
     const secondaryColor = `hsl(${temporaryColorHue}, 100%, 30%)`;
     const contrastColor = `hsl(${temporaryColorHue}, 100%, 10%)`;
     const backgroundColor = '#111';
-    const overlayBackgroundColor = '#222';
-    const bookBackgroundColor = overlayBackgroundColor;
+    const overlayBackgroundColor = secondaryColor;
+    const bookBackgroundColor = '#222';
     const needContrastText = (
       (temporaryColorHue > 0.1) && (temporaryColorHue < 0.2)
     );
     const textOverPrimaryColor = needContrastText ? contrastColor : 'white';
     const textOverBackgroundColor = '#aaa';
+
     return {
       primaryColor,
       secondaryColor,
@@ -68,6 +70,7 @@ export const SettingsProvider = ({ children }) => {
       textOverPrimaryColor,
       textOverBackgroundColor,
     } = (darkTheme) ? getDarkThemeColors() : getLightThemeColors();
+
     const rootStyle = document.querySelector(':root').style;
     rootStyle.setProperty('--primary', primaryColor);
     rootStyle.setProperty('--secondary', secondaryColor);

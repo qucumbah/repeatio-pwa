@@ -1,51 +1,43 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
+import Translation from './Translation';
+
 const RepeatListItem = ({ word, onWordEdit, onWordRemove }) => {
-  const [isEditing, setIsEditing] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+  const [text, setText] = useState(word.text);
 
-  const inputRef = useRef();
-
-  const confirmWordEdit = () => {
-    onWordEdit(word.time, inputRef.current.value);
-    setIsEditing(false);
+  const confirmWordEdit = (event) => {
+    setIsFocused(false);
+    onWordEdit(word.time, event.target.value);
   };
 
-  const cancelWordEdit = () => {
-    inputRef.current.value = word.text;
-    setIsEditing(false);
+  const translationContainerStyle = {
+    display: isFocused ? 'block' : 'none',
   };
-
-  const cancelEditButton = (
-    <button
-      className="cancelEditButton"
-      type="button"
-      aria-label="cancel word edition"
-      onClick={cancelWordEdit}
-    />
-  );
-
-  const removeButton = (
-    <button
-      className="removeButton"
-      type="button"
-      aria-label="remove word"
-      onClick={() => onWordRemove(word.time)}
-    />
-  );
 
   return (
     <li className="repeatListItem">
-      <div className="word">
-        <input
-          type="text"
-          defaultValue={word.text}
-          ref={inputRef}
-          onClick={() => setIsEditing(true)}
-          onBlur={confirmWordEdit}
+      <div className="wordContainer">
+        <div className="word">
+          <input
+            type="text"
+            value={text}
+            onChange={(event) => setText(event.target.value)}
+            onFocus={() => setIsFocused(true)}
+            onBlur={confirmWordEdit}
+          />
+        </div>
+        <button
+          className="removeButton"
+          type="button"
+          aria-label="remove word"
+          onClick={() => onWordRemove(word.time)}
         />
       </div>
-      {isEditing ? cancelEditButton : removeButton}
+      <div className="translationContainer" style={translationContainerStyle}>
+        <Translation text={text} />
+      </div>
     </li>
   );
 };

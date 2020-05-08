@@ -38,6 +38,14 @@ body {
   left: 0;
   top: 0;
   background-color: var(--overlay-background);
+
+  .overlayForeground {
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background-color: var(--book-background);
+  }
   // color: var();
 }
 
@@ -282,7 +290,6 @@ button {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: var(--text-over-primary);
 
   h2 {
     text-align: center;
@@ -305,7 +312,7 @@ button {
       content: '';
       width: 80%;
       height: 2px;
-      background-color: var(--text-over-primary);
+      background-color: var(--text-over-background);
       position: absolute;
       top: 50%;
       left: 50%;
@@ -452,8 +459,6 @@ button {
 .repeatList {
   width: 100%;
   height: 100%;
-  color: var(--text-over-background);
-  background-color: var(--book-background);
 
   h2 {
     margin-top: 40px;
@@ -474,12 +479,21 @@ button {
 }
 
 .repeatListItem {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  max-height: 500px;
+  transition: max-height .2s;
   margin: 10px;
   padding: 5px;
   box-shadow: 0 0 10px 0 #0003;
+
+  .wordContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .translationContainer {
+
+  }
 
   .word {
     width: 100%;
@@ -648,9 +662,8 @@ button {
       position: relative;
       top: 0;
       transform: translateX(-50%);
-      color: var(--text-over-primary);
       img {
-        filter: invert(1);
+        filter: invert(0.5);
         --icon-size: 24px;
       }
       .text {
@@ -701,18 +714,6 @@ button {
     }
   }
 
-  .translation {
-    word-wrap: break-word;
-    margin-top: 10px;
-
-    .placeholder {
-      color: #0003;
-      &::after {
-        content: 'Loading...';
-      }
-    }
-  }
-
   .buttons {
     margin-top: 15px;
     display: flex;
@@ -726,6 +727,18 @@ button {
       padding: 5px 15px;
       background-color: var(--primary);
       color: var(--text-over-primary);
+    }
+  }
+}
+
+.translation {
+  word-wrap: break-word;
+  margin-top: 10px;
+
+  .placeholder {
+    color: #0003;
+    &::after {
+      content: 'Loading...';
     }
   }
 }
