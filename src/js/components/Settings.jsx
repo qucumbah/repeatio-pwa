@@ -15,6 +15,7 @@ const Settings = ({ onClose }) => {
     fontSize,
     setFontSize,
   } = useContext(SettingsContext);
+
   return (
     <div className="overlayMenu settings">
       <h2>Settings</h2>
@@ -27,7 +28,7 @@ const Settings = ({ onClose }) => {
             labelOn="Dark"
             labelOff="Light"
             ariaLabel="Theme switch"
-            initiallyOn={darkTheme}
+            value={darkTheme}
             onChange={setDarkTheme}
           />
         </ListItem>
@@ -35,7 +36,7 @@ const Settings = ({ onClose }) => {
           <NumberInput
             label="px"
             ariaLabel="Font size input"
-            initialValue={fontSize}
+            value={fontSize}
             onChange={setFontSize}
           />
         </ListItem>
