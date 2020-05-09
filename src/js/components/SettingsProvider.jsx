@@ -38,7 +38,7 @@ export const SettingsProvider = ({ children }) => {
     const primaryColor = `hsl(${temporaryColorHue}, 100%, 50%)`;
     const secondaryColor = `hsl(${temporaryColorHue}, 100%, 30%)`;
     const contrastColor = `hsl(${temporaryColorHue}, 100%, 10%)`;
-    const backgroundColor = '#111';
+    const backgroundColor = '#333';
     const overlayBackgroundColor = secondaryColor;
     const bookBackgroundColor = '#222';
     const needContrastText = (

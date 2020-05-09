@@ -162,6 +162,28 @@ button {
   );
   color: transparent;
   user-select: none;
+
+  .colorPreview {
+    position: absolute;
+    height: 100%;
+    width: 5px;
+    top: 0;
+    pointer-events: none;
+
+    &::after {
+      content: '';
+      position: absolute;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      background-color: var(--primary);
+      left: 50%;
+      bottom: 0;
+      transform: translate(-50%, 100%) rotate(90deg);
+      mask-image: url(../img/arrow.svg);
+      -webkit-mask-image: url(../img/arrow.svg);
+    }
+  }
 }
 
 .plate {
@@ -257,28 +279,6 @@ button {
     cursor: pointer;
   }
 
-  .colorPreview {
-    position: absolute;
-    height: 100%;
-    width: 5px;
-    top: 0;
-    pointer-events: none;
-
-    &::after {
-      content: '';
-      position: absolute;
-      width: 25px;
-      height: 25px;
-      border-radius: 50%;
-      background-color: var(--primary);
-      left: 50%;
-      bottom: 0;
-      transform: translate(-50%, 100%) rotate(90deg);
-      mask-image: url(../img/arrow.svg);
-      -webkit-mask-image: url(../img/arrow.svg);
-    }
-  }
-
   input {
     display: none;
   }
@@ -328,7 +328,7 @@ button {
 
 .listItem {
   position: relative;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
   font-size: 1rem;
 
   // &::before {
@@ -392,6 +392,7 @@ button {
   }
 
   .text {
+    font-size: .8rem;
     display: inline-block;
     vertical-align: middle;
     position: relative;
@@ -449,6 +450,7 @@ button {
   }
 
   .text {
+    font-size: .8rem;
     display: inline-block;
     // vertical-align: middle;
     position: relative;
@@ -466,7 +468,7 @@ button {
 
   .list {
     width: 400px;
-    max-height: 60vh;
+    height: 60vh;
     overflow-y: scroll;
     margin: auto;
   }
@@ -482,8 +484,9 @@ button {
   max-height: 500px;
   transition: max-height .2s;
   margin: 10px;
-  padding: 5px;
+  padding: 10px;
   box-shadow: 0 0 10px 0 #0003;
+  background-color: var(--background);
 
   .wordContainer {
     display: flex;
@@ -521,9 +524,12 @@ button {
       width: 100%;
       box-sizing: border-box;
       border: none;
+      background-color: var(--background);
+      color: var(--text-over-background);
 
       &:focus {
         outline: 1px solid var(--text-over-background);
+        outline-offset: 0;
       }
     }
   }
@@ -561,7 +567,7 @@ button {
 
 .settings {
   .colorChooser {
-    border: 1.5px solid var(--contrast);
+    // border: 1.5px solid var(--contrast);
     border-radius: 10px;
   }
 }
@@ -679,7 +685,7 @@ button {
   background-color: var(--background);
   padding: 18px;
   width: 250px;
-  box-shadow: 0 0 8px 0 var(--text-over-background);
+  box-shadow: 0 0 8px 0 #0008;
 
   .word {
     position: relative;
@@ -692,10 +698,12 @@ button {
       border: none;
       padding: 5px;
       padding-right: 24px;
+      padding-left: 0;
       box-sizing: border-box;
       width: 100%;
       &:focus {
         outline: 1px solid var(--text-over-background);
+        outline-offset: 0;
       }
     }
 

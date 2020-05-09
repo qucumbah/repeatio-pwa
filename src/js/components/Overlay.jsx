@@ -22,8 +22,22 @@ const Overlay = ({ shouldOpen, from, children }) => {
   }, [shouldOpen, from]);
 
   const { x, y } = openingPosition;
-  const circleRadius = (
-    Math.sqrt(window.innerWidth ** 2 + window.innerHeight ** 2)
+
+  const calculateDistance = (x1, y1, x2, y2) => (
+    Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
+  );
+  const distanceToTopLeft = calculateDistance(x, y, 0, 0);
+  const distanceToTopRight = calculateDistance(x, y, window.innerWidth, 0);
+  const distanceToBottomLeft = calculateDistance(x, y, 0, window.innerHeight);
+  const distanceToBottomRight = (
+    calculateDistance(x, y, window.innerWidth, window.innerHeight)
+  );
+
+  const circleRadius = Math.max(
+    distanceToTopLeft,
+    distanceToTopRight,
+    distanceToBottomLeft,
+    distanceToBottomRight,
   );
   const backgroundStyle = {
     transition: `clip-path ${transitionDuration}ms ease-in`,

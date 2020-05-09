@@ -1,4 +1,10 @@
-import React, { useRef, useEffect, useState, useContext } from 'react';
+import React, {
+  useRef,
+  useEffect,
+  useState,
+  useContext,
+  useLayoutEffect
+} from 'react';
 import PropTypes from 'prop-types';
 
 import { RepeatListContext } from './RepeatListProvider';
@@ -30,12 +36,21 @@ const SelectionPopup = ({
     onClose();
   };
 
+  const [shouldSlideDown, setShouldSlideDown] = useState(false);
+
+  const popupRef = useRef();
+  const getIsAboveScreen = () => popupRef.current.getBoundingClientRect().y < 0;
+  useLayoutEffect(() => setShouldSlideDown(getIsAboveScreen()), [text]);
+
+  const getPopupHeight = () => popupRef.current.getBoundingClientRect().height;
+
   const positionStyle = {
     left: `${position.x}px`,
-    top: `${position.y}px`,
+    top: `${position.y + ((shouldSlideDown) ? getPopupHeight() + 40 : 0)}px`,
   };
+
   return (
-    <div className="selectionPopup" style={positionStyle}>
+    <div className="selectionPopup" style={positionStyle} ref={popupRef}>
       <div className="word">
         <input
           type="text"
