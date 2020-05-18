@@ -7,9 +7,7 @@ const Translation = ({ text }) => {
   const [translation, setTranslation] = useState(null);
 
   useEffect(() => {
-    getTranslation(text)
-      .then((response) => response.json())
-      .then((json) => setTranslation(json.text[0]));
+    getTranslation(text).then(setTranslation);
   }, [text]);
 
   return (

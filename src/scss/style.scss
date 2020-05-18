@@ -687,6 +687,11 @@ button {
   width: 250px;
   box-shadow: 0 0 8px 0 #0008;
 
+  .translation {
+    height: 100px;
+    overflow-y: scroll;
+  }
+
   .word {
     position: relative;
 
@@ -741,6 +746,7 @@ button {
 
 .translation {
   word-wrap: break-word;
+  white-space: pre-line;
   margin-top: 10px;
 
   .placeholder {

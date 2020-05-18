@@ -36,7 +36,7 @@ const RepeatListItem = ({ word, onWordEdit, onWordRemove }) => {
         />
       </div>
       <div className="translationContainer" style={translationContainerStyle}>
-        <Translation text={text} />
+        {isFocused ? <Translation text={text} /> : null}
       </div>
     </li>
   );

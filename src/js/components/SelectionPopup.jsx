@@ -42,6 +42,11 @@ const SelectionPopup = ({
   const getIsAboveScreen = () => popupRef.current.getBoundingClientRect().y < 0;
   useLayoutEffect(() => setShouldSlideDown(getIsAboveScreen()), [text]);
 
+  console.log(
+    popupRef.current ? popupRef.current.getBoundingClientRect().y : null,
+    shouldSlideDown
+  );
+
   const getPopupHeight = () => popupRef.current.getBoundingClientRect().height;
 
   const positionStyle = {
