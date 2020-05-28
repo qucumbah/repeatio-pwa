@@ -133,6 +133,7 @@ button {
     left: 50%;
     transform: translateX(-50%);
     background-color: var(--primary);
+    pointer-events: none;
   }
   &:hover .text::after {
     width: 100%;
@@ -659,13 +660,50 @@ button {
     transform: scaleX(-1);
   }
 
-  .pageCounter {
+  .pageCounterContainer {
     position: absolute;
     bottom: 30px;
     left: 50%;
     transform: translateX(-50%);
     color: #777;
     font-size: 0.8rem;
+
+    .pageCounter {
+      cursor: pointer;
+
+      &::after {
+        content: '';
+        height: 1px;
+        background-color: #777;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: -5px;
+
+        transition: .2s width;
+        width: 0;
+      }
+
+      &:hover::after {
+        width: 100%;
+      }
+    }
+
+    .pageInput {
+      display: inline-block;
+      font: inherit;
+      color: inherit;
+      border: none;
+      // padding: 5px;
+      margin: 0 5px;
+      box-sizing: border-box;
+      width: 50px;
+      text-align: center;
+      &:focus {
+        outline: 1px solid #777;
+        outline-offset: 0;
+      }
+    }
   }
 }
 
