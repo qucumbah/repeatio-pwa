@@ -36,22 +36,38 @@ const SelectionPopup = ({
     onClose();
   };
 
-  const [shouldSlideDown, setShouldSlideDown] = useState(false);
+  const [fixingOffsets, setFixingOffsets] = useState({
+    top: 0,
+    left: 0,
+  });
 
   const popupRef = useRef();
-  const getIsAboveScreen = () => popupRef.current.getBoundingClientRect().y < 0;
-  useLayoutEffect(() => setShouldSlideDown(getIsAboveScreen()), [text]);
 
-  console.log(
-    popupRef.current ? popupRef.current.getBoundingClientRect().y : null,
-    shouldSlideDown
-  );
+  useLayoutEffect(() => {
+    const popupDimensions = popupRef.current.getBoundingClientRect();
+    const isOutOfTopBound = popupDimensions.top < 0;
+    const isOutOfLeftBound = popupDimensions.left < 0;
+    const isOutOfRightBound = popupDimensions.right > window.innerWidth;
 
-  const getPopupHeight = () => popupRef.current.getBoundingClientRect().height;
+    const getLeftOffset = () => {
+      if (isOutOfLeftBound) {
+        return -popupDimensions.left;
+      }
+      if (isOutOfRightBound) {
+        return -(popupDimensions.right - window.innerWidth);
+      }
+      return 0;
+    };
+
+    setFixingOffsets({
+      top: isOutOfTopBound ? popupDimensions.height + 40 : 0,
+      left: getLeftOffset(),
+    });
+  }, [text]);
 
   const positionStyle = {
-    left: `${position.x}px`,
-    top: `${position.y + ((shouldSlideDown) ? getPopupHeight() + 40 : 0)}px`,
+    left: `${position.x + fixingOffsets.left}px`,
+    top: `${position.y + fixingOffsets.top}px`,
   };
 
   return (
