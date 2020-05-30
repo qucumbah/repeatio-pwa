@@ -63,11 +63,12 @@ Overlay.propTypes = {
     x: PropTypes.number,
     y: PropTypes.number,
   }),
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
 };
 
 Overlay.defaultProps = {
   from: null,
+  children: null,
 };
 
 export default Overlay;

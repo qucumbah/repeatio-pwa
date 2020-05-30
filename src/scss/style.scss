@@ -597,14 +597,6 @@ button {
   overflow: hidden;
   background-color: var(--book-background);
 
-  .menuLink {
-    position: absolute;
-    top: 30px;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    margin-left: 0;
-  }
-
   &:focus {
     outline: none;
   }
@@ -707,7 +699,55 @@ button {
   }
 }
 
-.bookMenu {
+.bookMenuWrapper {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  // Without this overlay will appear at the same height as bookUI, which will
+  // cause buttons to be visible over the overlay
+  z-index: 2;
+
+  .barsContainer {
+    position: absolute;
+    width: 100%;
+    height: 60px;
+    overflow: hidden;
+
+    .bottomBar {
+      pointer-events: none;
+    }
+
+    .topBar,
+    .bottomBar {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transform: translateY(-100%);
+      transition: .2s transform;
+    }
+
+    &:hover,
+    &.pinned {
+      .topBar,
+      .bottomBar {
+        transform: translateY(0%);
+      }
+    }
+  }
+
+  .desktopTopBar {
+    position: absolute;
+    display: inline-flex;
+  }
+}
+
+.mobileBookMenu {
   .list {
     overflow-y: initial;
   }
@@ -718,6 +758,7 @@ button {
     .menuLink {
       position: relative;
       top: 0;
+      left: 50%;
       transform: translateX(-50%);
       img {
         filter: invert(0.5);

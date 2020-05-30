@@ -11,11 +11,11 @@ import SettingsIcon from '../../img/settings.svg';
 import RepeatListIcon from '../../img/book.svg';
 import FaqIcon from '../../img/info.svg';
 
-const BookMenu = ({ onClose }) => {
+const MobileBookMenu = ({ onClose }) => {
   const [contentType, setContentType] = useState('bookMenu');
 
   const bookMenu = (
-    <div className="overlayMenu bookMenu">
+    <div className="overlayMenu mobileBookMenu">
       <h2>BookMenu</h2>
       <ul className="list">
         <li>
@@ -74,8 +74,8 @@ const BookMenu = ({ onClose }) => {
 };
 
 
-BookMenu.propTypes = {
+MobileBookMenu.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
-export default BookMenu;
+export default MobileBookMenu;
