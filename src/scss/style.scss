@@ -375,29 +375,29 @@ button {
     display: inline-block;
     position: relative;
     vertical-align: middle;
-    width: 40px;
+    width: 16px;
     height: 16px;
-    border: 2px solid var(--secondary);
-    border-radius: 8px;
-    background-color: var(--contrast);
+    border: 1px solid var(--text-over-background);
+    border-radius: 0;
+    background-color: transparent;
 
     &::before {
       content: '';
-      transition: .2s margin;
+      transition: .4s opacity;
       position: absolute;
-      width: 12px;
-      height: 12px;
-      background-color: var(--primary);
-      border-radius: 50%;
+      width: 10px;
+      height: 10px;
+      background-color: #aaa;
       top: 50%;
-      transform: translateY(-50%);
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
 
     &.off::before {
-      margin-left: 2px;
+      opacity: 0;
     }
     &.on::before {
-      margin-left: 26px;
+      opacity: 1;
     }
   }
 
@@ -420,16 +420,16 @@ button {
   input, button {
     display: inline-block;
     position: relative;
-    border: 2px solid var(--secondary);
-    background-color: var(--contrast);
-    color: white;
+    border: none;
+    background-color: transparent;
+    color: var(--text-over-background);
     text-align: center;
+    font: inherit;
   }
 
   input {
-    height: 16px;
     width: 40px;
-    border-radius: 8px;
+    border-radius: 0;
 
     &:focus {
       outline: none;
@@ -437,25 +437,23 @@ button {
   }
 
   button {
-    height: 20px;
-    width: 20px;
+    --size: 1rem;
+    height: var(--size);
+    width: var(--size);
     margin-left: 10px;
     border-radius: 50%;
+    cursor: pointer;
 
-    &::after {
-      position: absolute;
-      cursor: pointer;
-      left: 50%;
-      transform: translate(-50%);
-      font-size: 20px;
+    background-size: contain;
+    background-position: center;
+
+    filter: invert(0.5);
+
+    &.plus {
+      background-image: url(../img/plus.svg);
     }
-    &.plus::after {
-      content: '+';
-      top: -25%;
-    }
-    &.minus::after {
-      content: '-';
-      top: -30%;
+    &.minus {
+      background-image: url(../img/minus.svg);
     }
   }
 
@@ -464,7 +462,6 @@ button {
     display: inline-block;
     // vertical-align: middle;
     position: relative;
-    margin-left: 15px;
   }
 }
 
@@ -502,10 +499,6 @@ button {
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
-
-  .translationContainer {
-
   }
 
   .word {
@@ -701,19 +694,16 @@ button {
 
 .bookMenuWrapper {
   position: absolute;
-  height: 100%;
-  width: 100%;
   top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  // Without this overlay will appear at the same height as bookUI, which will
-  // cause buttons to be visible over the overlay
-  z-index: 2;
+  left: 0;
+  width: 0;
+  height: 0;
 
   .barsContainer {
     position: absolute;
-    width: 100%;
+    width: calc(100vw - 200px);
     height: 60px;
+    left: 100px;
     overflow: hidden;
 
     .bottomBar {
@@ -737,6 +727,22 @@ button {
       .topBar,
       .bottomBar {
         transform: translateY(0%);
+      }
+    }
+
+    .fontSize {
+      display: inline-flex;
+      margin-left: 50px;
+      align-items: center;
+
+      button {
+        margin-left: 10px;
+        padding: 5px;
+
+        img {
+          --icon-size: 20px;
+          margin-right: 0;
+        }
       }
     }
   }

@@ -95,6 +95,7 @@ const App = () => {
   const bookUi = useMemo(() => (
     <BookUI
       source={bookSource}
+      onBookClose={() => setBookSource(null)}
       onBookInfoChange={handleBookInfoChange}
     />
   ), [bookSource]);

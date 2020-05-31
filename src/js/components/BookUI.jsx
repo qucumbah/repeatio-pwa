@@ -8,6 +8,7 @@ import BookMenuWrapper from './BookMenuWrapper';
 
 const BookUI = ({
   source,
+  onBookClose,
   onBookInfoChange,
 }) => {
   const [curPage, setCurPage] = useState(0);
@@ -152,7 +153,7 @@ const BookUI = ({
   return (
     // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
     <div className="bookUI" ref={bookUIRef} tabIndex="0">
-      <BookMenuWrapper />
+      <BookMenuWrapper onBookClose={onBookClose} />
       <BookTextWrapper
         source={source}
         onWrapperSizeChange={handleWrapperSizeChange}
@@ -185,6 +186,7 @@ const BookUI = ({
 
 BookUI.propTypes = {
   source: PropTypes.string,
+  onBookClose: PropTypes.func.isRequired,
   onBookInfoChange: PropTypes.func.isRequired,
 };
 

@@ -15,13 +15,13 @@ const NumberInput = ({ label, ariaLabel, value, onChange }) => (
       <button
         className="plus"
         type="button"
-        aria-label="increase font size"
+        aria-label="increase value"
         onClick={() => onChange(value + 1)}
       />
       <button
         className="minus"
         type="button"
-        aria-label="decrease font size"
+        aria-label="decrease value"
         onClick={() => onChange(value - 1)}
       />
     </label>

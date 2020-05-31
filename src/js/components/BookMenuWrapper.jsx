@@ -1,4 +1,7 @@
-import React, { useState, useRef, useLayoutEffect } from 'react';
+import React, { useContext, useState, useRef, useLayoutEffect } from 'react';
+import PropTypes from 'prop-types';
+
+import { SettingsContext } from './SettingsProvider';
 
 import MobileBookMenu from './MobileBookMenu';
 import Overlay from './Overlay';
@@ -6,12 +9,15 @@ import MenuLink from './MenuLink';
 import Settings from './Settings';
 import RepeatList from './RepeatList';
 
+import ReturnIcon from '../../img/return.svg';
 import SettingsIcon from '../../img/settings.svg';
 import RepeatListIcon from '../../img/book.svg';
 import PinIcon from '../../img/pin.svg';
 import Bars from '../../img/bars.svg';
+import PlusIcon from '../../img/plus.svg';
+import MinusIcon from '../../img/minus.svg';
 
-const BookMenuWrapper = () => {
+const BookMenuWrapper = ({ onBookClose }) => {
   const [isPinned, setIsPinned] = useState(false);
 
   const [overlayOpenFrom, setOverlayOpenFrom] = useState(null);
@@ -34,10 +40,18 @@ const BookMenuWrapper = () => {
     openOverlay(event);
   };
 
+  const {
+    fontSize,
+    setFontSize,
+  } = useContext(SettingsContext);
+
   const desktopTopBarRef = useRef();
   const desktopTopBar = (
     <ul className="desktopTopBar list" ref={desktopTopBarRef}>
       <li>
+        <MenuLink action={onBookClose} icon={ReturnIcon}>
+          Close book
+        </MenuLink>
         <MenuLink action={openOverlayWith(settings)} icon={SettingsIcon}>
           Settings
         </MenuLink>
@@ -47,6 +61,16 @@ const BookMenuWrapper = () => {
         <MenuLink action={() => setIsPinned(!isPinned)} icon={PinIcon}>
           {isPinned ? 'Unpin menu' : 'Pin menu'}
         </MenuLink>
+        <div className="fontSize">
+          <MenuLink
+            action={() => setFontSize(fontSize + 1)}
+            icon={PlusIcon}
+          />
+          <MenuLink
+            action={() => setFontSize(fontSize - 1)}
+            icon={MinusIcon}
+          />
+        </div>
       </li>
     </ul>
   );
@@ -90,6 +114,10 @@ const BookMenuWrapper = () => {
       </div>
     </div>
   );
+};
+
+BookMenuWrapper.propTypes = {
+  onBookClose: PropTypes.func.isRequired,
 };
 
 export default BookMenuWrapper;
