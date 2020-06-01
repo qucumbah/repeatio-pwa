@@ -51,13 +51,14 @@ const xmlToHtml = (node, index) => {
       return $childNode.text();
     });
 
-    const h1Children = [];
-    titleInnerTextNodes.forEach((textNode, textNodeIndex) => {
-      h1Children.push(<span key={`text ${textNodeIndex}`}>{textNode}</span>);
-      if (index !== titleInnerTextNodes.length) {
-        h1Children.push(<br key={`linebreak ${textNodeIndex}`} />);
-      }
-    });
+    const h1Children = titleInnerTextNodes.map((textNode, textNodeIndex) => (
+      <span
+        xmltagname="p-inside-title"
+        key={`text ${textNodeIndex}`}
+      >
+        {textNode}
+      </span>
+    ));
     return <h1 key={index}>{h1Children}</h1>;
   }
 
@@ -112,18 +113,14 @@ const getContent = ($) => {
 
 const BookText = React.memo(
   React.forwardRef((props, ref) => {
-    console.time('render');
     const { source, onBookInfoChange } = props;
-    console.time('parse1');
     const $ = Cheerio.load(source, { xmlMode: true });
-    console.timeEnd('parse1');
-    console.time('parse2');
-    const dom = new DOMParser().parseFromString(source, 'text/xml');
-    console.timeEnd('parse2');
-    console.log(dom);
 
-    console.time('stuff');
     const info = getInfo($);
+    useEffect(() => {
+      onBookInfoChange(info);
+    }, [source]);
+
     const imagesBase64 = getImagesBase64($);
     const images = $('image');
     Array.from(images).forEach((imageNode) => {
@@ -141,16 +138,9 @@ const BookText = React.memo(
 
       image.attr('l:href', `data:image/png;base64,${imageBase64}`);
     });
-    console.timeEnd('stuff');
-    console.time('content');
+
     const content = getContent($);
-    console.timeEnd('content');
 
-    useEffect(() => {
-      onBookInfoChange(info);
-    }, [source]);
-
-    console.timeEnd('render');
     return (
       <div ref={ref}>
         {content}

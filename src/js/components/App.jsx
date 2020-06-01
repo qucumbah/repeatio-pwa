@@ -49,7 +49,9 @@ const App = () => {
       authorFirstName,
       authorLastName,
       title,
+      chapterTitleElements,
     } = newBookInfo;
+    console.log(chapterTitleElements);
     document.title = `${title} - ${authorFirstName} ${authorLastName}`;
   };
 

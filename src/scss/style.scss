@@ -887,3 +887,9 @@ img {
 [xmltagname="poem"] {
   margin: 50px 100px;
 }
+
+// We can't have p inside h1 because it's invalid html, so instead we make it
+// a span and set "display: block" to add linebreaks between parts of the title
+[xmltagname="p-inside-title"] {
+  display: block;
+}
