@@ -10,6 +10,29 @@ export const SettingsProvider = ({ children }) => {
   const [darkTheme, setDarkTheme] = useState(false);
   const [fontSize, setFontSize] = useState(20);
 
+  useEffect(() => {
+    const loadSettings = () => JSON.parse(localStorage.getItem('settings'));
+    const settings = loadSettings();
+
+    if (settings !== null) {
+      setTemporaryColorHue(settings.permanentColorHue);
+      setPermanentColorHue(settings.permanentColorHue);
+      setDarkTheme(settings.darkTheme);
+      setFontSize(settings.fontSize);
+    }
+  }, []);
+
+  useEffect(() => {
+    const saveSettings = () => {
+      localStorage.setItem('settings', JSON.stringify({
+        permanentColorHue,
+        darkTheme,
+        fontSize,
+      }));
+    };
+    window.onbeforeunload = saveSettings;
+  });
+
   const getLightThemeColors = () => {
     const primaryColor = `hsl(${temporaryColorHue}, 100%, 50%)`;
     const secondaryColor = `hsl(${temporaryColorHue}, 100%, 30%)`;
@@ -82,7 +105,7 @@ export const SettingsProvider = ({ children }) => {
     rootStyle.setProperty('--text-over-background', textOverBackgroundColor);
 
     rootStyle.setProperty('font-size', `${fontSize}px`);
-  }, [temporaryColorHue, darkTheme, fontSize]);
+  }, [temporaryColorHue, permanentColorHue, darkTheme, fontSize]);
 
   const settings = {
     temporaryColorHue,
