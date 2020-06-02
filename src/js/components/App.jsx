@@ -9,7 +9,7 @@ import Settings from './Settings';
 import RepeatList from './RepeatList';
 import Help from './Help';
 import MainPage from './MainPage';
-import BookUI from './BookUI';
+import Fb2UI from './Fb2UI';
 
 const App = () => {
   const [bookSource, setBookSource] = useState(null);
@@ -95,7 +95,7 @@ const App = () => {
     />
   );
   const bookUi = useMemo(() => (
-    <BookUI
+    <Fb2UI
       source={bookSource}
       onBookClose={() => setBookSource(null)}
       onBookInfoChange={handleBookInfoChange}

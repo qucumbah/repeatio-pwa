@@ -2,11 +2,11 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-import BookTextWrapper from './BookTextWrapper';
+import Fb2TextWrapper from './Fb2TextWrapper';
 import SelectionPopup from './SelectionPopup';
 import BookMenuWrapper from './BookMenuWrapper';
 
-const BookUI = ({
+const Fb2UI = ({
   source,
   onBookClose,
   onBookInfoChange,
@@ -154,7 +154,7 @@ const BookUI = ({
     // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
     <div className="bookUI" ref={bookUIRef} tabIndex="0">
       <BookMenuWrapper onBookClose={onBookClose} />
-      <BookTextWrapper
+      <Fb2TextWrapper
         source={source}
         onWrapperSizeChange={handleWrapperSizeChange}
         onBookInfoChange={onBookInfoChange}
@@ -184,14 +184,14 @@ const BookUI = ({
   );
 };
 
-BookUI.propTypes = {
+Fb2UI.propTypes = {
   source: PropTypes.string,
   onBookClose: PropTypes.func.isRequired,
   onBookInfoChange: PropTypes.func.isRequired,
 };
 
-BookUI.defaultProps = {
+Fb2UI.defaultProps = {
   source: '',
 };
 
-export default BookUI;
+export default Fb2UI;

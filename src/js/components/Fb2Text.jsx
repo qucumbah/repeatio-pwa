@@ -111,7 +111,7 @@ const getContent = ($) => {
   return Array.from(bodies).map(xmlToHtml);
 };
 
-const BookText = React.memo(
+const Fb2Text = React.memo(
   React.forwardRef((props, ref) => {
     const { source, onBookInfoChange } = props;
     const $ = Cheerio.load(source, { xmlMode: true });
@@ -149,9 +149,9 @@ const BookText = React.memo(
   })
 );
 
-BookText.propTypes = {
+Fb2Text.propTypes = {
   source: PropTypes.string.isRequired,
   onBookInfoChange: PropTypes.func.isRequired,
 };
 
-export default BookText;
+export default Fb2Text;
