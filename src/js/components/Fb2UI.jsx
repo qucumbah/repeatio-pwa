@@ -6,7 +6,7 @@ import Fb2TextWrapper from './Fb2TextWrapper';
 import SelectionPopup from './SelectionPopup';
 import BookMenuWrapper from './BookMenuWrapper';
 
-const Fb2UI = ({
+const Fb2Ui = ({
   source,
   onBookClose,
   onBookInfoChange,
@@ -184,14 +184,14 @@ const Fb2UI = ({
   );
 };
 
-Fb2UI.propTypes = {
+Fb2Ui.propTypes = {
   source: PropTypes.string,
   onBookClose: PropTypes.func.isRequired,
   onBookInfoChange: PropTypes.func.isRequired,
 };
 
-Fb2UI.defaultProps = {
+Fb2Ui.defaultProps = {
   source: '',
 };
 
-export default Fb2UI;
+export default Fb2Ui;

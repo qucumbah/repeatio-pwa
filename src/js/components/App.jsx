@@ -9,37 +9,62 @@ import Settings from './Settings';
 import RepeatList from './RepeatList';
 import Help from './Help';
 import MainPage from './MainPage';
-import Fb2UI from './Fb2UI';
+import Fb2Ui from './Fb2Ui';
+import PdfUi from './PdfUi';
 
 const App = () => {
-  const [bookSource, setBookSource] = useState(null);
+  const [book, setBook] = useState(null);
   const [fileOverlayContent, setFileOverlayContent] = useState(null);
 
   const handleFileDrag = (isFileDragged) => {
     setFileOverlayContent(isFileDragged ? 'Drop FB2 Here' : null);
   };
 
-  const changeBookFile = (file) => {
-    const makeAllWorkAndHideOverlay = () => {
-      const reader = new FileReader();
-      reader.readAsText(file);
+  const getBook = async (file) => {
+    const getFormat = () => {
+      if (file.name.endsWith('.pdf')) {
+        return 'pdf';
+      }
 
-      reader.onload = () => {
-        setBookSource(reader.result);
-        setFileOverlayContent(null);
-      };
-      reader.onerror = () => {
-        setFileOverlayContent(null);
-      };
+      if (file.name.endsWith('.fb2')) {
+        return 'fb2';
+      }
+
+      return null;
     };
 
+    const getPdfData = () => new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.readAsArrayBuffer(file);
+      reader.onload = () => resolve(reader.result);
+    });
+    const getFb2Data = () => new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.readAsText(file);
+      reader.onload = () => resolve(reader.result);
+    });
+
+    const format = getFormat();
+    if (format === null) {
+      return null;
+    }
+    const source = await ((format === 'pdf') ? getPdfData() : getFb2Data());
+
+    return {
+      format,
+      source,
+    };
+  };
+
+  const changeBookFile = (file) => {
     // Before rendering frame 1: set loader visible
     requestAnimationFrame(() => {
       setFileOverlayContent('Loading...');
 
       // Before rendering frame 2: make all work, set loader invisible
-      requestAnimationFrame(() => {
-        makeAllWorkAndHideOverlay();
+      requestAnimationFrame(async () => {
+        setBook(await getBook(file));
+        setFileOverlayContent(null);
       });
     });
   };
@@ -94,14 +119,23 @@ const App = () => {
       onLoginMenuOpen={() => null}
     />
   );
-  const bookUi = useMemo(() => (
-    <Fb2UI
-      source={bookSource}
-      onBookClose={() => setBookSource(null)}
+  const getFb2Ui = () => (
+    <Fb2Ui
+      source={book.source}
+      onBookClose={() => setBook(null)}
       onBookInfoChange={handleBookInfoChange}
     />
-  ), [bookSource]);
-  const showBookUi = bookSource !== null;
+  );
+  const getPdfUi = () => (
+    (<PdfUi />)
+  );
+  const bookUi = useMemo(() => {
+    switch (book?.format) {
+      case 'fb2': return getFb2Ui();
+      case 'pdf': return getPdfUi();
+      default: return null;
+    }
+  }, [book]);
 
   return (
     <SettingsProvider>
@@ -127,7 +161,7 @@ const App = () => {
           <RepeatList onClose={() => setRepeatListOpen(false)} />
         </Overlay>
 
-        {showBookUi ? bookUi : mainPage}
+        {(book === null) ? mainPage : bookUi}
       </RepeatListProvider>
     </SettingsProvider>
   );
