@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import Fb2TextWrapper from './Fb2TextWrapper';
 import SelectionPopup from './SelectionPopup';
 import BookMenuWrapper from './BookMenuWrapper';
+import PageCounter from './PageCounter';
 
 const Fb2Ui = ({
   source,
@@ -108,48 +109,6 @@ const Fb2Ui = ({
     `pageButton nextButton ${nextButtonActive ? 'active' : 'inactive'}`
   );
 
-  const [pageInputActive, setPageInputActive] = useState(false);
-  const pageCounter = (
-    <span
-      className="pageCounter"
-      aria-label="Go to page"
-      onClick={() => setPageInputActive(true)}
-    >
-      {`${curPage + 1} / ${totalPages}`}
-    </span>
-  );
-
-  const changePage = (inputValue) => {
-    setPageInputActive(false);
-
-    if (Number.isNaN(Number(inputValue))) {
-      return;
-    }
-
-    console.log(totalPages);
-
-    const clampedNewValue = Math.max(0, Math.min(inputValue - 1, totalPages));
-    setCurPage(clampedNewValue);
-  };
-  const pageInput = (
-    <>
-      <input
-        className="pageInput"
-        type="text"
-        defaultValue={curPage + 1}
-        // eslint-disable-next-line jsx-a11y/no-autofocus
-        autoFocus
-        onBlur={(event) => changePage(event.target.value)}
-        onKeyPress={(event) => {
-          if (event.key === 'Enter') {
-            changePage(event.target.value);
-          }
-        }}
-      />
-      <span>{`/ ${totalPages}`}</span>
-    </>
-  );
-
   return (
     // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
     <div className="bookUI" ref={bookUIRef} tabIndex="0">
@@ -178,7 +137,11 @@ const Fb2Ui = ({
         onTouchEnd={nextPage}
       />
       <div className="pageCounterContainer">
-        {pageInputActive ? pageInput : pageCounter}
+        <PageCounter
+          curPage={curPage}
+          totalPages={totalPages}
+          onCurPageChange={setCurPage}
+        />
       </div>
     </div>
   );
