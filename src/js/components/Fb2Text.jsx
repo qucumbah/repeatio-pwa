@@ -5,11 +5,16 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Cheerio from 'cheerio';
 
-const getInfo = ($) => ({
-  title: $('description book-title').eq(0).text(),
-  authorFirstName: $('description author first-name').eq(0).text(),
-  authorLastName: $('description author last-name').eq(0).text(),
-});
+const getInfo = ($) => {
+  const title = $('description book-title').eq(0).text();
+  const authorFirstName = $('description author first-name').eq(0).text();
+  const authorLastName = $('description author last-name').eq(0).text();
+
+  return {
+    title,
+    author: `${authorFirstName} ${authorLastName}`,
+  };
+};
 
 const getImagesBase64 = ($) => {
   const imageElements = $('binary');

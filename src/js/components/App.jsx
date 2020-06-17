@@ -71,13 +71,10 @@ const App = () => {
 
   const handleBookInfoChange = (newBookInfo) => {
     const {
-      authorFirstName,
-      authorLastName,
+      author,
       title,
-      chapterTitleElements,
     } = newBookInfo;
-    console.log(chapterTitleElements);
-    document.title = `${title} - ${authorFirstName} ${authorLastName}`;
+    document.title = `${title} - ${author}`;
   };
 
   const [overlayOpenFrom, setOverlayOpenFrom] = useState(null);
