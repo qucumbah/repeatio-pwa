@@ -19,7 +19,6 @@ const Fb2TextWrapper = (props) => {
     const callOnWrapperSizeChange = () => {
       onWrapperSizeChange(
         wrapperRef.current.clientWidth,
-        wrapperRef.current.clientHieght,
         wrapperRef.current.scrollWidth,
       );
     };

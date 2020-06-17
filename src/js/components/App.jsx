@@ -127,7 +127,11 @@ const App = () => {
     />
   );
   const getPdfUi = () => (
-    (<PdfUi />)
+    <PdfUi
+      source={book.source}
+      onBookClose={() => setBook(null)}
+      onBookInfoChange={handleBookInfoChange}
+    />
   );
   const bookUi = useMemo(() => {
     switch (book?.format) {

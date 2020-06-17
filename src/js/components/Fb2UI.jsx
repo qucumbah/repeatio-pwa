@@ -23,7 +23,6 @@ const Fb2Ui = ({
   const getGapSize = () => 40; // css column-gap property of wrapper
   const handleWrapperSizeChange = useCallback((
     newWrapperWidth,
-    newWrapperHeight,
     newTextWidth,
   ) => {
     const progress = curPage / totalPages;
@@ -37,13 +36,13 @@ const Fb2Ui = ({
     setTotalPages(newTotalPages);
   }, [curPage, totalPages]);
 
-  const prevPage = () => {
+  const goToPrevPage = () => {
     if (curPage - 1 < 0) {
       return;
     }
     setCurPage(curPage - 1);
   };
-  const nextPage = () => {
+  const goToNextPage = () => {
     if (curPage + 1 >= totalPages) {
       return;
     }
@@ -61,16 +60,18 @@ const Fb2Ui = ({
   useEffect(() => {
     const keyDownHandler = (event) => {
       if (event.key === 'ArrowDown' || event.key === 'ArrowRight') {
-        nextPage();
+        goToNextPage();
       }
       if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') {
-        prevPage();
+        goToPrevPage();
       }
     };
 
     bookUIRef.current.focus();
     bookUIRef.current.onkeydown = keyDownHandler;
-    return () => { bookUIRef.current.onkeydown = null; };
+    return () => {
+      bookUIRef.current.onkeydown = null;
+    };
   }, [curPage, totalPages]);
 
   const [selectionPopupState, setSelectionPopupState] = useState({
@@ -111,7 +112,7 @@ const Fb2Ui = ({
 
   return (
     // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
-    <div className="bookUI" ref={bookUIRef} tabIndex="0">
+    <div className="fb2Ui" ref={bookUIRef} tabIndex="0">
       <BookMenuWrapper onBookClose={onBookClose} />
       <Fb2TextWrapper
         source={source}
@@ -126,15 +127,15 @@ const Fb2Ui = ({
         type="button"
         aria-label="previous page"
         className={prevButtonClassName}
-        onClick={prevPage}
-        onTouchEnd={prevPage}
+        onClick={goToPrevPage}
+        onTouchEnd={goToPrevPage}
       />
       <button
         type="button"
         aria-label="next page"
         className={nextButtonClassName}
-        onClick={nextPage}
-        onTouchEnd={nextPage}
+        onClick={goToNextPage}
+        onTouchEnd={goToNextPage}
       />
       <div className="pageCounterContainer">
         <PageCounter
