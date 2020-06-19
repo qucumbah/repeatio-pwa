@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 const PageCounter = ({ curPage, totalPages, onCurPageChange }) => {
@@ -25,24 +25,32 @@ const PageCounter = ({ curPage, totalPages, onCurPageChange }) => {
 
     onCurPageChange(clampedNewValue);
   };
+
+  const pageInputRef = useRef();
   const pageInput = (
     <>
       <input
         className="pageInput"
         type="text"
         defaultValue={curPage}
-        // eslint-disable-next-line jsx-a11y/no-autofocus
-        autoFocus
         onBlur={(event) => changePage(event.target.value)}
         onKeyPress={(event) => {
           if (event.key === 'Enter') {
             changePage(event.target.value);
           }
         }}
+        ref={pageInputRef}
       />
       <span>{`/ ${totalPages}`}</span>
     </>
   );
+
+  useEffect(() => {
+    console.log(pageInputActive, pageInputRef);
+    if (pageInputActive) {
+      pageInputRef.current.select();
+    }
+  }, [pageInputActive]);
 
   return pageInputActive ? pageInput : pageCounter;
 };
