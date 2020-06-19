@@ -2,21 +2,21 @@ import React, { useState, useContext, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import { Document, Page } from 'react-pdf/dist/entry.webpack';
+
 import { SettingsContext } from './SettingsProvider';
+
+import BookMenuWrapper from './BookMenuWrapper';
 
 const PdfUi = ({
   source,
   onBookClose,
-  onBookInfoChange,
 }) => {
   const [curPage, setCurPage] = useState(1);
   const [totalPages, setTotalPages] = useState(-1);
 
   const handleLoadSuccess = (bookInfo) => {
+    console.log(bookInfo);
     setTotalPages(bookInfo.numPages);
-    bookInfo.getMetadata().then(({ info }) => {
-      onBookInfoChange({ title: info.Title });
-    });
   };
 
   const handleLoadError = (error) => {
@@ -62,11 +62,12 @@ const PdfUi = ({
       className="pdfUi"
       onScroll={updatePageNumber}
     >
+      <BookMenuWrapper onBookClose={onBookClose} />
       <Document
         file={source}
         onLoadSuccess={handleLoadSuccess}
         onLoadError={handleLoadError}
-        inputRef={documentRef}
+        inputRef={(ref) => { documentRef.current = ref; }}
       >
         {renderPage(curPage - 1)}
         {renderPage(curPage)}

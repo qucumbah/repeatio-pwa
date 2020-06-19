@@ -781,6 +781,27 @@ button {
   }
 }
 
+.pdfUi {
+  .bookMenuWrapper {
+    z-index: 1;
+    width: 95%;
+
+    .barsContainer {
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+
+      .topBar {
+        background-color: var(--background);
+      }
+
+      .bottomBar {
+        opacity: 0;
+      }
+    }
+  }
+}
+
 .react-pdf__Document {
   overflow: auto;
   position: absolute;
@@ -792,13 +813,6 @@ button {
 
 .pdfPageContainer {
   position: absolute;
-}
-
-.react-pdf__Page {
-  // position: absolute !important;
-  // display: flex;
-  // justify-content: center;
-  // align-items: center;
 }
 
 .selectionPopup {
