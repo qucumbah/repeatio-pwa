@@ -12,12 +12,12 @@ const Fb2Ui = ({
   onBookClose,
   onBookInfoChange,
 }) => {
-  const [curPage, setCurPage] = useState(0);
+  const [curPage, setCurPage] = useState(1);
   const [totalPages, setTotalPages] = useState(-1);
   const [wrapperWidth, setWrapperWidth] = useState(null);
 
   useEffect(() => {
-    setCurPage(0);
+    setCurPage(1);
   }, [source]);
 
   const getGapSize = () => 40; // css column-gap property of wrapper
@@ -37,24 +37,17 @@ const Fb2Ui = ({
   }, [curPage, totalPages]);
 
   const goToPrevPage = () => {
-    if (curPage - 1 < 0) {
+    if (curPage - 1 < 1) {
       return;
     }
     setCurPage(curPage - 1);
   };
   const goToNextPage = () => {
-    if (curPage + 1 >= totalPages) {
+    if (curPage + 1 > totalPages) {
       return;
     }
     setCurPage(curPage + 1);
   };
-
-  const [prevButtonActive, setPrevButtonActive] = useState(true);
-  const [nextButtonActive, setNextButtonActive] = useState(true);
-  useEffect(() => {
-    setPrevButtonActive(curPage !== 0);
-    setNextButtonActive(curPage !== totalPages - 1);
-  }, [curPage, totalPages]);
 
   const bookUIRef = useRef();
   useEffect(() => {
@@ -103,6 +96,13 @@ const Fb2Ui = ({
     />
   );
 
+  const [prevButtonActive, setPrevButtonActive] = useState(true);
+  const [nextButtonActive, setNextButtonActive] = useState(true);
+  useEffect(() => {
+    setPrevButtonActive(curPage !== 1);
+    setNextButtonActive(curPage !== totalPages);
+  }, [curPage, totalPages]);
+
   const prevButtonClassName = (
     `pageButton prevButton ${prevButtonActive ? 'active' : 'inactive'}`
   );
@@ -120,7 +120,7 @@ const Fb2Ui = ({
         onBookInfoChange={onBookInfoChange}
         onTextSelect={handleTextSelect}
         onTextUnselect={handleSelectionPopupClose}
-        offset={curPage * (wrapperWidth + getGapSize())}
+        offset={(curPage - 1) * (wrapperWidth + getGapSize())}
       />
       {selectionPopupState.visible ? getSelectionPopup() : null}
       <button

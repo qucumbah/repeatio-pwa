@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef } from 'react';
+import React, { useState, useContext, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { Document, Page } from 'react-pdf/dist/entry.webpack';
@@ -6,6 +6,7 @@ import { Document, Page } from 'react-pdf/dist/entry.webpack';
 import { SettingsContext } from './SettingsProvider';
 
 import BookMenuWrapper from './BookMenuWrapper';
+import PageCounter from './PageCounter';
 
 const PdfUi = ({
   source,
@@ -13,6 +14,35 @@ const PdfUi = ({
 }) => {
   const [curPage, setCurPage] = useState(1);
   const [totalPages, setTotalPages] = useState(-1);
+
+  const getVGap = () => 20;
+
+  const { fontSize } = useContext(SettingsContext);
+  const getPageHeight = () => fontSize * 60;
+
+  const documentRef = useRef();
+
+  const forcePageChange = (newCurPage) => {
+    if (!documentRef.current) {
+      return;
+    }
+
+    documentRef.current.scrollTop = (
+      (newCurPage - 1) * (getPageHeight() + getVGap())
+    );
+  };
+
+  const updatePageNumber = () => {
+    if (!documentRef.current) {
+      return;
+    }
+
+    const { scrollTop } = documentRef.current;
+    const newPageNumberZeroBased = Math.floor(
+      scrollTop / (getPageHeight() + getVGap())
+    );
+    setCurPage(newPageNumberZeroBased + 1);
+  };
 
   const handleLoadSuccess = (bookInfo) => {
     console.log(bookInfo);
@@ -22,11 +52,6 @@ const PdfUi = ({
   const handleLoadError = (error) => {
     console.log(error);
   };
-
-  const getVGap = () => 20;
-
-  const { fontSize } = useContext(SettingsContext);
-  const getPageHeight = () => fontSize * 60;
 
   const bookPlaceholderStyle = {
     height: `${getVGap() + totalPages * (getPageHeight() + getVGap())}px`,
@@ -48,21 +73,20 @@ const PdfUi = ({
     );
   };
 
-  const documentRef = useRef();
-  const updatePageNumber = () => {
-    const { scrollTop } = documentRef.current;
-    const newPageNumberZeroBased = Math.floor(
-      scrollTop / (getPageHeight() + getVGap())
-    );
-    setCurPage(newPageNumberZeroBased + 1);
-  };
-
   return (
     <div
       className="pdfUi"
       onScroll={updatePageNumber}
     >
-      <BookMenuWrapper onBookClose={onBookClose} />
+      <BookMenuWrapper onBookClose={onBookClose}>
+        <div className="pageCounterContainer">
+          <PageCounter
+            curPage={curPage}
+            totalPages={totalPages}
+            onCurPageChange={forcePageChange}
+          />
+        </div>
+      </BookMenuWrapper>
       <Document
         file={source}
         onLoadSuccess={handleLoadSuccess}
@@ -81,7 +105,7 @@ const PdfUi = ({
 PdfUi.propTypes = {
   source: PropTypes.instanceOf(ArrayBuffer),
   onBookClose: PropTypes.func.isRequired,
-  onBookInfoChange: PropTypes.func.isRequired,
+  // onBookInfoChange: PropTypes.func.isRequired,
 };
 
 PdfUi.defaultProps = {

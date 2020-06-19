@@ -17,7 +17,7 @@ import Bars from '../../img/bars.svg';
 import PlusIcon from '../../img/plus.svg';
 import MinusIcon from '../../img/minus.svg';
 
-const BookMenuWrapper = ({ onBookClose }) => {
+const BookMenuWrapper = ({ onBookClose, children }) => {
   const [isPinned, setIsPinned] = useState(false);
 
   const [overlayOpenFrom, setOverlayOpenFrom] = useState(null);
@@ -47,32 +47,31 @@ const BookMenuWrapper = ({ onBookClose }) => {
 
   const desktopTopBarRef = useRef();
   const desktopTopBar = (
-    <ul className="desktopTopBar list" ref={desktopTopBarRef}>
-      <li>
-        <MenuLink action={onBookClose} icon={ReturnIcon}>
-          Close book
-        </MenuLink>
-        <MenuLink action={openOverlayWith(settings)} icon={SettingsIcon}>
-          Settings
-        </MenuLink>
-        <MenuLink action={openOverlayWith(repeatList)} icon={RepeatListIcon}>
-          Repeat list
-        </MenuLink>
-        <MenuLink action={() => setIsPinned(!isPinned)} icon={PinIcon}>
-          {isPinned ? 'Unpin menu' : 'Pin menu'}
-        </MenuLink>
-        <div className="fontSize">
-          <MenuLink
-            action={() => setFontSize(fontSize + 1)}
-            icon={PlusIcon}
-          />
-          <MenuLink
-            action={() => setFontSize(fontSize - 1)}
-            icon={MinusIcon}
-          />
-        </div>
-      </li>
-    </ul>
+    <div className="desktopTopBar list" ref={desktopTopBarRef}>
+      <MenuLink action={onBookClose} icon={ReturnIcon}>
+        Close book
+      </MenuLink>
+      <MenuLink action={openOverlayWith(settings)} icon={SettingsIcon}>
+        Settings
+      </MenuLink>
+      <MenuLink action={openOverlayWith(repeatList)} icon={RepeatListIcon}>
+        Repeat list
+      </MenuLink>
+      <MenuLink action={() => setIsPinned(!isPinned)} icon={PinIcon}>
+        {isPinned ? 'Unpin menu' : 'Pin menu'}
+      </MenuLink>
+      <div className="fontSize">
+        <MenuLink
+          action={() => setFontSize(fontSize + 1)}
+          icon={PlusIcon}
+        />
+        <MenuLink
+          action={() => setFontSize(fontSize - 1)}
+          icon={MinusIcon}
+        />
+      </div>
+      {children}
+    </div>
   );
 
   const mobileMenu = (
@@ -118,6 +117,11 @@ const BookMenuWrapper = ({ onBookClose }) => {
 
 BookMenuWrapper.propTypes = {
   onBookClose: PropTypes.func.isRequired,
+  children: PropTypes.node,
+};
+
+BookMenuWrapper.defaultProps = {
+  children: null,
 };
 
 export default BookMenuWrapper;

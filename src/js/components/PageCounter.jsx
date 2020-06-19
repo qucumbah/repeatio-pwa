@@ -9,7 +9,7 @@ const PageCounter = ({ curPage, totalPages, onCurPageChange }) => {
       aria-label="Go to page"
       onClick={() => setPageInputActive(true)}
     >
-      {`${curPage + 1} / ${totalPages}`}
+      {`${curPage} / ${totalPages}`}
     </span>
   );
 
@@ -20,10 +20,8 @@ const PageCounter = ({ curPage, totalPages, onCurPageChange }) => {
       return;
     }
 
-    console.log(totalPages);
-
     const clamp = (value, min, max) => Math.max(min, Math.min(value, max));
-    const clampedNewValue = clamp(inputValue - 1, 0, totalPages - 1);
+    const clampedNewValue = clamp(inputValue, 1, totalPages);
 
     onCurPageChange(clampedNewValue);
   };
@@ -32,7 +30,7 @@ const PageCounter = ({ curPage, totalPages, onCurPageChange }) => {
       <input
         className="pageInput"
         type="text"
-        defaultValue={curPage + 1}
+        defaultValue={curPage}
         // eslint-disable-next-line jsx-a11y/no-autofocus
         autoFocus
         onBlur={(event) => changePage(event.target.value)}
