@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-import BookText from './BookText';
+import Fb2Text from './Fb2Text';
 
-const BookTextWrapper = (props) => {
+const Fb2TextWrapper = (props) => {
   const {
     source,
     onWrapperSizeChange,
@@ -19,7 +19,6 @@ const BookTextWrapper = (props) => {
     const callOnWrapperSizeChange = () => {
       onWrapperSizeChange(
         wrapperRef.current.clientWidth,
-        wrapperRef.current.clientHieght,
         wrapperRef.current.scrollWidth,
       );
     };
@@ -65,7 +64,7 @@ const BookTextWrapper = (props) => {
       onTouchEnd={checkSelection}
       onMouseUp={() => requestAnimationFrame(checkSelection)}
     >
-      <BookText
+      <Fb2Text
         source={source}
         onBookInfoChange={onBookInfoChange}
         ref={textRef}
@@ -74,7 +73,7 @@ const BookTextWrapper = (props) => {
   );
 };
 
-BookTextWrapper.propTypes = {
+Fb2TextWrapper.propTypes = {
   source: PropTypes.string.isRequired,
   onWrapperSizeChange: PropTypes.func.isRequired,
   onBookInfoChange: PropTypes.func.isRequired,
@@ -83,4 +82,4 @@ BookTextWrapper.propTypes = {
   onTextUnselect: PropTypes.func.isRequired,
 };
 
-export default BookTextWrapper;
+export default Fb2TextWrapper;

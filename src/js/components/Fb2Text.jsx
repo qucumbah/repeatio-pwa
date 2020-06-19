@@ -5,11 +5,16 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Cheerio from 'cheerio';
 
-const getInfo = ($) => ({
-  title: $('description book-title').eq(0).text(),
-  authorFirstName: $('description author first-name').eq(0).text(),
-  authorLastName: $('description author last-name').eq(0).text(),
-});
+const getInfo = ($) => {
+  const title = $('description book-title').eq(0).text();
+  const authorFirstName = $('description author first-name').eq(0).text();
+  const authorLastName = $('description author last-name').eq(0).text();
+
+  return {
+    title,
+    author: `${authorFirstName} ${authorLastName}`,
+  };
+};
 
 const getImagesBase64 = ($) => {
   const imageElements = $('binary');
@@ -111,7 +116,7 @@ const getContent = ($) => {
   return Array.from(bodies).map(xmlToHtml);
 };
 
-const BookText = React.memo(
+const Fb2Text = React.memo(
   React.forwardRef((props, ref) => {
     const { source, onBookInfoChange } = props;
     const $ = Cheerio.load(source, { xmlMode: true });
@@ -149,9 +154,9 @@ const BookText = React.memo(
   })
 );
 
-BookText.propTypes = {
+Fb2Text.propTypes = {
   source: PropTypes.string.isRequired,
   onBookInfoChange: PropTypes.func.isRequired,
 };
 
-export default BookText;
+export default Fb2Text;
