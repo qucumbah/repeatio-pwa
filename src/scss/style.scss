@@ -816,6 +816,9 @@ button {
   height: 100%;
   display: flex;
   justify-content: center;
+  ::selection {
+    color: transparent;
+  }
 }
 
 .pdfPageContainer {
