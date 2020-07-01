@@ -46,7 +46,6 @@ const PageCounter = ({ curPage, totalPages, onCurPageChange }) => {
   );
 
   useEffect(() => {
-    console.log(pageInputActive, pageInputRef);
     if (pageInputActive) {
       pageInputRef.current.select();
     }

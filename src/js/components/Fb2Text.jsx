@@ -147,7 +147,7 @@ const Fb2Text = React.memo(
     const content = getContent($);
 
     return (
-      <div ref={ref}>
+      <div className="fb2Text" ref={ref}>
         {content}
       </div>
     );

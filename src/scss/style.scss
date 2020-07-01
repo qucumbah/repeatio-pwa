@@ -625,34 +625,34 @@ button {
 }
 
 .fb2Ui {
+  position: relative;
   width: 100%;
   height: 100%;
-  padding: 60px 100px 80px;
-  box-sizing: border-box;
-  overflow: hidden;
+  display: grid;
+  --top-bar-height: 60px;
+  --bottom-bar-height: 80px;
+  --text-height: calc(100vh - var(--top-bar-height) - var(--bottom-bar-height));
+  grid-template-rows:
+    var(--top-bar-height)
+    var(--text-height)
+    var(--bottom-bar-height);
+  --page-button-size: 100px;
+  grid-template-columns: var(--page-button-size) 1fr var(--page-button-size);
+  // grid-template: 60px 1fr 80px / 100px 1fr 100px;
   background-color: var(--book-background);
 
   &:focus {
     outline: none;
   }
 
-  @media screen and (max-width: 719px) {
-    padding: 40px 40px 80px;
-  }
-
   .pageButton {
-    position: absolute;
-    width: 100px;
+    grid-row: span 3;
+    position: relative;
+    width: 100%;
     height: 100%;
-    top: 0;
     cursor: pointer;
     transition: .2s ease;
     transition-property: opacity;
-
-    @media screen and (max-width: 719px) {
-      width: 50%;
-      opacity: 0;
-    }
 
     &.inactive {
       opacity: 0;
@@ -679,36 +679,27 @@ button {
     }
   }
 
-  .prevButton {
-    left: 0px;
-  }
   .nextButton {
-    right: 0px;
     transform: scaleX(-1);
   }
 
   .pageCounterContainer {
-    position: absolute;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     color: #777;
     font-size: 0.8rem;
   }
 }
 
 .bookMenuWrapper {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 0;
-  height: 0;
+  position: relative;
 
   .barsContainer {
     position: absolute;
-    width: calc(100vw - 200px);
-    height: 60px;
-    left: 100px;
+    width: 100%;
+    height: 100%;
     overflow: hidden;
 
     .bottomBar {
@@ -904,7 +895,9 @@ button {
   }
 }
 
-.bookTextWrapper {
+.fb2TextWrapper {
+  position: relative;
+
   column-count: 2;
   column-gap: 40px;
   width: 100%;

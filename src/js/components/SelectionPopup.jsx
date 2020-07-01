@@ -27,6 +27,7 @@ const SelectionPopup = ({
   });
 
   const [text, setText] = useState(inputText);
+  useEffect(() => setText(inputText), [inputText]);
 
   const { onWordAdd } = useContext(RepeatListContext);
   const inputRef = useRef();
@@ -70,6 +71,7 @@ const SelectionPopup = ({
     top: `${position.y + fixingOffsets.top}px`,
   };
 
+  // add onclick, prevent propagation, effect window.onclick = closeoverlay
   return (
     <div className="selectionPopup" style={positionStyle} ref={popupRef}>
       <div className="word">

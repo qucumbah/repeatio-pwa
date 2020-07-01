@@ -9,8 +9,6 @@ const Fb2TextWrapper = (props) => {
     onWrapperSizeChange,
     onBookInfoChange,
     offset,
-    onTextSelect,
-    onTextUnselect,
   } = props;
 
   const wrapperRef = useRef();
@@ -33,36 +31,10 @@ const Fb2TextWrapper = (props) => {
     wrapperRef.current.scrollLeft = offset;
   }, [offset]);
 
-  const checkSelection = () => {
-    const selection = (
-      (window.getSelection && window.getSelection())
-      || (document.getSelection && document.getSelection())
-    );
-    if (selection.toString().length === 0) {
-      onTextUnselect();
-    } else {
-      const {
-        x,
-        y,
-        width,
-        height
-      } = selection.getRangeAt(0).getBoundingClientRect();
-      onTextSelect({
-        x,
-        y,
-        width,
-        height,
-        text: selection.toString(),
-      });
-    }
-  };
-
   return (
     <div
-      className="bookTextWrapper"
+      className="fb2TextWrapper"
       ref={wrapperRef}
-      onTouchEnd={checkSelection}
-      onMouseUp={() => requestAnimationFrame(checkSelection)}
     >
       <Fb2Text
         source={source}
@@ -78,8 +50,6 @@ Fb2TextWrapper.propTypes = {
   onWrapperSizeChange: PropTypes.func.isRequired,
   onBookInfoChange: PropTypes.func.isRequired,
   offset: PropTypes.number.isRequired,
-  onTextSelect: PropTypes.func.isRequired,
-  onTextUnselect: PropTypes.func.isRequired,
 };
 
 export default Fb2TextWrapper;

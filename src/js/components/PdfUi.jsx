@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef, useEffect } from 'react';
+import React, { useState, useContext, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import { Document, Page } from 'react-pdf/dist/entry.webpack';
@@ -7,7 +7,7 @@ import { SettingsContext } from './SettingsProvider';
 
 import BookMenuWrapper from './BookMenuWrapper';
 import PageCounter from './PageCounter';
-import SelectionPopup from './SelectionPopup';
+import SelectionPopupArea from './SelectionPopupArea';
 
 const PdfUi = ({
   source,
@@ -74,65 +74,11 @@ const PdfUi = ({
     );
   };
 
-  const [selectionPopupState, setSelectionPopupState] = useState({
-    visible: false,
-    position: null,
-    text: '',
-  });
-
-  const handleTextSelect = ({ x, y, width, text }) => {
-    setSelectionPopupState({
-      visible: true,
-      position: { x: x + width / 2, y },
-      text,
-    });
-  };
-  const handleSelectionPopupClose = () => {
-    setSelectionPopupState((prevState) => ({
-      visible: false,
-      position: prevState.position,
-      text: prevState.text,
-    }));
-  };
-
-  const getSelectionPopup = () => (
-    <SelectionPopup
-      position={selectionPopupState.position}
-      text={selectionPopupState.text}
-      onClose={handleSelectionPopupClose}
-    />
-  );
-
-  const checkSelection = () => {
-    const selection = (
-      (window.getSelection && window.getSelection())
-      || (document.getSelection && document.getSelection())
-    );
-    if (selection.toString().length === 0) {
-      handleSelectionPopupClose();
-    } else {
-      const {
-        x,
-        y,
-        width,
-        height
-      } = selection.getRangeAt(0).getBoundingClientRect();
-      handleTextSelect({
-        x,
-        y,
-        width,
-        height,
-        text: selection.toString(),
-      });
-    }
-  };
-
   return (
     <div
       className="pdfUi"
       onScroll={updatePageNumber}
     >
-      {selectionPopupState.visible ? getSelectionPopup() : null}
       <BookMenuWrapper onBookClose={onBookClose}>
         <div className="pageCounterContainer">
           <PageCounter
@@ -142,22 +88,20 @@ const PdfUi = ({
           />
         </div>
       </BookMenuWrapper>
-      <div
-        className="pdfDocumentWrapper"
-        onMouseUp={checkSelection}
-        onTouchEnd={checkSelection}
-      >
-        <Document
-          file={source}
-          onLoadSuccess={handleLoadSuccess}
-          onLoadError={handleLoadError}
-          inputRef={(ref) => { documentRef.current = ref; }}
-        >
-          {renderPage(curPage - 1)}
-          {renderPage(curPage)}
-          {renderPage(curPage + 1)}
-          <div className="bookPlaceholder" style={bookPlaceholderStyle} />
-        </Document>
+      <div className="pdfDocumentWrapper">
+        <SelectionPopupArea>
+          <Document
+            file={source}
+            onLoadSuccess={handleLoadSuccess}
+            onLoadError={handleLoadError}
+            inputRef={(ref) => { documentRef.current = ref; }}
+          >
+            {renderPage(curPage - 1)}
+            {renderPage(curPage)}
+            {renderPage(curPage + 1)}
+            <div className="bookPlaceholder" style={bookPlaceholderStyle} />
+          </Document>
+        </SelectionPopupArea>
       </div>
     </div>
   );
