@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import SelectionPopup from './SelectionPopup';
@@ -57,26 +57,9 @@ const SelectionPopupArea = ({ children }) => {
     }
   };
 
-  const selectionPopupAreaRef = useRef();
-  useEffect(() => {
-    const selectionPopupArea = selectionPopupAreaRef.current;
-    const stopPropagation = (event) => event.stopPropagation();
-
-    selectionPopupArea.addEventListener('click', stopPropagation);
-    // If this event fires then the user clicked outside of selection
-    // popup, which means we have to close it
-    window.addEventListener('click', handleSelectionPopupClose);
-
-    return () => {
-      selectionPopupArea.removeEventListener('click', stopPropagation);
-      window.removeEventListener('click', handleSelectionPopupClose);
-    };
-  }, [children]);
-
   return (
     <div
       className="selectionPopupArea"
-      ref={selectionPopupAreaRef}
       onMouseUp={checkSelection}
     >
       {children}

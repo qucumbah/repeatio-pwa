@@ -3,7 +3,7 @@ import React, {
   useEffect,
   useState,
   useContext,
-  useLayoutEffect
+  useLayoutEffect,
 } from 'react';
 import PropTypes from 'prop-types';
 
@@ -71,9 +71,31 @@ const SelectionPopup = ({
     top: `${position.y + fixingOffsets.top}px`,
   };
 
+  useEffect(() => {
+    const selectionPopup = popupRef.current;
+    const stopPropagation = (event) => event.stopPropagation();
+
+    // Need to skip first mouseup because it opens the popup
+    requestAnimationFrame(() => {
+      selectionPopup.addEventListener('mouseup', stopPropagation);
+      // If this event fires then the user clicked outside of selection
+      // popup, which means we have to close it
+      window.addEventListener('mouseup', onClose);
+    });
+
+    return () => {
+      selectionPopup.removeEventListener('mouseup', stopPropagation);
+      window.removeEventListener('mouseup', onClose);
+    };
+  });
+
   // add onclick, prevent propagation, effect window.onclick = closeoverlay
   return (
-    <div className="selectionPopup" style={positionStyle} ref={popupRef}>
+    <div
+      className="selectionPopup"
+      style={positionStyle}
+      ref={popupRef}
+    >
       <div className="word">
         <input
           type="text"
