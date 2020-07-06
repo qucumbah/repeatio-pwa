@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-import Fb2TextWrapper from './Fb2TextWrapper';
+import Fb2TextWindow from './Fb2TextWindow';
 import SelectionPopupArea from './SelectionPopupArea';
 import BookMenuWrapper from './BookMenuWrapper';
 import PageCounter from './PageCounter';
@@ -14,22 +14,22 @@ const Fb2Ui = ({
 }) => {
   const [curPage, setCurPage] = useState(1);
   const [totalPages, setTotalPages] = useState(-1);
-  const [wrapperWidth, setWrapperWidth] = useState(null);
+  const [textWindowWidth, setTextWindowWidth] = useState(null);
 
   useEffect(() => {
     setCurPage(1);
   }, [source]);
 
-  const getGapSize = () => 40; // css column-gap property of wrapper
-  const handleWrapperSizeChange = useCallback((
-    newWrapperWidth,
+  const getGapSize = () => 40; // css column-gap property of textWindow
+  const handleTextWindowSizeChange = useCallback((
+    newTextWindowWidth,
     newTextWidth,
   ) => {
     const progress = curPage / totalPages;
-    setWrapperWidth(newWrapperWidth);
+    setTextWindowWidth(newTextWindowWidth);
 
     const newTotalPages = Math.ceil(
-      newTextWidth / (newWrapperWidth + getGapSize())
+      newTextWidth / (newTextWindowWidth + getGapSize())
     );
     const newCurPage = Math.round(progress * newTotalPages);
     setCurPage(newCurPage);
@@ -100,11 +100,11 @@ const Fb2Ui = ({
         onTouchEnd={goToNextPage}
       />
       <SelectionPopupArea>
-        <Fb2TextWrapper
+        <Fb2TextWindow
           source={source}
-          onWrapperSizeChange={handleWrapperSizeChange}
+          onTextWindowSizeChange={handleTextWindowSizeChange}
           onBookInfoChange={onBookInfoChange}
-          offset={(curPage - 1) * (wrapperWidth + getGapSize())}
+          offset={(curPage - 1) * (textWindowWidth + getGapSize())}
         />
       </SelectionPopupArea>
       <div className="pageCounterContainer">

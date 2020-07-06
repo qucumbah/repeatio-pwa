@@ -3,38 +3,38 @@ import PropTypes from 'prop-types';
 
 import Fb2Text from './Fb2Text';
 
-const Fb2TextWrapper = (props) => {
+const Fb2TextWindow = (props) => {
   const {
     source,
-    onWrapperSizeChange,
+    onTextWindowSizeChange,
     onBookInfoChange,
     offset,
   } = props;
 
-  const wrapperRef = useRef();
+  const textWindowRef = useRef();
   const textRef = useRef();
   useEffect(() => {
-    const callOnWrapperSizeChange = () => {
-      onWrapperSizeChange(
-        wrapperRef.current.clientWidth,
-        wrapperRef.current.scrollWidth,
+    const callOnTextWindowSizeChange = () => {
+      onTextWindowSizeChange(
+        textWindowRef.current.clientWidth,
+        textWindowRef.current.scrollWidth,
       );
     };
-    callOnWrapperSizeChange();
-    window.onresize = callOnWrapperSizeChange;
+    callOnTextWindowSizeChange();
+    window.onresize = callOnTextWindowSizeChange;
     return () => {
       window.onresize = null;
     };
   });
 
   useEffect(() => {
-    wrapperRef.current.scrollLeft = offset;
+    textWindowRef.current.scrollLeft = offset;
   }, [offset]);
 
   return (
     <div
-      className="fb2TextWrapper"
-      ref={wrapperRef}
+      className="fb2TextWindow"
+      ref={textWindowRef}
     >
       <Fb2Text
         source={source}
@@ -45,11 +45,11 @@ const Fb2TextWrapper = (props) => {
   );
 };
 
-Fb2TextWrapper.propTypes = {
+Fb2TextWindow.propTypes = {
   source: PropTypes.string.isRequired,
-  onWrapperSizeChange: PropTypes.func.isRequired,
+  onTextWindowSizeChange: PropTypes.func.isRequired,
   onBookInfoChange: PropTypes.func.isRequired,
   offset: PropTypes.number.isRequired,
 };
 
-export default Fb2TextWrapper;
+export default Fb2TextWindow;

@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef } from 'react';
+import React, { useState, useContext, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { Document, Page } from 'react-pdf/dist/entry.webpack';
@@ -21,29 +21,26 @@ const PdfUi = ({
   const { fontSize } = useContext(SettingsContext);
   const getPageHeight = () => fontSize * 60;
 
-  const documentRef = useRef();
+  const pdfDocumentWrapperRef = useRef();
 
   const forcePageChange = (newCurPage) => {
-    if (!documentRef.current) {
-      return;
-    }
-
-    documentRef.current.scrollTop = (
+    pdfDocumentWrapperRef.current.scrollTop = (
       (newCurPage - 1) * (getPageHeight() + getVGap())
     );
   };
 
   const updatePageNumber = () => {
-    if (!documentRef.current) {
-      return;
-    }
-
-    const { scrollTop } = documentRef.current;
+    const { scrollTop } = document.querySelector(':root');
     const newPageNumberZeroBased = Math.floor(
       scrollTop / (getPageHeight() + getVGap())
     );
     setCurPage(newPageNumberZeroBased + 1);
   };
+
+  useEffect(() => {
+    window.addEventListener('scroll', updatePageNumber);
+    return () => window.removeEventListener('scroll', updatePageNumber);
+  });
 
   const handleLoadSuccess = (bookInfo) => {
     console.log(bookInfo);
@@ -52,10 +49,6 @@ const PdfUi = ({
 
   const handleLoadError = (error) => {
     console.log(error);
-  };
-
-  const bookPlaceholderStyle = {
-    height: `${getVGap() + totalPages * (getPageHeight() + getVGap())}px`,
   };
 
   const renderPage = (pageNumber) => {
@@ -74,11 +67,10 @@ const PdfUi = ({
     );
   };
 
+  const documentHeight = getVGap() + totalPages * (getPageHeight() + getVGap());
+
   return (
-    <div
-      className="pdfUi"
-      onScroll={updatePageNumber}
-    >
+    <div className="pdfUi">
       <BookMenuWrapper onBookClose={onBookClose}>
         <div className="pageCounterContainer">
           <PageCounter
@@ -88,19 +80,21 @@ const PdfUi = ({
           />
         </div>
       </BookMenuWrapper>
-      <div className="pdfDocumentWrapper">
+      <div className="pdfDocumentWrapper" ref={pdfDocumentWrapperRef}>
         <SelectionPopupArea>
           <Document
             file={source}
             onLoadSuccess={handleLoadSuccess}
             onLoadError={handleLoadError}
-            inputRef={(ref) => { documentRef.current = ref; }}
           >
             {renderPage(curPage - 1)}
             {renderPage(curPage)}
             {renderPage(curPage + 1)}
-            <div className="bookPlaceholder" style={bookPlaceholderStyle} />
           </Document>
+          <div
+            className="documentPlaceholder"
+            style={{ height: `${documentHeight}px` }}
+          />
         </SelectionPopupArea>
       </div>
     </div>

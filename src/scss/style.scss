@@ -14,7 +14,7 @@ body {
 
 #root {
   position: relative;
-  width: 100vw;
+  width: 100%;
   height: 100%;
 }
 
@@ -775,14 +775,18 @@ button {
 }
 
 .pdfUi {
+  position: relative;
+
   .bookMenuWrapper {
+    position: fixed;
     z-index: 1;
-    width: 95%;
+    width: 100%;
 
     .barsContainer {
       left: 50%;
       transform: translateX(-50%);
       width: 100%;
+      height: 60px;
 
       .topBar {
         background-color: var(--background);
@@ -801,7 +805,7 @@ button {
 }
 
 .react-pdf__Document {
-  overflow: auto;
+  overflow: visible;
   position: absolute;
   width: 100%;
   height: 100%;
@@ -810,6 +814,10 @@ button {
   ::selection {
     color: transparent;
   }
+}
+
+.react-pdf__Page__annotations {
+  display: none;
 }
 
 .pdfPageContainer {
@@ -895,7 +903,7 @@ button {
   }
 }
 
-.fb2TextWrapper {
+.fb2TextWindow {
   position: relative;
 
   column-count: 2;
