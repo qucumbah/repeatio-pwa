@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "webpack-dev-server --config webpack/webpack.dev.js --host 192.168.0.166",
+    "start": "webpack-dev-server --config webpack/webpack.dev.js --host 0.0.0.0",
     "build": "webpack --config webpack/webpack.prod.js",
     "deploy": "gh-pages -d dist"
   },
