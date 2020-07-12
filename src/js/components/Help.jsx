@@ -10,18 +10,24 @@ const Help = ({ onClose }) => (
       <ListItem name="What is this?">
         <p className="helpText">
           Repeatio is a customizable book reader for people who are learning
-          foreign languages
+          foreign languages.
         </p>
       </ListItem>
-      <ListItem name="How does this help learn a language?">
+      <ListItem name="What exactly is customizable?">
         <p className="helpText">
-          Repeatio automatically shows translation of the selected
-          word or sentance and allows you to save it and repeat it later.
+          You can change the primary color of the UI, dark mode, and font size.
         </p>
       </ListItem>
-      <ListItem name="What book formats are supported?">
+      <ListItem name="How does this help to learn a language?">
         <p className="helpText">
-          Right now, only FB2 format is supported
+          Repeat automatically shows translations of the selected word or
+          sentence.
+        </p>
+      </ListItem>
+      <ListItem name="Which book formats are supported?">
+        <p className="helpText">
+          FB2 and PDF, you can use the translation feature in both (if the book
+          quality allows it).
         </p>
       </ListItem>
     </ol>
