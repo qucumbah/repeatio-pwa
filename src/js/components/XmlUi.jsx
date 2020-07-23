@@ -2,12 +2,12 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-import Fb2TextWindow from './Fb2TextWindow';
+import XmlTextWindow from './XmlTextWindow';
 import SelectionPopupArea from './SelectionPopupArea';
 import BookMenuWrapper from './BookMenuWrapper';
 import PageCounter from './PageCounter';
 
-const Fb2Ui = ({
+const XmlUi = ({
   source,
   onBookClose,
   onBookInfoChange,
@@ -118,14 +118,14 @@ const Fb2Ui = ({
   );
 };
 
-Fb2Ui.propTypes = {
+XmlUi.propTypes = {
   source: PropTypes.string,
   onBookClose: PropTypes.func.isRequired,
   onBookInfoChange: PropTypes.func.isRequired,
 };
 
-Fb2Ui.defaultProps = {
+XmlUi.defaultProps = {
   source: '',
 };
 
-export default Fb2Ui;
+export default XmlUi;

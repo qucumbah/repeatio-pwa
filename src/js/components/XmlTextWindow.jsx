@@ -3,14 +3,12 @@ import PropTypes from 'prop-types';
 
 import Fb2Text from './Fb2Text';
 
-const Fb2TextWindow = (props) => {
-  const {
-    source,
-    onTextWindowSizeChange,
-    onBookInfoChange,
-    offset,
-  } = props;
-
+const XmlTextWindow = ({
+  source,
+  onTextWindowSizeChange,
+  onBookInfoChange,
+  offset,
+}) => {
   const textWindowRef = useRef();
   const textRef = useRef();
   useEffect(() => {
@@ -45,11 +43,11 @@ const Fb2TextWindow = (props) => {
   );
 };
 
-Fb2TextWindow.propTypes = {
+XmlTextWindow.propTypes = {
   source: PropTypes.string.isRequired,
   onTextWindowSizeChange: PropTypes.func.isRequired,
   onBookInfoChange: PropTypes.func.isRequired,
   offset: PropTypes.number.isRequired,
 };
 
-export default Fb2TextWindow;
+export default XmlTextWindow;
