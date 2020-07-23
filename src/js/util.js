@@ -1,4 +1,5 @@
-/* eslint-disable import/prefer-default-export */
+import JsZip from 'jszip';
+
 const translationApiKey = 'trnsl.1.1.20200422T083917Z.28cbd2f52df07dcd.a776528bbd937c69b808570840b48a58224acf25';
 const dictionaryApiKey = 'dict.1.1.20190711T095338Z.484d81ae92e52b2a.f377215fa79771b02fb5f2343803aa24876acbe2';
 
@@ -34,3 +35,10 @@ export const getTranslation = (text) => {
       return translationResponseJson.text[0];
     });
 };
+
+const jsZip = new JsZip();
+export const unzipFiles = (zippedBuffer) => jsZip
+  .loadAsync(zippedBuffer)
+  .then((archive) => Object.keys(archive.files).map((fileName) => (
+    archive.file(fileName).async('arraybuffer')
+  )));
