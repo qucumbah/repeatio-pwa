@@ -19,3 +19,6 @@ Right now, nothing. In future it will add words to [Repeatio Extension](https://
 
 ## Which book formats are supported?
 FB2 and PDF, you can use the translation feature in both (if the book quality allows it).
+
+## Where can I try it?
+You can find repeatio [here](https://qucumbah.github.io/repeatio-pwa/)
