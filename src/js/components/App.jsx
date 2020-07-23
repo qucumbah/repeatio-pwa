@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { unzipFiles } from '../util';
 
 import { SettingsProvider } from './SettingsProvider';
 import { RepeatListProvider } from './RepeatListProvider';
@@ -9,7 +10,7 @@ import Settings from './Settings';
 import RepeatList from './RepeatList';
 import Help from './Help';
 import MainPage from './MainPage';
-import Fb2Ui from './Fb2Ui';
+import XmlUi from './XmlUi';
 import PdfUi from './PdfUi';
 
 const App = () => {
@@ -22,33 +23,44 @@ const App = () => {
 
   const getBook = async (file) => {
     const getFormat = () => {
-      if (file.name.endsWith('.pdf')) {
-        return 'pdf';
-      }
+      const supportedFormats = ['pdf', 'fb2', 'epub'];
 
-      if (file.name.endsWith('.fb2')) {
-        return 'fb2';
-      }
+      const result = supportedFormats.find(
+        (format) => file.endsWith(`.${format}`)
+      );
 
-      return null;
+      return result ?? 'unsupported';
     };
 
-    const getPdfData = () => new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.readAsArrayBuffer(file);
-      reader.onload = () => resolve(reader.result);
-    });
-    const getFb2Data = () => new Promise((resolve) => {
+    const readFileAsText = () => new Promise((resolve) => {
       const reader = new FileReader();
       reader.readAsText(file);
       reader.onload = () => resolve(reader.result);
     });
+    const readFileAsArrayByffer = () => new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.readAsArrayBuffer(file);
+      reader.onload = () => resolve(reader.result);
+    });
+
+    const getData = async (format) => {
+      switch (format) {
+        case 'pdf':
+          return readFileAsArrayByffer();
+        case 'fb2':
+          return readFileAsText();
+        case 'epub':
+          return unzipFiles(await readFileAsArrayByffer());
+        default:
+          return null;
+      }
+    };
 
     const format = getFormat();
     if (format === null) {
       return null;
     }
-    const source = await ((format === 'pdf') ? getPdfData() : getFb2Data());
+    const source = await getData(format);
 
     return {
       format,
@@ -117,7 +129,7 @@ const App = () => {
     />
   );
   const getFb2Ui = () => (
-    <Fb2Ui
+    <XmlUi
       source={book.source}
       onBookClose={() => setBook(null)}
       onBookInfoChange={handleBookInfoChange}
