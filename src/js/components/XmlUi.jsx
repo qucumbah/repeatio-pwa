@@ -8,7 +8,7 @@ import BookMenuWrapper from './BookMenuWrapper';
 import PageCounter from './PageCounter';
 
 const XmlUi = ({
-  source,
+  book,
   onBookClose,
   onBookInfoChange,
 }) => {
@@ -18,7 +18,7 @@ const XmlUi = ({
 
   useEffect(() => {
     setCurPage(1);
-  }, [source]);
+  }, [book]);
 
   const getGapSize = () => 40; // css column-gap property of textWindow
   const handleTextWindowSizeChange = useCallback((
@@ -100,8 +100,8 @@ const XmlUi = ({
         onTouchEnd={goToNextPage}
       />
       <SelectionPopupArea>
-        <Fb2TextWindow
-          source={source}
+        <XmlTextWindow
+          book={book}
           onTextWindowSizeChange={handleTextWindowSizeChange}
           onBookInfoChange={onBookInfoChange}
           offset={(curPage - 1) * (textWindowWidth + getGapSize())}
@@ -119,13 +119,15 @@ const XmlUi = ({
 };
 
 XmlUi.propTypes = {
-  source: PropTypes.string,
+  book: PropTypes.shape({
+    format: PropTypes.string,
+    source: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.arrayOf(PropTypes.string)
+    ]),
+  }).isRequired,
   onBookClose: PropTypes.func.isRequired,
   onBookInfoChange: PropTypes.func.isRequired,
-};
-
-XmlUi.defaultProps = {
-  source: '',
 };
 
 export default XmlUi;

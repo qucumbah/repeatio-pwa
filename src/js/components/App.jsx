@@ -26,7 +26,7 @@ const App = () => {
       const supportedFormats = ['pdf', 'fb2', 'epub'];
 
       const result = supportedFormats.find(
-        (format) => file.endsWith(`.${format}`)
+        (format) => file.name.endsWith(`.${format}`)
       );
 
       return result ?? 'unsupported';
@@ -73,7 +73,7 @@ const App = () => {
     requestAnimationFrame(() => {
       setFileOverlayContent('Loading...');
 
-      // Before rendering frame 2: make all work, set loader invisible
+      // Before rendering frame 2: make everything work, set loader invisible
       requestAnimationFrame(async () => {
         setBook(await getBook(file));
         setFileOverlayContent(null);
@@ -130,7 +130,7 @@ const App = () => {
   );
   const getFb2Ui = () => (
     <XmlUi
-      source={book.source}
+      book={book}
       onBookClose={() => setBook(null)}
       onBookInfoChange={handleBookInfoChange}
     />
@@ -144,9 +144,13 @@ const App = () => {
   );
   const bookUi = useMemo(() => {
     switch (book?.format) {
-      case 'fb2': return getFb2Ui();
-      case 'pdf': return getPdfUi();
-      default: return null;
+      case 'fb2':
+      case 'epub':
+        return getFb2Ui();
+      case 'pdf':
+        return getPdfUi();
+      default:
+        return null;
     }
   }, [book]);
 
