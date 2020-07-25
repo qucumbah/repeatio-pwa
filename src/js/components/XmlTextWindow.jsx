@@ -48,7 +48,7 @@ XmlTextWindow.propTypes = {
     format: PropTypes.string,
     source: PropTypes.oneOfType([
       PropTypes.string,
-      PropTypes.arrayOf(PropTypes.string)
+      PropTypes.instanceOf(Map)
     ]),
   }).isRequired,
   onTextWindowSizeChange: PropTypes.func.isRequired,

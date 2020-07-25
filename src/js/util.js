@@ -39,7 +39,19 @@ export const getTranslation = (text) => {
 const jsZip = new JsZip();
 export const unzipFiles = (zippedBuffer) => jsZip
   .loadAsync(zippedBuffer)
-  .then((archive) => Object.keys(archive.files).map(async (fileName) => (
-    [fileName, await archive.file(fileName).async('arraybuffer')]
-  )))
-  .then((promisedFiles) => Promise.all(promisedFiles));
+  .then(async (archive) => {
+    const files = new Map();
+    const addFileIfNotDir = async ([fileName, fileInfo]) => {
+      if (fileInfo.dir) {
+        return;
+      }
+
+      const file = await archive.file(fileName).async('arraybuffer');
+      files.set(fileName, file);
+    };
+
+    const fileAdditions = Object.entries(archive.files).map(addFileIfNotDir);
+    await Promise.all(fileAdditions);
+
+    return files;
+  });
