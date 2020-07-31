@@ -1,16 +1,14 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-import Fb2Text from './Fb2Text';
+import XmlText from './XmlText';
 
-const Fb2TextWindow = (props) => {
-  const {
-    source,
-    onTextWindowSizeChange,
-    onBookInfoChange,
-    offset,
-  } = props;
-
+const XmlTextWindow = ({
+  book,
+  onTextWindowSizeChange,
+  onBookInfoChange,
+  offset,
+}) => {
   const textWindowRef = useRef();
   const textRef = useRef();
   useEffect(() => {
@@ -36,20 +34,26 @@ const Fb2TextWindow = (props) => {
       className="fb2TextWindow"
       ref={textWindowRef}
     >
-      <Fb2Text
-        source={source}
+      <XmlText
+        book={book}
         onBookInfoChange={onBookInfoChange}
-        ref={textRef}
+        textRef={textRef}
       />
     </div>
   );
 };
 
-Fb2TextWindow.propTypes = {
-  source: PropTypes.string.isRequired,
+XmlTextWindow.propTypes = {
+  book: PropTypes.shape({
+    format: PropTypes.string,
+    source: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.instanceOf(Map)
+    ]),
+  }).isRequired,
   onTextWindowSizeChange: PropTypes.func.isRequired,
   onBookInfoChange: PropTypes.func.isRequired,
   offset: PropTypes.number.isRequired,
 };
 
-export default Fb2TextWindow;
+export default XmlTextWindow;

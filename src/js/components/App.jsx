@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { unzipFiles } from '../util';
 
 import { SettingsProvider } from './SettingsProvider';
 import { RepeatListProvider } from './RepeatListProvider';
@@ -9,7 +10,7 @@ import Settings from './Settings';
 import RepeatList from './RepeatList';
 import Help from './Help';
 import MainPage from './MainPage';
-import Fb2Ui from './Fb2Ui';
+import XmlUi from './XmlUi';
 import PdfUi from './PdfUi';
 
 const App = () => {
@@ -22,33 +23,44 @@ const App = () => {
 
   const getBook = async (file) => {
     const getFormat = () => {
-      if (file.name.endsWith('.pdf')) {
-        return 'pdf';
-      }
+      const supportedFormats = ['pdf', 'fb2', 'epub'];
 
-      if (file.name.endsWith('.fb2')) {
-        return 'fb2';
-      }
+      const result = supportedFormats.find(
+        (format) => file.name.endsWith(`.${format}`)
+      );
 
-      return null;
+      return result ?? 'unsupported';
     };
 
-    const getPdfData = () => new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.readAsArrayBuffer(file);
-      reader.onload = () => resolve(reader.result);
-    });
-    const getFb2Data = () => new Promise((resolve) => {
+    const readFileAsText = () => new Promise((resolve) => {
       const reader = new FileReader();
       reader.readAsText(file);
       reader.onload = () => resolve(reader.result);
     });
+    const readFileAsArrayByffer = () => new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.readAsArrayBuffer(file);
+      reader.onload = () => resolve(reader.result);
+    });
+
+    const getData = async (format) => {
+      switch (format) {
+        case 'pdf':
+          return readFileAsArrayByffer();
+        case 'fb2':
+          return readFileAsText();
+        case 'epub':
+          return unzipFiles(await readFileAsArrayByffer());
+        default:
+          return null;
+      }
+    };
 
     const format = getFormat();
     if (format === null) {
       return null;
     }
-    const source = await ((format === 'pdf') ? getPdfData() : getFb2Data());
+    const source = await getData(format);
 
     return {
       format,
@@ -61,7 +73,7 @@ const App = () => {
     requestAnimationFrame(() => {
       setFileOverlayContent('Loading...');
 
-      // Before rendering frame 2: make all work, set loader invisible
+      // Before rendering frame 2: make everything work, set loader invisible
       requestAnimationFrame(async () => {
         setBook(await getBook(file));
         setFileOverlayContent(null);
@@ -117,8 +129,8 @@ const App = () => {
     />
   );
   const getFb2Ui = () => (
-    <Fb2Ui
-      source={book.source}
+    <XmlUi
+      book={book}
       onBookClose={() => setBook(null)}
       onBookInfoChange={handleBookInfoChange}
     />
@@ -132,9 +144,13 @@ const App = () => {
   );
   const bookUi = useMemo(() => {
     switch (book?.format) {
-      case 'fb2': return getFb2Ui();
-      case 'pdf': return getPdfUi();
-      default: return null;
+      case 'fb2':
+      case 'epub':
+        return getFb2Ui();
+      case 'pdf':
+        return getPdfUi();
+      default:
+        return null;
     }
   }, [book]);
 

@@ -2,13 +2,13 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-import Fb2TextWindow from './Fb2TextWindow';
+import XmlTextWindow from './XmlTextWindow';
 import SelectionPopupArea from './SelectionPopupArea';
 import BookMenuWrapper from './BookMenuWrapper';
 import PageCounter from './PageCounter';
 
-const Fb2Ui = ({
-  source,
+const XmlUi = ({
+  book,
   onBookClose,
   onBookInfoChange,
 }) => {
@@ -18,7 +18,7 @@ const Fb2Ui = ({
 
   useEffect(() => {
     setCurPage(1);
-  }, [source]);
+  }, [book]);
 
   const getGapSize = () => 40; // css column-gap property of textWindow
   const handleTextWindowSizeChange = useCallback((
@@ -100,8 +100,8 @@ const Fb2Ui = ({
         onTouchEnd={goToNextPage}
       />
       <SelectionPopupArea>
-        <Fb2TextWindow
-          source={source}
+        <XmlTextWindow
+          book={book}
           onTextWindowSizeChange={handleTextWindowSizeChange}
           onBookInfoChange={onBookInfoChange}
           offset={(curPage - 1) * (textWindowWidth + getGapSize())}
@@ -118,14 +118,16 @@ const Fb2Ui = ({
   );
 };
 
-Fb2Ui.propTypes = {
-  source: PropTypes.string,
+XmlUi.propTypes = {
+  book: PropTypes.shape({
+    format: PropTypes.string,
+    source: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.instanceOf(Map)
+    ]),
+  }).isRequired,
   onBookClose: PropTypes.func.isRequired,
   onBookInfoChange: PropTypes.func.isRequired,
 };
 
-Fb2Ui.defaultProps = {
-  source: '',
-};
-
-export default Fb2Ui;
+export default XmlUi;
