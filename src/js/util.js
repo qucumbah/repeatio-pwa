@@ -55,3 +55,19 @@ export const unzipFiles = (zippedBuffer) => jsZip
 
     return files;
   });
+
+export const convertToBase64 = (binary) => {
+  const bytes = new Uint8Array(binary);
+  const chars = bytes.map((byte) => String.fromCharCode(byte));
+  const string = chars.join('');
+  return window.btoa(string);
+};
+
+export const relativePathToAbsolute = (fromPath, toPath) => {
+  if (fromPath.indexOf('/') === -1) {
+    return toPath;
+  }
+
+  const fromFolder = fromPath.slice(0, fromPath.lastIndexOf('/'));
+  return `${fromFolder}/${toPath}`;
+};
