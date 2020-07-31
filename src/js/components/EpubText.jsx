@@ -20,6 +20,10 @@ const cheerioNodeToReactComponent = (node, index) => {
     children,
   } = node;
 
+  if (tagName === 'img') {
+    return '---------IMAGE-----------';
+  }
+
   // Don't have to create any elements for text
   if (type === 'text') {
     return (data.trim().length === 0) ? null : data;
@@ -31,7 +35,7 @@ const cheerioNodeToReactComponent = (node, index) => {
       key: index,
       elementid: index,
     },
-    children.map(cheerioNodeToReactComponent),
+    (children.length !== 0) ? children.map(cheerioNodeToReactComponent) : null,
   );
 };
 
@@ -63,29 +67,23 @@ const EpubText = React.memo(
         (itemInfo) => itemInfo.attribs
       );
 
-      const extractItem = (itemMediaType, itemBinary) => {
-        if (itemMediaType === 'application/xhtml+xml') {
-          return extractHtmlFromBinary(itemBinary);
-        }
-
-        if (itemMediaType.startsWith('image')) {
-          const imageFormatStart = itemMediaType.lastIndexOf('/') + 1;
-          const imageFormat = itemMediaType.slice(imageFormatStart);
-          return extractImageFromBinary(itemBinary, imageFormat);
-        }
-
-        return null;
-      };
-
-      const itemsContent = new Map();
+      const htmlPages = new Map();
       itemsInfo.forEach((itemInfo) => {
         const itemMediaType = itemInfo['media-type'];
-        const itemBinary = source.get(itemInfo.href);
 
-        const extractedItem = extractItem(itemMediaType, itemBinary);
-        if (extractedItem !== null) {
-          itemsContent.set(itemInfo.id, extractedItem);
+        if (itemMediaType !== 'application/xhtml+xml') {
+          return;
         }
+
+        const htmlPageRelativePath = itemInfo.href;
+        const htmlPageAbsolutePath = (
+          relativePathToAbsolute(rootFilePath, htmlPageRelativePath)
+        );
+        const htmlPageBinary = source.get(htmlPageAbsolutePath);
+        const htmlPage = extractHtmlFromBinary(htmlPageBinary);
+
+        const pageId = itemInfo.id;
+        htmlPages.set(pageId, htmlPage);
       });
 
       const referencesInfo = Array.from($ofRootFile('spine itemref'));
@@ -93,7 +91,7 @@ const EpubText = React.memo(
         (referenceInfo) => referenceInfo.attribs.idref
       );
 
-      return references.map((reference) => itemsContent.get(reference));
+      return references.map((reference) => htmlPages.get(reference));
     };
 
     const rootFilesInfo = Array.from($ofContainer('rootfile'));
