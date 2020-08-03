@@ -18,7 +18,7 @@ Repeat automatically shows translations of the selected word or sentence.
 Right now, nothing. In future it will add words to [Repeatio Extension](https://github.com/qucumbah/repeatio-extension)'s list of words to be learned.
 
 ## Which book formats are supported?
-FB2 and PDF, you can use the translation feature in both (if the book quality allows it).
+FB2, EPUB and PDF, you can use the translation feature in either (if the book quality allows it).
 
 ## Where can I try it?
 You can find repeatio [here](https://qucumbah.github.io/repeatio-pwa/)
