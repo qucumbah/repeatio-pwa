@@ -6,10 +6,14 @@ import { convertToBase64, relativePathToAbsolute } from '../util';
 
 const textDecoder = new TextDecoder('utf-8');
 
-const extractImageFromBinary = (imageBinary, imageFormat) => {
+const getImageBase64Href = (source, imagePath) => {
+  const imageBinary = source.get(imagePath);
   const imageBase64 = convertToBase64(imageBinary);
-  const href = `data:image/${imageFormat};base64,${imageBase64}`;
-  return <img src={href} alt="" />;
+
+  const imageFormatStart = imagePath.lastIndexOf('.') + 1;
+  const imageFormat = imagePath.slice(imageFormatStart);
+
+  return `data:image/${imageFormat};base64,${imageBase64}`;
 };
 
 const cheerioNodeToReactComponent = (node, index) => {
@@ -21,7 +25,7 @@ const cheerioNodeToReactComponent = (node, index) => {
   } = node;
 
   if (tagName === 'img') {
-    return '---------IMAGE-----------';
+    return <img src={node.attribs.src} alt="" key={index} elementid={index} />;
   }
 
   // Don't have to create any elements for text
@@ -39,11 +43,29 @@ const cheerioNodeToReactComponent = (node, index) => {
   );
 };
 
-const extractHtmlFromBinary = (htmlBinary) => {
-  const html = textDecoder.decode(htmlBinary);
-  const $ofHtml = Cheerio.load(html);
-  const bodyChildrensNodes = Array.from($ofHtml('body > *'));
+const extractHtml = (rootFilePath, htmlPageRelativePath, source) => {
+  const htmlPageAbsolutePath = (
+    relativePathToAbsolute(rootFilePath, htmlPageRelativePath)
+  );
+  const htmlPageBinary = source.get(htmlPageAbsolutePath);
 
+  const html = textDecoder.decode(htmlPageBinary);
+  const $ofHtml = Cheerio.load(html);
+
+  const images = Array.from($ofHtml('img'));
+  images.forEach((image) => {
+    const imageRelativePath = image.attribs.src;
+    const imageAbsolutePath = (
+      relativePathToAbsolute(htmlPageAbsolutePath, imageRelativePath)
+    );
+
+    // Have to change src attribute here image paths won't work
+    // eslint-disable-next-line no-param-reassign
+    image.attribs.src = getImageBase64Href(source, imageAbsolutePath);
+    // console.log(getImageBase64Href(source, imageAbsolutePath));
+  });
+
+  const bodyChildrensNodes = Array.from($ofHtml('body > *'));
   return bodyChildrensNodes.map(cheerioNodeToReactComponent);
 };
 
@@ -59,7 +81,9 @@ const EpubText = React.memo(
 
     const $ofContainer = get$('META-INF/container.xml');
 
-    const convertRootFileToHtml = (rootFilePath) => {
+    const rootFilesInfo = Array.from($ofContainer('rootfile'));
+    const content = rootFilesInfo.map((rootFileInfo) => {
+      const rootFilePath = rootFileInfo.attribs['full-path'];
       const $ofRootFile = get$(rootFilePath);
 
       const $ofItemElements = $ofRootFile('manifest item');
@@ -76,11 +100,9 @@ const EpubText = React.memo(
         }
 
         const htmlPageRelativePath = itemInfo.href;
-        const htmlPageAbsolutePath = (
-          relativePathToAbsolute(rootFilePath, htmlPageRelativePath)
+        const htmlPage = (
+          extractHtml(rootFilePath, htmlPageRelativePath, source)
         );
-        const htmlPageBinary = source.get(htmlPageAbsolutePath);
-        const htmlPage = extractHtmlFromBinary(htmlPageBinary);
 
         const pageId = itemInfo.id;
         htmlPages.set(pageId, htmlPage);
@@ -92,16 +114,7 @@ const EpubText = React.memo(
       );
 
       return references.map((reference) => htmlPages.get(reference));
-    };
-
-    const rootFilesInfo = Array.from($ofContainer('rootfile'));
-    const content = rootFilesInfo.map((rootFileInfo) => {
-      const rootFilePath = rootFileInfo.attribs['full-path'];
-
-      return convertRootFileToHtml(rootFilePath);
     });
-
-    console.log(content);
 
     return (
       <div className="epubText" ref={ref}>

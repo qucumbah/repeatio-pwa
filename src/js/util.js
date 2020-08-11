@@ -58,7 +58,10 @@ export const unzipFiles = (zippedBuffer) => jsZip
 
 export const convertToBase64 = (binary) => {
   const bytes = new Uint8Array(binary);
-  const chars = bytes.map((byte) => String.fromCharCode(byte));
+
+  const chars = [];
+  bytes.forEach((byte) => chars.push(String.fromCharCode(byte)));
+
   const string = chars.join('');
   return window.btoa(string);
 };
@@ -69,5 +72,21 @@ export const relativePathToAbsolute = (fromPath, toPath) => {
   }
 
   const fromFolder = fromPath.slice(0, fromPath.lastIndexOf('/'));
-  return `${fromFolder}/${toPath}`;
+  const toFolder = toPath.slice(0, toPath.lastIndexOf('/'));
+
+  const fromFolderKeypoints = fromFolder.split('/');
+  const toFolderKeypoints = toFolder.split('/');
+
+  const resultKeypoints = fromFolderKeypoints.slice();
+  toFolderKeypoints.forEach((keypoint) => {
+    if (keypoint === '..') {
+      resultKeypoints.pop();
+      return;
+    }
+
+    resultKeypoints.push(keypoint);
+  });
+
+  const toFileName = toPath.slice(toPath.lastIndexOf('/') + 1);
+  return `${resultKeypoints.join('/')}/${toFileName}`;
 };

@@ -928,6 +928,7 @@ p {
 img {
   display: block;
   max-height: calc(100vh - 120px);
+  max-width: calc(50vw - 120px);
   margin: 0 auto;
   user-select: none;
   -webkit-user-drag: none;
