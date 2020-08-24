@@ -34,6 +34,12 @@ const SelectionPopup = ({
   const handleWordAdd = () => {
     const wordText = inputRef.current.value;
     onWordAdd(wordText);
+
+    window.postMessage({
+      type: 'repeatio__addWordToRepeatList',
+      value: wordText,
+    }, '*');
+
     onClose();
   };
 
