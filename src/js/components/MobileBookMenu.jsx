@@ -73,7 +73,6 @@ const MobileBookMenu = ({ onClose }) => {
   ), [contentType]);
 };
 
-
 MobileBookMenu.propTypes = {
   onClose: PropTypes.func.isRequired,
 };

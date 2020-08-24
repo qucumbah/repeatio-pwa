@@ -26,7 +26,8 @@ const Help = ({ onClose }) => (
       </ListItem>
       <ListItem name="Which book formats are supported?">
         <p className="helpText">
-        FB2, EPUB and PDF, you can use the translation feature in either (if the book quality allows it).
+          FB2, EPUB and PDF, you can use the translation feature in either
+          (if the book quality allows it).
         </p>
       </ListItem>
     </ol>
