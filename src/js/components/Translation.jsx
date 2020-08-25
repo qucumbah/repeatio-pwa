@@ -7,6 +7,7 @@ const Translation = ({ text }) => {
   const [translation, setTranslation] = useState(null);
 
   useEffect(() => {
+    setTranslation(null);
     getTranslation(text).then(setTranslation);
   }, [text]);
 

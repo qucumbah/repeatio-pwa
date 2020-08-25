@@ -12,6 +12,7 @@ import { RepeatListContext } from './RepeatListProvider';
 import Translation from './Translation';
 
 const SelectionPopup = ({
+  visible,
   position,
   text: inputText,
   onClose,
@@ -51,6 +52,11 @@ const SelectionPopup = ({
   const popupRef = useRef();
 
   useLayoutEffect(() => {
+    // No need to fix position of invisible popup
+    if (!visible) {
+      return;
+    }
+
     const popupDimensions = popupRef.current.getBoundingClientRect();
     const isOutOfTopBound = popupDimensions.top < 0;
     const isOutOfLeftBound = popupDimensions.left < 0;
@@ -72,34 +78,59 @@ const SelectionPopup = ({
     });
   }, [text]);
 
-  const positionStyle = {
+  const popupStyle = {
+    display: visible ? '' : 'none',
     left: `${position.x + fixingOffsets.left}px`,
     top: `${position.y + fixingOffsets.top}px`,
   };
 
   useEffect(() => {
     const selectionPopup = popupRef.current;
-    const stopPropagation = (event) => event.stopPropagation();
 
-    // Need to skip first mouseup because it opens the popup
-    requestAnimationFrame(() => {
-      selectionPopup.addEventListener('mouseup', stopPropagation);
-      // If this event fires then the user clicked outside of selection
-      // popup, which means we have to close it
-      window.addEventListener('mouseup', onClose);
+    const isInsidePopup = (mouseX, mouseY) => {
+      const {
+        x: selectionPopupX,
+        y: selectionPopupY,
+        width: selectionPopupWidth,
+        height: selectionPopupHeight,
+      } = selectionPopup.getBoundingClientRect();
+
+      return (
+        mouseX >= selectionPopupX
+        && mouseX <= selectionPopupX + selectionPopupWidth
+        && mouseY >= selectionPopupY
+        && mouseY <= selectionPopupY + selectionPopupHeight
+      );
+    };
+
+    const hidePopupIfClickedOutside = (event) => {
+      const {
+        clientX: mouseX,
+        clientY: mouseY
+      } = event;
+
+      console.log(isInsidePopup(mouseX, mouseY));
+
+      if (!isInsidePopup(mouseX, mouseY)) {
+        onClose();
+      }
+    };
+
+    window.addEventListener('mouseup', hidePopupIfClickedOutside, {
+      capture: true
     });
 
-    return () => {
-      selectionPopup.removeEventListener('mouseup', stopPropagation);
-      window.removeEventListener('mouseup', onClose);
-    };
+    return () => (
+      window.removeEventListener('mouseup', hidePopupIfClickedOutside, {
+        capture: true
+      })
+    );
   });
 
-  // add onclick, prevent propagation, effect window.onclick = closeoverlay
   return (
     <div
       className="selectionPopup"
-      style={positionStyle}
+      style={popupStyle}
       ref={popupRef}
     >
       <div className="word">
@@ -120,6 +151,7 @@ const SelectionPopup = ({
 };
 
 SelectionPopup.propTypes = {
+  visible: PropTypes.bool.isRequired,
   text: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
   position: PropTypes.exact({
