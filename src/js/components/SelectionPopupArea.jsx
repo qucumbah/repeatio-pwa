@@ -10,7 +10,7 @@ const SelectionPopupArea = ({ children }) => {
     text: '',
   });
 
-  const handleTextSelect = ({ x, y, width, text }) => {
+  const handleSelectionPopupOpen = ({ x, y, width, text }) => {
     setSelectionPopupState({
       visible: true,
       position: { x: x + width / 2, y },
@@ -18,7 +18,6 @@ const SelectionPopupArea = ({ children }) => {
     });
   };
   const handleSelectionPopupClose = useCallback(() => {
-    console.log('close');
     setSelectionPopupState((prevState) => ({
       visible: false,
       position: prevState.position,
@@ -42,7 +41,7 @@ const SelectionPopupArea = ({ children }) => {
       width,
       height
     } = selection.getRangeAt(0).getBoundingClientRect();
-    handleTextSelect({
+    handleSelectionPopupOpen({
       x,
       y,
       width,

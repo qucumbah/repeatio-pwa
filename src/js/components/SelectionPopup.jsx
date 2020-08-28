@@ -52,8 +52,11 @@ const SelectionPopup = ({
   const popupRef = useRef();
 
   useLayoutEffect(() => {
-    // No need to fix position of invisible popup
     if (!visible) {
+      setFixingOffsets({
+        top: 0,
+        left: 0,
+      });
       return;
     }
 
@@ -76,7 +79,7 @@ const SelectionPopup = ({
       top: isOutOfTopBound ? popupDimensions.height + 40 : 0,
       left: getLeftOffset(),
     });
-  }, [text]);
+  }, [visible]);
 
   const popupStyle = {
     display: visible ? '' : 'none',
@@ -87,7 +90,7 @@ const SelectionPopup = ({
   useEffect(() => {
     const selectionPopup = popupRef.current;
 
-    const isInsidePopup = (mouseX, mouseY) => {
+    const isInsidePopup = (x, y) => {
       const {
         x: selectionPopupX,
         y: selectionPopupY,
@@ -96,34 +99,30 @@ const SelectionPopup = ({
       } = selectionPopup.getBoundingClientRect();
 
       return (
-        mouseX >= selectionPopupX
-        && mouseX <= selectionPopupX + selectionPopupWidth
-        && mouseY >= selectionPopupY
-        && mouseY <= selectionPopupY + selectionPopupHeight
+        x >= selectionPopupX
+        && x <= selectionPopupX + selectionPopupWidth
+        && y >= selectionPopupY
+        && y <= selectionPopupY + selectionPopupHeight
       );
     };
 
-    const hidePopupIfClickedOutside = (event) => {
+    const handleMouseUp = (event) => {
       const {
         clientX: mouseX,
         clientY: mouseY
       } = event;
 
-      console.log(isInsidePopup(mouseX, mouseY));
-
-      if (!isInsidePopup(mouseX, mouseY)) {
+      if (isInsidePopup(mouseX, mouseY)) {
+        event.stopPropagation();
+      } else {
         onClose();
       }
     };
 
-    window.addEventListener('mouseup', hidePopupIfClickedOutside, {
-      capture: true
-    });
+    window.addEventListener('mouseup', handleMouseUp, { capture: true });
 
     return () => (
-      window.removeEventListener('mouseup', hidePopupIfClickedOutside, {
-        capture: true
-      })
+      window.removeEventListener('mouseup', handleMouseUp, { capture: true })
     );
   });
 
