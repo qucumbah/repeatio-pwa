@@ -1,37 +1,18 @@
 import JsZip from 'jszip';
 
-const dictionaryApiKey = 'dict.1.1.20190711T095338Z.484d81ae92e52b2a.f377215fa79771b02fb5f2343803aa24876acbe2';
-
 export const getTranslation = async (text) => {
   const trimmedText = text.trim();
   if (trimmedText.length === 0) {
     return Promise.resolve('');
   }
 
-  const dictionaryApiRequest = `https://dictionary.yandex.net/api/v1/dicservice.json/lookup?key=${dictionaryApiKey}&lang=en-ru&text=${text}`;
+  const translationApiRequest = `https://repeatio-translation-server.herokuapp.com/translate?source=en&target=ru&text=${text}`;
 
-  const [
-    dictionaryApiResponse,
-  ] = await Promise.allSettled([
-    fetch(dictionaryApiRequest),
-  ]);
-
-  if (dictionaryApiResponse.status === 'fulfilled') {
-    const dictionaryResponseJson = await dictionaryApiResponse.value.json();
-    const dictionaryApiHasResult = (dictionaryResponseJson.def.length !== 0);
-
-    if (dictionaryApiHasResult) {
-      return dictionaryResponseJson.def.map((definition) => {
-        const joinedTranslations = definition.tr
-          .map((translation) => translation.text)
-          .join(', ');
-
-        return `${definition.pos}:\n${joinedTranslations}`;
-      }).join('\n');
-    }
+  try {
+    return fetch(translationApiRequest).then((response) => response.text());
+  } catch (exception) {
+    return `Translation error: ${exception.message}`;
   }
-
-  return 'Translation error';
 };
 
 const jsZip = new JsZip();
