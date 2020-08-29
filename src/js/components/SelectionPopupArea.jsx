@@ -53,7 +53,7 @@ const SelectionPopupArea = ({ children }) => {
   return (
     <div
       className="selectionPopupArea"
-      onMouseUp={checkSelection}
+      onMouseUp={() => requestAnimationFrame(checkSelection)}
     >
       {children}
       <SelectionPopup
