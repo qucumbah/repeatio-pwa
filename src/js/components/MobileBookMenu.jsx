@@ -7,47 +7,48 @@ import Settings from './Settings';
 import RepeatList from './RepeatList';
 import Help from './Help';
 
+import ReturnIcon from '../../img/return.svg';
 import SettingsIcon from '../../img/settings.svg';
 import RepeatListIcon from '../../img/book.svg';
 import FaqIcon from '../../img/info.svg';
 
-const MobileBookMenu = ({ onClose }) => {
+const MobileBookMenu = ({ onMenuClose, onBookClose }) => {
   const [contentType, setContentType] = useState('bookMenu');
 
   const bookMenu = (
     <div className="overlayMenu mobileBookMenu">
       <h2>BookMenu</h2>
-      <ul className="list">
-        <li>
-          <MenuLink
-            action={() => setContentType('settings')}
-            icon={SettingsIcon}
-          >
-            Settings
-          </MenuLink>
-        </li>
-        <li>
-          <MenuLink
-            action={() => setContentType('repeatList')}
-            icon={RepeatListIcon}
-          >
-            Repeat list
-          </MenuLink>
-        </li>
-        <li>
-          <MenuLink
-            action={() => setContentType('help')}
-            icon={FaqIcon}
-          >
-            Help
-          </MenuLink>
-        </li>
-      </ul>
+      <div className="list">
+        <MenuLink
+          action={onBookClose}
+          icon={ReturnIcon}
+        >
+          Close book
+        </MenuLink>
+        <MenuLink
+          action={() => setContentType('settings')}
+          icon={SettingsIcon}
+        >
+          Settings
+        </MenuLink>
+        <MenuLink
+          action={() => setContentType('repeatList')}
+          icon={RepeatListIcon}
+        >
+          Repeat list
+        </MenuLink>
+        <MenuLink
+          action={() => setContentType('help')}
+          icon={FaqIcon}
+        >
+          Help
+        </MenuLink>
+      </div>
       <button
         className="closeButton"
         type="button"
         aria-label="close"
-        onClick={onClose}
+        onClick={onMenuClose}
       />
     </div>
   );
@@ -74,7 +75,8 @@ const MobileBookMenu = ({ onClose }) => {
 };
 
 MobileBookMenu.propTypes = {
-  onClose: PropTypes.func.isRequired,
+  onMenuClose: PropTypes.func.isRequired,
+  onBookClose: PropTypes.func.isRequired,
 };
 
 export default MobileBookMenu;

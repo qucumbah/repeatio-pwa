@@ -35,9 +35,9 @@ const MainPage = ({
           <MenuLink action={onSettingsMenuOpen} icon={SettingsIcon}>
             Settings
           </MenuLink>
-          <MenuLink action={onRepeatListOpen} icon={RepeatListIcon}>
+          {/* <MenuLink action={onRepeatListOpen} icon={RepeatListIcon}>
             Repeat list
-          </MenuLink>
+          </MenuLink> */}
         </div>
         <div className="topRight">
           <MenuLink action={onSignupMenuOpen} icon={SignupIcon}>
@@ -53,8 +53,8 @@ const MainPage = ({
         </div>
       </div>
       <div className="foreground">
-        <h1>Welcome to Repeatio!</h1>
-        <div className="menus">
+        <div className="mainPageCenterContent">
+          <h1>Welcome to Repeatio!</h1>
           <div className="menu fileMenu">
             <span className="subtitle">Drag and drop your book</span>
             <div className="content">

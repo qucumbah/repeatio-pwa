@@ -1,0 +1,55 @@
+@media screen and (max-width: 1279px) {
+
+.xmlTextWindow {
+  column-count: 1;
+}
+
+.overlayMenu {
+  max-width: 400px;
+  width: 75%;
+}
+
+.mainPage {
+  .menu {
+    max-width: 320px;
+    width: 90vw;
+  }
+
+  .mainPageCenterContent {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr 1fr;
+  }
+
+  h1 {
+    grid-column: span 1;
+    font-size: 4vh;
+
+    @media screen and (max-width: 360px) {
+      font-size: 3vh;
+    }
+  }
+}
+
+.xmlUi {
+  grid-template-columns: 1fr;
+
+  .pageButton {
+    position: fixed;
+    width: 35vw;
+    z-index: 15;
+
+    opacity: 0;
+
+    &.nextButton {
+      right: 0;
+    }
+  }
+
+  .xmlTextWindow {
+    width: 80vw;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+}

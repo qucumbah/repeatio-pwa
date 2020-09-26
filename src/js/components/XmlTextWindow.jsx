@@ -31,7 +31,7 @@ const XmlTextWindow = ({
 
   return (
     <div
-      className="fb2TextWindow"
+      className="xmlTextWindow"
       ref={textWindowRef}
     >
       <XmlText

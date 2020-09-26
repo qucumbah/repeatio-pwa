@@ -83,7 +83,7 @@ const XmlUi = ({
 
   return (
     // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
-    <div className="fb2Ui" ref={bookUIRef} tabIndex="0">
+    <div className="xmlUi" ref={bookUIRef} tabIndex="0">
       <button
         type="button"
         aria-label="previous page"

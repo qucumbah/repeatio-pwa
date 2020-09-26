@@ -75,7 +75,10 @@ const BookMenuWrapper = ({ onBookClose, children }) => {
   );
 
   const mobileMenu = (
-    <MobileBookMenu onClose={() => setOverlayOpen(false)} />
+    <MobileBookMenu
+      onMenuClose={() => setOverlayOpen(false)}
+      onBookClose={onBookClose}
+    />
   );
   const mobileTopBar = (
     <MenuLink action={openOverlay} icon={Bars}>Open menu</MenuLink>
